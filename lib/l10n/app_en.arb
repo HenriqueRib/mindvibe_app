@@ -1,0 +1,919 @@
+{
+  "@@locale": "en",
+  "appName": "MindVibe",
+  "appTagline": "Mental Fitness",
+  "brandLine": "A quiet place to train your mind.",
+  "tabHome": "Home",
+  "tabProgress": "Progress",
+  "tabProfile": "Profile",
+  "actionContinue": "Continue",
+  "actionBack": "Back",
+  "actionStart": "Start training",
+  "actionLogin": "Sign in",
+  "actionRegister": "Create account",
+  "actionForgotPassword": "Reset password",
+  "actionSend": "Send",
+  "actionSave": "Save",
+  "actionLogout": "Log out",
+  "actionRetry": "Try again",
+  "actionSkip": "Skip",
+  "actionSubscribe": "Subscribe",
+  "actionTransferDevice": "Change device link",
+  "actionComingSoon": "Coming soon",
+  "fieldName": "Name",
+  "fieldEmail": "Email",
+  "fieldPassword": "Password",
+  "fieldPasswordConfirm": "Confirm password",
+  "passwordShow": "Show password",
+  "passwordHide": "Hide password",
+  "fieldResetToken": "Reset code",
+  "validationRequired": "This field is required.",
+  "validationEmail": "Enter a valid email.",
+  "validationPasswordMin": "Password must be at least 8 characters.",
+  "validationPasswordMatch": "Passwords do not match.",
+  "splashLoading": "Preparing your space…",
+  "welcomeTitle": "Welcome to MindVibe",
+  "welcomeBody": "Just as you train your body at a gym, you can build a routine to train your mind.",
+  "welcomeLogin": "I already have an account",
+  "welcomeRegister": "Get started",
+  "loginTitle": "Sign in",
+  "loginSubtitle": "Pick up your training where you left off.",
+  "registerTitle": "Create account",
+  "registerSubtitle": "Email and password only. No social login.",
+  "forgotTitle": "Reset password",
+  "forgotSubtitle": "We will send a code to your email.",
+  "forgotSent": "If this email is registered, you will receive instructions shortly.",
+  "resetTitle": "Choose a new password",
+  "resetSubtitle": "Use the code sent to your email.",
+  "resetSuccess": "Password updated. Sign in with your new password.",
+  "deviceAssociatedTitle": "This device already has an account",
+  "deviceAssociatedBody": "This device already has an account registered with {email}.",
+  "@deviceAssociatedBody": {
+    "placeholders": {
+      "email": { "type": "String" }
+    }
+  },
+  "deviceAssociatedHint": "Sign in, reset the password, or change the device link after authenticating. We never create a new account silently.",
+  "errorGeneric": "Something went wrong. Please try again.",
+  "errorOffline": "You appear to be offline. Check your connection and try again.",
+  "errorNotFound": "We could not find what you are looking for.",
+  "errorUnauthorized": "Your session expired. Please sign in again.",
+  "errorServer": "The server is unavailable right now.",
+  "errorUpdateApp": "Please update the app to continue.",
+  "onboardingWelcomeTitle": "Let’s start slowly",
+  "onboardingWelcomeBody": "In a few steps you choose what to strengthen and join your plan.",
+  "onboardingNameTitle": "What should we call you?",
+  "onboardingGoalTitle": "What do you want to improve?",
+  "onboardingGoalHint": "Pick one plan. You follow one at a time — you can switch later.",
+  "onboardingGoalFocusBody": "Strengthen attention at work, study, and daily life. A 7-day plan.",
+  "onboardingGoalMindfulnessBody": "Train presence and notice what is happening now, with more calm. A 5-day plan.",
+  "onboardingGoalMemoryBody": "Remember with more clarity, at your pace. A 5-day plan.",
+  "onboardingGoalOthers": "Other paths",
+  "onboardingExperienceTitle": "How experienced are you?",
+  "onboardingReminderTitle": "Want a daily reminder?",
+  "onboardingReminderBody": "Local notification only, at the time you choose.",
+  "goalFocus": "Focus",
+  "goalMemory": "Memory",
+  "goalRelaxation": "Relaxation",
+  "goalSleep": "Sleep",
+  "goalHabit": "Build the habit",
+  "goalBreathing": "Breathing",
+  "goalMindfulness": "Mindfulness",
+  "experienceBeginner": "I am starting",
+  "experienceIntermediate": "I have practiced a little",
+  "experienceExperienced": "I already have a routine",
+  "reminderEnable": "Remind me to train",
+  "reminderTime": "Time",
+  "homeGreeting": "Hi, {name}",
+  "@homeGreeting": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "homeTodayTitle": "Today’s training",
+  "homeQuestion": "What should I do now?",
+  "homeStreak": "Streak",
+  "homeMinutes": "minutes",
+  "homeDayProgress": "day {current}/{total}",
+  "@homeDayProgress": {
+    "placeholders": {
+      "current": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "homeCompleted": "The next training unlocks tomorrow.",
+  "homeStartFirst": "Start your first training",
+  "homeStartToday": "Do today’s training",
+  "homeResumeTraining": "Back to training",
+  "homeSeePlan": "See my plan",
+  "homeCompletedEyebrow": "Done for today",
+  "homeTomorrowTraining": "Unlocks tomorrow: day {day} — {title}",
+  "@homeTomorrowTraining": {
+    "placeholders": {
+      "day": { "type": "int" },
+      "title": { "type": "String" }
+    }
+  },
+  "homeNextUnlocksOn": "Unlocks on {date}: day {day} — {title}",
+  "@homeNextUnlocksOn": {
+    "placeholders": {
+      "date": { "type": "String" },
+      "day": { "type": "int" },
+      "title": { "type": "String" }
+    }
+  },
+  "homeNoProgram": "You are not enrolled in a training plan yet.",
+  "homeNoProgramBody": "Choose what you want to improve and join your plan.",
+  "homeSessionSoon": "The full session arrives in the next step. For now, this is your training for today.",
+  "homeNowTitle": "Audio",
+  "homeNowBody": "Open sessions you can listen to whenever you want.",
+  "homeNowSleep": "Sleep",
+  "homeNowRelax": "Relax",
+  "homeNowBreathe": "Breathe",
+  "homeNowStudy": "Study",
+  "homeNowWork": "Work",
+  "homeNowAll": "All",
+  "homeSeeAll": "See all",
+  "libraryAudiosTitle": "All audio",
+  "libraryAudiosEmpty": "No audio here right now.",
+  "librarySearch": "Search",
+  "librarySearchHint": "Search audio",
+  "libraryExercisesTitle": "All exercises",
+  "libraryExercisesBody": "Pick a short session and start whenever you want.",
+  "libraryExercisesEmpty": "No published exercises right now.",
+  "libraryMemoryMeta": "{words} words · {seconds}s to look",
+  "@libraryMemoryMeta": {
+    "placeholders": {
+      "words": { "type": "int" },
+      "seconds": { "type": "int" }
+    }
+  },
+  "libraryMemoryKindWords": "Words · short term",
+  "libraryMemoryKindIcons": "Pictures · visual",
+  "libraryMemoryKindOrder": "Sequence",
+  "libraryMemoryKindDelayed": "Hold in mind",
+  "libraryAttentionKindTarget": "Tap only the target",
+  "libraryAttentionKindNogo": "Tap everything except this",
+  "libraryAttentionKindChange": "Tap when it changes",
+  "libraryAttentionKindGrid": "Find the odd one out",
+  "libraryBreathingKindWave": "Guided circle",
+  "libraryBreathingKindBox": "Box 4-4-4-4",
+  "libraryBreathingKindLadder": "4-7-8",
+  "libraryBreathingKindTide": "Tide · long exhale",
+  "libraryBreathingRoom": "Breathing room",
+  "libraryBreathingRoomBody": "Exercises and audio on one screen.",
+  "breathingHubTitle": "Breathing",
+  "breathingHubBody": "Guided exercises and audio to breathe at your own pace.",
+  "breathingHubExercises": "Exercises",
+  "breathingHubAudios": "Audio",
+  "breathingHubEmpty": "No breathing content here right now.",
+  "homeExercisesTitle": "Exercises",
+  "homeExercisesBody": "Daily practice, attention, memory and breathing.",
+  "homeExerciseBreathing": "Breathing",
+  "homeExerciseAttention": "Attention",
+  "homeExerciseMemory": "Memory",
+  "homeExploreTitle": "The six rooms",
+  "homeExploreBody": "Each point has its own program. Today’s training stays in the card above.",
+  "homeExploreAll": "See plans",
+  "homeChoosePlan": "Choose my plan",
+  "homeToolsTitle": "Tools",
+  "homeToolsBody": "A check-in, a full mind, a notebook and a way to close the night.",
+  "homeToolPomodoro": "Pomodoro",
+  "homeToolCheckin": "Check-in",
+  "homeToolClearMind": "Full mind",
+  "homeToolJournal": "Notebook",
+  "homeToolThought": "Park",
+  "homeToolSilentRoom": "Room",
+  "homeToolDayClose": "Night",
+  "homeTagline": "Breathe. Focus. Grow.",
+  "homeTodayEyebrow": "Today's training",
+  "homeProgressSection": "Your progress",
+  "homeKeepExploring": "Keep exploring",
+  "homeAreaProgress": "Your progress by area",
+  "homeNextTraining": "Next training",
+  "homeMyTools": "My tools",
+  "homeNumbersTitle": "Your moment in numbers",
+  "homeQuote": "Small daily choices build a stronger, calmer mind.",
+  "homeStatDays": "Days",
+  "homeStatTrained": "Trained",
+  "homeNowFocus": "Focus",
+  "homeNowMemory": "Memory",
+  "homeNowMindfulness": "Mindfulness",
+  "homeCurrentStreak": "Current streak",
+  "menuOpen": "Academy menu",
+  "menuClose": "Close menu",
+  "menuTitle": "Mental Academy",
+  "menuSubtitle": "Every room, in one place.",
+  "menuSectionTrain": "Training",
+  "menuSectionAudio": "Audio",
+  "menuSectionExercise": "Exercises",
+  "menuSectionTools": "Tools",
+  "menuSectionJourney": "Journey",
+  "menuToday": "Today's training",
+  "menuTodayHint": "Your session for the day",
+  "menuPlans": "Programs",
+  "menuPlansHint": "The academy rooms",
+  "menuMyPlan": "My plan",
+  "menuMyPlanHint": "Days done and what’s next",
+  "menuRoomHint": "A full program",
+  "menuAudios": "Library",
+  "menuAudiosHint": "Listen at your own pace",
+  "menuSleepHint": "Sounds for the night",
+  "menuRelaxHint": "Ease the body and mind",
+  "menuFocusAudio": "Focus audio",
+  "menuFocusAudioHint": "A track for concentration",
+  "menuAttentionHint": "Target training",
+  "menuMemoryHint": "Words and presence",
+  "menuBreathingHint": "A guided rhythm",
+  "menuDailyHint": "Ten short drills and 15 minutes",
+  "menuPomodoroHint": "Focus blocks",
+  "menuCheckinHint": "Mood and energy",
+  "menuClearMindHint": "One thing for today",
+  "menuJournalHint": "Three lines, yours only",
+  "menuThoughtHint": "Write, park, move on",
+  "menuSilentRoomHint": "A presence block",
+  "menuDayCloseHint": "Two minutes to close",
+  "menuProgressHint": "Streak, climate and time",
+  "menuHistoryHint": "Everything you did",
+  "menuRankingHint": "Who is training",
+  "menuProfileHint": "Account and preferences",
+  "catalogTitle": "Catalog",
+  "catalogEmpty": "No published programs right now.",
+  "catalogDays": "{count} days",
+  "@catalogDays": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "catalogDayItem": "Day {day} · {title}",
+  "@catalogDayItem": {
+    "placeholders": {
+      "day": { "type": "int" },
+      "title": { "type": "String" }
+    }
+  },
+  "catalogBrowseHint": "One plan at a time. If you switch, the current plan’s progress and report start over.",
+  "catalogFreeDays": "{count} free days",
+  "@catalogFreeDays": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "catalogPlanDays": "The days of the plan",
+  "catalogEnroll": "Start this plan",
+  "catalogEnrollCurrent": "This is your plan",
+  "catalogSwitch": "Switch to this plan",
+  "catalogSwitchTitle": "Switch plans?",
+  "catalogSwitchBody": "You can follow only one plan at a time. The progress and report of your current plan will be reset.",
+  "catalogSwitchConfirm": "Switch anyway",
+  "momentListen": "Listen",
+  "prepareStart": "I’m ready",
+  "sessionElapsed": "Time {time}",
+  "@sessionElapsed": {
+    "placeholders": {
+      "time": { "type": "String" }
+    }
+  },
+  "themeSection": "Theme",
+  "themeSectionHint": "Night theme gives breathing and the session a dark background.",
+  "themeDark": "Night theme",
+  "themeDarkHint": "Black background in the session and breathing.",
+  "languageSection": "Language",
+  "languageSectionHint": "Choose the app language.",
+  "languagePortuguese": "Português",
+  "languageEnglish": "English",
+  "homeLayoutSection": "Home layout",
+  "homeLayoutSectionHint": "Choose how the home screen looks.",
+  "homeLayoutToday": "Today's training",
+  "homeLayoutTodayHint": "A scene of the day with today's session in focus.",
+  "homeLayoutTraining": "Training first",
+  "homeLayoutTrainingHint": "A large card to start right away.",
+  "homeLayoutProgress": "Progress first",
+  "homeLayoutProgressHint": "Streak, areas and the next session.",
+  "playerLoadError": "The audio could not be played. Check your connection and try again.",
+  "playerReplay": "Play again",
+  "paywallTitle": "Continue with Premium",
+  "paywallBody": "Extra audios, exercises and tools are part of Premium. The first days of the plan stay free.",
+  "paywallCtaSoon": "Subscription coming soon",
+  "paywallCta": "Subscribe to Premium",
+  "paywallCtaRenew": "Renew Premium",
+  "paywallCtaPrice": "Subscribe to Premium · {price}/{period}",
+  "@paywallCtaPrice": {
+    "placeholders": {
+      "price": { "type": "String" },
+      "period": { "type": "String" }
+    }
+  },
+  "paywallPriceHint": "{price} every {period}, via Mercado Pago.",
+  "@paywallPriceHint": {
+    "placeholders": {
+      "price": { "type": "String" },
+      "period": { "type": "String" }
+    }
+  },
+  "paywallWaiting": "Checkout opened in the browser. When you return, the app confirms the status.",
+  "paywallOpenError": "Could not open checkout. Try again.",
+  "billingTitle": "Subscription",
+  "billingHistoryTitle": "Payment history",
+  "billingHistoryEmpty": "Charges will show up here after a payment.",
+  "billingPeriodMonth": "month",
+  "billingPeriodDays": "{count} days",
+  "@billingPeriodDays": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "billingValidUntil": "Valid until {date}",
+  "@billingValidUntil": {
+    "placeholders": {
+      "date": { "type": "String" }
+    }
+  },
+  "billingStatusActive": "Premium active",
+  "billingStatusPending": "Waiting for confirmation",
+  "billingStatusFailed": "Payment not approved",
+  "billingStatusExpired": "Subscription ended",
+  "billingStatusNone": "No subscription",
+  "billingPaymentApproved": "Approved",
+  "billingPaymentPending": "Pending",
+  "billingPaymentFailed": "Not approved",
+  "billingPaymentRefunded": "Refunded",
+  "profileTitle": "Profile",
+  "profileAccountTitle": "Account",
+  "profileLogoutConfirm": "Log out on this device?",
+  "profilePlaceholder": "Account settings, reminders and account deletion come next.",
+  "progressTitle": "Progress",
+  "progressPlaceholder": "Your history, XP and day-7 report will appear here in the next step.",
+  "profileDeleteAccount": "Delete account",
+  "profileDeleteConfirm": "Delete your account?",
+  "profileDeleteConfirmBody": "Your account will stop working on this device. This cannot be undone here.",
+  "profileTerms": "Terms of use",
+  "profilePrivacy": "Privacy policy",
+  "profileLegalPlaceholder": "The legal text will be published later. This is only a reserved shortcut for now.",
+  "profileSaved": "Profile updated.",
+  "profileEditName": "Change name",
+  "profileNameHint": "How you want to appear on the ranking.",
+  "profileAvatarHint": "Tap the photo to pick a gallery image or a calm symbol. It shows on the ranking.",
+  "profilePhotoGallery": "Choose from gallery",
+  "profileEmojiChoose": "Use a symbol",
+  "profileEmojiTitle": "A symbol for the ranking",
+  "profileEmojiBody": "No selfie? Pick a quiet icon from the mental gym.",
+  "profilePhotoRemove": "Remove photo",
+  "profileLegalOpenError": "The page could not be opened right now.",
+  "profileMessageTitle": "Message the team",
+  "profileMessageTileBody": "A suggestion, a new idea, or a thank you.",
+  "profileMessageBody": "Tell us what you missed, a new idea, or a thank you. Each message becomes a ticket we read.",
+  "profileMessageTypeSuggestion": "Improvement",
+  "profileMessageTypeFeature": "New feature",
+  "profileMessageTypeThanks": "Thanks",
+  "profileMessageField": "Your message",
+  "profileMessageHint": "Keep it simple. What would help your training?",
+  "profileMessageTooShort": "Write a little more so we can understand.",
+  "profileMessageSent": "Message sent. Thank you for writing.",
+  "progressXp": "XP",
+  "progressLevel": "Level",
+  "progressSessions": "Sessions",
+  "progressJourneyTitle": "Your journey",
+  "progressTimeHint": "Plan training and free audio, added together.",
+  "progressTimeUnderMinute": "Under 1 min",
+  "progressTimeOnlyMinutes": "{minutes} min",
+  "@progressTimeOnlyMinutes": {
+    "placeholders": {
+      "minutes": { "type": "int" }
+    }
+  },
+  "progressTimeHours": "{hours} h {minutes} min",
+  "@progressTimeHours": {
+    "placeholders": {
+      "hours": { "type": "int" },
+      "minutes": { "type": "int" }
+    }
+  },
+  "progressTimeCompactMinutes": "{minutes}min",
+  "@progressTimeCompactMinutes": {
+    "placeholders": {
+      "minutes": { "type": "int" }
+    }
+  },
+  "progressTimeCompactHours": "{hours}h {minutes}min",
+  "@progressTimeCompactHours": {
+    "placeholders": {
+      "hours": { "type": "int" },
+      "minutes": { "type": "int" }
+    }
+  },
+  "progressEmptyTitle": "Your journey is just beginning",
+  "progressEmptyBody": "Complete your first training to take the first step. It only takes a few minutes.",
+  "progressEmptyCta": "Start my first training",
+  "progressStreakTitle": "Your current streak",
+  "progressStreakDays": "{count, plural, =1{1 day in a row} other{{count} days in a row}}",
+  "@progressStreakDays": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "progressHeroStats": "{time} trained · {count} sessions",
+  "@progressHeroStats": {
+    "placeholders": {
+      "time": { "type": "String" },
+      "count": { "type": "int" }
+    }
+  },
+  "progressMoreTitle": "More",
+  "progressStatTrained": "trained",
+  "progressProgramTitle": "Your program",
+  "progressProgramDay": "Day {current} of {total}",
+  "@progressProgramDay": {
+    "placeholders": {
+      "current": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "progressProgramDaysDone": "{done} of {total} days completed",
+  "@progressProgramDaysDone": {
+    "placeholders": {
+      "done": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "progressContinue": "Continue training",
+  "progressWeekRhythmTitle": "Your rhythm",
+  "progressWeekDaysTrained": "{count, plural, =1{You trained 1 day this week} other{You trained {count} days this week}}",
+  "@progressWeekDaysTrained": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "progressWeekDeltaUp": "+{time} vs last week",
+  "@progressWeekDeltaUp": {
+    "placeholders": {
+      "time": { "type": "String" }
+    }
+  },
+  "progressWeekDeltaDown": "{time} less than last week",
+  "@progressWeekDeltaDown": {
+    "placeholders": {
+      "time": { "type": "String" }
+    }
+  },
+  "progressMilestoneTitle": "Next milestone",
+  "progressMilestoneXp": "{xp} XP to the next level",
+  "@progressMilestoneXp": {
+    "placeholders": {
+      "xp": { "type": "int" }
+    }
+  },
+  "progressMilestoneXpBar": "{current} / {target} XP",
+  "@progressMilestoneXpBar": {
+    "placeholders": {
+      "current": { "type": "int" },
+      "target": { "type": "int" }
+    }
+  },
+  "progressMilestoneStreak": "{count, plural, =1{1 day in a row} other{{count} days in a row}}",
+  "@progressMilestoneStreak": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "progressMilestoneStreakRemain": "{count, plural, =1{1 day left} other{{count} days left}}",
+  "@progressMilestoneStreakRemain": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "progressMilestoneMinutes": "{minutes} minutes trained",
+  "@progressMilestoneMinutes": {
+    "placeholders": {
+      "minutes": { "type": "int" }
+    }
+  },
+  "progressMilestoneMinutesBar": "{current} / {target} min",
+  "@progressMilestoneMinutesBar": {
+    "placeholders": {
+      "current": { "type": "int" },
+      "target": { "type": "int" }
+    }
+  },
+  "progressRecentTitle": "Recent activity",
+  "progressSeeHistory": "See history",
+  "rankingTitle": "World ranking",
+  "rankingCardTitle": "World ranking",
+  "rankingCardBody": "See who is training around the world. Joining is optional.",
+  "rankingPeriodAll": "All time",
+  "rankingPeriodWeekly": "This week",
+  "rankingOptInTitle": "Appear on the ranking",
+  "rankingOptInBody": "Your name, photo or symbol, and XP become visible to other people in the app. You can leave whenever you want.",
+  "rankingOptInCta": "Join the ranking",
+  "rankingOptOut": "Leave the ranking",
+  "rankingEmpty": "Nobody is on the ranking yet. You can be the first.",
+  "rankingPlayers": "{count, plural, =0{Nobody on the ranking yet} =1{1 person on the ranking} other{{count} people on the ranking}}",
+  "@rankingPlayers": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "rankingYourPlace": "Your place",
+  "rankingUnranked": "Not on the ranking",
+  "rankingXp": "{xp} XP",
+  "@rankingXp": {
+    "placeholders": {
+      "xp": { "type": "int" }
+    }
+  },
+  "rankingRank": "#{rank}",
+  "@rankingRank": {
+    "placeholders": {
+      "rank": { "type": "int" }
+    }
+  },
+  "rankingYou": "You",
+  "profileRanking": "Appear on the ranking",
+  "profileRankingHint": "Name, photo or symbol, and XP visible to other people.",
+  "progressLevelName": "Current level: {name}",
+  "@progressLevelName": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "progressXpCardBody": "It comes from training. Tap to see how.",
+  "progressChapterTitle": "Current chapter",
+  "progressPathTitle": "The path",
+  "progressJourneyStart": "Start",
+  "progressJourneyWarm": "First steps",
+  "progressJourneyRhythm": "Rhythm",
+  "progressJourneyWalk": "Path",
+  "progressJourneyDeep": "Presence",
+  "progressJourneyConstancy": "Constancy",
+  "progressJourneyCopy0": "You're at the beginning. One minute is already presence.",
+  "progressJourneyCopy1": "The first minutes already open the path.",
+  "progressJourneyCopy2": "Rhythm is showing up. Keep going, unhurried.",
+  "progressJourneyCopy3": "Your journey already has shape. This is real training.",
+  "progressStreakHint": "days in motion",
+  "progressWeekChartTitle": "This week",
+  "progressWeekChartEmpty": "No time logged this week yet. A session or a track will show up here.",
+  "progressWeekChartTotal": "{time} this week",
+  "@progressWeekChartTotal": {
+    "placeholders": {
+      "time": { "type": "String" }
+    }
+  },
+  "historyTitle": "History",
+  "historyCardTitle": "History",
+  "historyCardBody": "Everything you did in the app.",
+  "historyEmpty": "A training, an audio, an exercise, a pomodoro, a check-in or the notebook will show up here.",
+  "historyToday": "Today",
+  "historyYesterday": "Yesterday",
+  "historyWhen": "{weekday} at {time}",
+  "@historyWhen": {
+    "placeholders": {
+      "weekday": { "type": "String" },
+      "time": { "type": "String" }
+    }
+  },
+  "historyTypeExercise": "Exercise",
+  "historyTypeSession": "Training",
+  "historyTypeListen": "Audio",
+  "historyTypePomodoro": "Pomodoro",
+  "historyTypeCheckin": "Check-in",
+  "historyTypeJournal": "Notebook",
+  "historyTypeThought": "Thought",
+  "historyTypeClearMind": "Full mind",
+  "historyTypeDayClose": "Closing",
+  "historyTypeSilentRoom": "Quiet room",
+  "sessionPrepareTitle": "Get ready",
+  "sessionPrepareBody": "Find a calm place. This training takes about {minutes} minutes. There may be audio: sound does not start on its own. If you are in a classroom or with other people, use headphones and tap play only when you are ready.",
+  "@sessionPrepareBody": {
+    "placeholders": {
+      "minutes": { "type": "int" }
+    }
+  },
+  "sessionAudioWait": "Audio does not start on its own. Tap play when you are in a calm place. If you are in a classroom or with other people, use headphones.",
+  "sessionAudioObjectiveTitle": "In this audio",
+  "sessionAudioObjectiveFallback": "As you listen, stay with the audio at your own pace. If your mind wanders, notice and return.",
+  "sessionCompleteTitle": "Training complete",
+  "sessionSeeYouTomorrow": "See you tomorrow",
+  "sessionCompletingTitle": "Saving your training",
+  "sessionCompletingBody": "One more moment in the Mental Academy.",
+  "sessionLoadingTitle": "Preparing your training",
+  "sessionLoadingBody": "Find a quiet place. The Mental Academy is about to begin.",
+  "planTitle": "My plan",
+  "planUniqueHint": "One plan at a time",
+  "planCadenceTitle": "Training rhythm",
+  "planCadenceBody": "You follow one plan at a time. The next day unlocks on your next training day, in your timezone. The same exercises can appear in other plans, but this is your curriculum now.",
+  "planCadenceDaily": "Every day",
+  "planCadenceWeekdays": "Weekdays",
+  "planCadenceHintDaily": "The next training unlocks the following day in your timezone.",
+  "planCadenceHintWeekdays": "Monday to Friday. If you finish on Friday, the next day unlocks on Monday.",
+  "planReminderHint": "The reminder arrives at the time you choose.",
+  "planEmpty": "You are not in a plan yet.",
+  "planDaysDone": "{done} of {total} days",
+  "@planDaysDone": {
+    "placeholders": {
+      "done": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "planSettings": "Rhythm and reminder",
+  "planDoneForToday": "Done for today.",
+  "planNextUnlocksTomorrow": "Unlocks tomorrow: {title}",
+  "@planNextUnlocksTomorrow": {
+    "placeholders": {
+      "title": { "type": "String" }
+    }
+  },
+  "planNextTraining": "Unlocks on {date}: {title}",
+  "@planNextTraining": {
+    "placeholders": {
+      "title": { "type": "String" },
+      "date": { "type": "String" }
+    }
+  },
+  "planDayDone": "Done",
+  "planDayToday": "Today",
+  "planDayTomorrow": "Tomorrow",
+  "planDayLocked": "Unlocks on {date}",
+  "@planDayLocked": {
+    "placeholders": {
+      "date": { "type": "String" }
+    }
+  },
+  "planDayLabel": "Day {day} — {title}",
+  "@planDayLabel": {
+    "placeholders": {
+      "day": { "type": "int" },
+      "title": { "type": "String" }
+    }
+  },
+  "sessionXpAwarded": "+{xp} XP",
+  "@sessionXpAwarded": {
+    "placeholders": {
+      "xp": { "type": "int" }
+    }
+  },
+  "sessionBlockOf": "{current} of {total}",
+  "@sessionBlockOf": {
+    "placeholders": {
+      "current": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "breathingInhale": "INHALE",
+  "breathingHold": "HOLD",
+  "breathingExhale": "EXHALE",
+  "breathingRest": "REST",
+  "breathingCycle": "cycle {current}/{total}",
+  "@breathingCycle": {
+    "placeholders": {
+      "current": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "playerPlay": "Play",
+  "playerPause": "Pause",
+  "playerNext": "Next",
+  "playerNowPlaying": "Now playing",
+  "playerVolume": "Volume",
+  "playerCoverExpand": "Expand cover",
+  "playerPrevious": "Previous",
+  "playerRepeat": "Repeat",
+  "playerFavorite": "Favorite",
+  "playerFavorited": "Saved",
+  "playerTimer": "Timer",
+  "playerTimerOff": "No timer",
+  "playerAboutTitle": "About this session",
+  "playerAboutBody": "Listen at your own pace. Pause whenever you need and come back when it feels right.",
+  "attentionPrompt": "Tap only when the target appears.",
+  "attentionBriefingTitle": "Target attention",
+  "attentionBriefingBody": "Shapes will appear. Tap only the figure below. If another one shows up, don’t tap. The pace speeds up gradually.",
+  "attentionBriefingNogoTitle": "Hold the tap",
+  "attentionBriefingNogoBody": "Tap every shape except the one below. The training is to hold the impulse.",
+  "attentionBriefingChangeTitle": "When it changes",
+  "attentionBriefingChangeBody": "Tap only when the shape is different from the previous one. If it’s the same, wait.",
+  "attentionBriefingGridTitle": "Find the odd one",
+  "attentionBriefingGridBody": "Nine shapes appear together. Tap only the one that doesn’t match the others.",
+  "attentionTargetLabel": "Tap only this shape",
+  "attentionNogoLabel": "Don’t tap this shape",
+  "attentionChangeLabel": "Tap when the shape changes",
+  "attentionGridLabel": "Tap the odd one out",
+  "attentionPreviousLabel": "Previous",
+  "breathingBriefingTitle": "Guided breathing",
+  "breathingBriefingBody": "Follow the circle. Inhale, hold and exhale with the rhythm. No rush, no perfection.",
+  "breathingBriefingBoxTitle": "Box breathing",
+  "breathingBriefingBoxBody": "A square, four sides. Inhale, hold, exhale and rest. The dot walks with you.",
+  "breathingBriefingLadderTitle": "4-7-8",
+  "breathingBriefingLadderBody": "Inhale for 4, hold for 7, exhale for 8. The column rises and falls with the breath.",
+  "breathingBriefingTideTitle": "Long tide",
+  "breathingBriefingTideBody": "The exhale is longer than the inhale. Follow the tide in and out. Don’t force it.",
+  "memoryBriefingTitle": "Word memory",
+  "memoryBriefingBody": "First look at the words. Then mark only the ones you remember.",
+  "memoryBriefingIconsTitle": "Visual memory",
+  "memoryBriefingIconsBody": "Look at the pictures. Then mark only the ones you saw.",
+  "memoryBriefingOrderTitle": "Sequence memory",
+  "memoryBriefingOrderBody": "Words appear one by one. Then tap them in the same order.",
+  "memoryBriefingDelayedTitle": "Hold in mind",
+  "memoryBriefingDelayedBody": "Look, wait a little with what remains, then mark what you remember.",
+  "exerciseBriefingStart": "Start",
+  "exerciseDurationLabel": "How long do you want to train?",
+  "exerciseDurationMinutes": "{minutes} min",
+  "@exerciseDurationMinutes": {
+    "placeholders": {
+      "minutes": { "type": "int" }
+    }
+  },
+  "attentionHits": "Hits: {count}",
+  "@attentionHits": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "attentionMisses": "Misses: {count}",
+  "@attentionMisses": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "memoryStudyTitle": "Look at the words",
+  "memorySelectTitle": "Which words do you remember?",
+  "memoryStudyIconsTitle": "Look at the pictures",
+  "memorySelectIconsTitle": "Which pictures did you see?",
+  "memoryHoldTitle": "Hold them in mind",
+  "memoryHoldBody": "They’re gone from the screen. Stay with what remains, without rehearsing.",
+  "memoryOrderStudyTitle": "Watch the order",
+  "memoryOrderSelectTitle": "Tap in the same order",
+  "memoryOrderReset": "Start over",
+  "memoryWordsTitle": "My words",
+  "memoryWordsHint": "Add your own words. They join the exercise, shuffled in a new order each time.",
+  "memoryWordsAdd": "Add my words",
+  "memoryWordsEmpty": "You have no custom words yet. Training uses a random set.",
+  "memoryWordsField": "New word",
+  "memoryWordsCount": "{count} of your words",
+  "@memoryWordsCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "ratingSelect": "Choose a value",
+  "unknownExercise": "Please update the app for this exercise.",
+  "exerciseRoomDone": "Session complete.",
+  "notificationTitle": "MindVibe",
+  "notificationBody": "Today’s training is waiting for you. 🧠",
+  "actionDelete": "Delete account",
+  "emptyTitle": "Nothing here yet",
+  "loadingLabel": "Loading…",
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+  "pomodoroTitle": "Pomodoro",
+  "pomodoroHint": "25 minutes of attention, 5 of rest. No pressure.",
+  "pomodoroFocus": "Focus",
+  "pomodoroBreak": "Break",
+  "pomodoroStart": "Start",
+  "pomodoroPause": "Pause",
+  "pomodoroReset": "Reset",
+  "pomodoroPresetClassic": "25 + 5",
+  "pomodoroPresetShort": "15 + 5",
+  "pomodoroPresetLong": "50 + 10",
+  "pomodoroRounds": "{count} blocks done",
+  "@pomodoroRounds": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "checkinTitle": "Check-in",
+  "checkinHint": "How are you right now? One tap on each axis. Ten seconds.",
+  "checkinMoodTitle": "Mood",
+  "checkinEnergyTitle": "Energy",
+  "checkinMood": "{level, select, 1{Very heavy} 2{Heavy} 3{Neutral} 4{Light} 5{Good} other{}}",
+  "@checkinMood": {
+    "placeholders": {
+      "level": { "type": "String" }
+    }
+  },
+  "checkinEnergy": "{level, select, 1{Drained} 2{Low} 3{Medium} 4{Steady} 5{High} other{}}",
+  "@checkinEnergy": {
+    "placeholders": {
+      "level": { "type": "String" }
+    }
+  },
+  "checkinWeight": "{level, select, 1{A heavy day} 2{A quieter day} 3{A balanced day} 4{A moving day} 5{A light day} other{}}",
+  "@checkinWeight": {
+    "placeholders": {
+      "level": { "type": "String" }
+    }
+  },
+  "checkinSaved": "Saved. This becomes today’s climate on progress.",
+  "checkinSaving": "Saving…",
+  "checkinSeeProgress": "See on progress",
+  "checkinUpdateHint": "Tap again if the day has changed.",
+  "checkinPromptLater": "Not now",
+  "progressCheckinTitle": "Today’s climate",
+  "progressCheckinEmpty": "How is the day? Ten seconds, one tap.",
+  "progressCheckinCta": "Check in",
+  "progressCheckinBody": "Mood {mood} · Energy {energy}",
+  "@progressCheckinBody": {
+    "placeholders": {
+      "mood": { "type": "String" },
+      "energy": { "type": "String" }
+    }
+  },
+  "progressStreakCheckinHint": "The streak is showing up. Climate explains the weight of the day better than minutes alone.",
+  "clearMindTitle": "Full mind",
+  "clearMindIntro": "This is not the time for more information. It is time to slow down and recover space.",
+  "clearMindStart": "Start",
+  "clearMindPauseBody": "Step back. Breathe. Don’t try to solve anything.",
+  "clearMindSkipPause": "I already breathed",
+  "clearMindDumpBody": "Write what is going through your head. Don’t organize it yet.",
+  "clearMindDumpHint": "What won’t let go",
+  "clearMindAdd": "One more",
+  "clearMindDumpNext": "Continue",
+  "clearMindQuestion": "Of all these things in your head right now, which is the only one that really needs your attention today?",
+  "clearMindPickHint": "Tap one. The rest can wait.",
+  "clearMindKeepOne": "Keep this one",
+  "clearMindDoneEyebrow": "Today, only this",
+  "clearMindParked": "The rest was parked ({count}). It does not need to be solved today.",
+  "@clearMindParked": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "clearMindParkedNone": "Just this. Nothing else to park.",
+  "clearMindDone": "Done",
+  "clearMindSeeLot": "See the lot",
+  "clearMindOneThing": "One thing at a time",
+  "clearMindHomeCard": "Today, only this",
+  "clearMindHomeCta": "Mind full? Unload it and keep one thing.",
+  "clearMindFromCheckin": "Is your mind full?",
+  "journalTitle": "Notebook",
+  "journalHint": "Three lines. A morning intention, emptying the head, or 3 gratitudes. Short, private, back tomorrow.",
+  "journalPrompt": "{prompt, select, intention{Morning intention} unload{Empty the head} gratitude{3 gratitudes} other{Notebook}}",
+  "@journalPrompt": {
+    "placeholders": {
+      "prompt": { "type": "String" }
+    }
+  },
+  "journalPromptHint": "{prompt, select, intention{What you carry into the day.} unload{Put down what is taking up space.} gratitude{Three small things that are still here.} other{}}",
+  "@journalPromptHint": {
+    "placeholders": {
+      "prompt": { "type": "String" }
+    }
+  },
+  "journalIntention1": "What matters today?",
+  "journalIntention2": "One small step",
+  "journalIntention3": "How I want to arrive tonight",
+  "journalUnload1": "What is occupying my head?",
+  "journalUnload2": "What can wait",
+  "journalUnload3": "What I let go of now",
+  "journalGratitude1": "One good thing",
+  "journalGratitude2": "Another",
+  "journalGratitude3": "One more",
+  "journalSave": "Save",
+  "journalUpdate": "Update today",
+  "journalSaved": "Saved. Only you can read this. Tomorrow the notebook comes back empty.",
+  "journalPrivate": "Nobody else sees this. Not even on the ranking.",
+  "journalWeek": "Days you wrote",
+  "silentRoomTitle": "Quiet room",
+  "silentRoomHint": "One presence block. No cycle, no break. For when Pomodoro feels heavy.",
+  "silentRoomPresence": "Presence",
+  "silentRoomDone": "Block complete",
+  "silentRoomMinutes": "{count} min",
+  "@silentRoomMinutes": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "thoughtTitle": "Park the thought",
+  "thoughtHint": "Write what’s occupying your mind. Save it and move on — to training, audio, or sleep.",
+  "thoughtPlaceholder": "What won’t let go",
+  "thoughtSave": "Park and continue",
+  "thoughtSaved": "It’s parked. Your mind can move on.",
+  "thoughtPrivate": "Only you can read this. It never goes to the ranking.",
+  "thoughtContinue": "Move on to",
+  "thoughtContinueTraining": "Training",
+  "thoughtContinueAudio": "Audio",
+  "thoughtContinueSleep": "Sleep",
+  "thoughtLot": "Parked",
+  "thoughtLotEmpty": "Nothing parked.",
+  "thoughtLotFull": "The lot is full. Let one go to park another.",
+  "thoughtRelease": "Let go",
+  "dayCloseTitle": "Close the day",
+  "dayCloseHint": "Two minutes. What stayed, what you let go, a short audio. Close the academy the way training closes the day in the body.",
+  "dayCloseKept": "What stayed",
+  "dayCloseReleased": "What you let go",
+  "dayCloseSave": "Close the day",
+  "dayCloseUpdate": "Update today",
+  "dayCloseSaved": "The day is closed. Only you can read this. Now the short audio.",
+  "dayClosePrivate": "Only you can read this. It never goes to the ranking.",
+  "dayCloseAudio": "Short audio",
+  "dayClosePlay": "Listen",
+  "dayCloseWeek": "Nights you closed",
+  "xpInfoTitle": "About XP",
+  "xpInfoLead": "XP grows when you finish a training session. Tools and audio stay with the day — they don’t add points.",
+  "xpInfoGivesTitle": "What gives XP",
+  "xpInfoGivesBody": "Completing a program session. Finishing a cycle. Achievements tied to training.",
+  "xpInfoSkipsTitle": "What doesn’t",
+  "xpInfoSkipsBody": "Check-in, full mind, notebook, parking a thought, closing the day, Pomodoro, the quiet room, and listening to audio. They live in history and climate. No XP.",
+  "xpInfoWhereTitle": "Where it shows",
+  "xpInfoWhereBody": "On Progress, on home, and at the end of a session. On the ranking, only if you choose to appear.",
+  "xpInfoStreakTitle": "Streak",
+  "xpInfoStreakBody": "The streak counts days with a completed training. Check-in is the day’s climate, not the streak."
+}

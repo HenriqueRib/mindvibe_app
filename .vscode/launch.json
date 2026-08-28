@@ -1,0 +1,23 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "mindvibe_app (prod)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "toolArgs": [
+        "--dart-define=API_URL=https://mindvibe.codeline43.com.br/api/v1"
+      ]
+    },
+    {
+      "name": "mindvibe_app (API local emulador)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "toolArgs": [
+        "--dart-define=API_URL=http://10.0.2.2:8000/api/v1"
+      ]
+    }
+  ]
+}
