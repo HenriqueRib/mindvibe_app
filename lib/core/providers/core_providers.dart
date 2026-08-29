@@ -5,6 +5,7 @@ import 'package:mindvibe_app/core/notifications/notification_scheduler.dart';
 import 'package:mindvibe_app/core/storage/memory_words_store.dart';
 import 'package:mindvibe_app/core/storage/paused_training_store.dart';
 import 'package:mindvibe_app/core/storage/pending_session_store.dart';
+import 'package:mindvibe_app/core/storage/remembered_account_store.dart';
 import 'package:mindvibe_app/core/storage/token_store.dart';
 import 'package:mindvibe_app/features/analytics/data/analytics_client.dart';
 
@@ -26,6 +27,10 @@ final apiClientProvider = Provider<ApiClient>((ref) {
 
 final pendingSessionStoreProvider = Provider<PendingSessionStore>((ref) {
   return PendingSessionStore();
+});
+
+final rememberedAccountStoreProvider = Provider<RememberedAccountStore>((ref) {
+  return RememberedAccountStore();
 });
 
 final pausedTrainingStoreProvider = Provider<PausedTrainingStore>((ref) {

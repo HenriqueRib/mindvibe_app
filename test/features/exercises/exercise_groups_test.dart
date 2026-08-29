@@ -28,9 +28,10 @@ void main() {
       ExerciseSpec(id: 3, type: 'breathing', title: 'Círculo', variant: 'wave'),
     ];
 
-    expect(
-      sortedBreathingExercises(items).map((item) => item.title).toList(),
-      ['Círculo', 'Caixa', 'Maré'],
-    );
+    expect(sortedBreathingExercises(items).map((item) => item.title).toList(), [
+      'Círculo',
+      'Caixa',
+      'Maré',
+    ]);
   });
 }

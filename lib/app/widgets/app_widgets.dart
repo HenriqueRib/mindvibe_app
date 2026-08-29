@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mindvibe_app/app/theme/app_theme.dart';
 import 'package:mindvibe_app/app/widgets/app_loading.dart';
+import 'package:mindvibe_app/l10n/app_localizations.dart';
 
 export 'app_loading.dart';
 export 'app_motion.dart';
@@ -98,11 +99,12 @@ class AppButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     final child = loading
         ? AppLoading.compact(
             color: variant == AppButtonVariant.primary
-                ? AppColors.onPrimary
-                : AppColors.primary,
+                ? scheme.onPrimary
+                : scheme.primary,
           )
         : Text(label);
 
@@ -111,8 +113,10 @@ class AppButton extends StatelessWidget {
         onPressed: loading ? null : onPressed,
         style: FilledButton.styleFrom(
           minimumSize: const Size.fromHeight(54),
-          backgroundColor: AppColors.primary,
-          foregroundColor: AppColors.onPrimary,
+          backgroundColor: scheme.primary,
+          foregroundColor: scheme.onPrimary,
+          disabledBackgroundColor: scheme.primary.withValues(alpha: 0.38),
+          disabledForegroundColor: scheme.onPrimary.withValues(alpha: 0.72),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
@@ -124,8 +128,8 @@ class AppButton extends StatelessWidget {
         onPressed: loading ? null : onPressed,
         style: OutlinedButton.styleFrom(
           minimumSize: const Size.fromHeight(54),
-          foregroundColor: AppColors.primary,
-          side: const BorderSide(color: AppColors.border),
+          foregroundColor: scheme.primary,
+          side: BorderSide(color: scheme.outline),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
@@ -135,6 +139,11 @@ class AppButton extends StatelessWidget {
       ),
       AppButtonVariant.ghost => TextButton(
         onPressed: loading ? null : onPressed,
+        style: TextButton.styleFrom(
+          minimumSize: const Size.fromHeight(48),
+          foregroundColor: scheme.primary,
+          textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        ),
         child: child,
       ),
     };
@@ -165,7 +174,7 @@ class AppCard extends StatelessWidget {
     );
 
     final scheme = Theme.of(context).colorScheme;
-    return Material(
+    final card = Material(
       color: scheme.surface,
       elevation: 0,
       shape: RoundedRectangleBorder(
@@ -175,6 +184,7 @@ class AppCard extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       child: onTap == null ? content : InkWell(onTap: onTap, child: content),
     );
+    return onTap == null ? card : ScaleOnTap(child: card);
   }
 }
 
@@ -186,6 +196,9 @@ class AppText extends StatelessWidget {
     this.color,
     this.align,
     this.maxLines,
+    this.muted = false,
+    this.headline = false,
+    this.heading = false,
   });
 
   final String text;
@@ -193,43 +206,41 @@ class AppText extends StatelessWidget {
   final Color? color;
   final TextAlign? align;
   final int? maxLines;
+  final bool muted;
+  final bool headline;
+  final bool heading;
 
   factory AppText.title(String text, {Key? key, TextAlign? align}) {
-    return AppText(
-      text,
-      key: key,
-      align: align,
-      style: const TextStyle(
-        fontSize: 28,
-        fontWeight: FontWeight.w600,
-        height: 1.2,
-        letterSpacing: -0.4,
-      ),
-    );
+    return AppText(text, key: key, align: align, headline: true);
+  }
+
+  factory AppText.heading(String text, {Key? key, TextAlign? align}) {
+    return AppText(text, key: key, align: align, heading: true);
   }
 
   factory AppText.subtitle(String text, {Key? key, TextAlign? align}) {
-    return AppText(
-      text,
-      key: key,
-      align: align,
-      style: const TextStyle(
-        fontSize: 16,
-        height: 1.45,
-        color: AppColors.muted,
-      ),
-    );
+    return AppText(text, key: key, align: align, muted: true);
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final base =
+        style ??
+        (headline
+            ? theme.textTheme.headlineMedium
+            : heading
+            ? theme.textTheme.titleLarge
+            : theme.textTheme.bodyLarge);
     return Text(
       text,
       textAlign: align,
       maxLines: maxLines,
       overflow: maxLines == null ? null : TextOverflow.ellipsis,
-      style: (style ?? Theme.of(context).textTheme.bodyLarge)?.copyWith(
-        color: color,
+      style: base?.copyWith(
+        color:
+            color ?? (muted ? theme.colorScheme.onSurfaceVariant : base.color),
+        fontWeight: heading ? FontWeight.w700 : base.fontWeight,
       ),
     );
   }
@@ -255,7 +266,7 @@ class AppProgressBar extends StatelessWidget {
             backgroundColor: Theme.of(
               context,
             ).colorScheme.outline.withValues(alpha: 0.22),
-            color: AppColors.primary,
+            color: Theme.of(context).colorScheme.primary,
           ),
         );
       },
@@ -267,53 +278,120 @@ class AppError extends StatelessWidget {
   const AppError({
     super.key,
     required this.message,
+    this.title,
     this.onRetry,
     this.retryLabel,
   });
 
   final String message;
+  final String? title;
   final VoidCallback? onRetry;
   final String? retryLabel;
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(message, textAlign: TextAlign.center),
-          if (onRetry != null) ...[
-            const SizedBox(height: 16),
-            AppButton(
-              label: retryLabel ?? 'OK',
-              onPressed: onRetry,
-              expand: false,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.cloud_off_outlined,
+              size: 36,
+              color: scheme.onSurfaceVariant,
             ),
+            const SizedBox(height: 16),
+            if (title != null) ...[
+              Text(
+                title!,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                  height: 1.25,
+                  color: scheme.onSurface,
+                ),
+              ),
+              const SizedBox(height: 8),
+            ],
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 16,
+                height: 1.45,
+                color: scheme.onSurfaceVariant,
+              ),
+            ),
+            if (onRetry != null) ...[
+              const SizedBox(height: 20),
+              AppButton(
+                label: retryLabel ?? AppLocalizations.of(context).actionRetry,
+                onPressed: onRetry,
+                expand: false,
+              ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }
 }
 
 class AppEmpty extends StatelessWidget {
-  const AppEmpty({super.key, required this.title, this.body});
+  const AppEmpty({
+    super.key,
+    required this.title,
+    this.body,
+    this.actionLabel,
+    this.onAction,
+    this.icon = Icons.spa_outlined,
+  });
 
   final String title;
   final String? body;
+  final String? actionLabel;
+  final VoidCallback? onAction;
+  final IconData icon;
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          AppText.title(title),
-          if (body != null) ...[
-            const SizedBox(height: 8),
-            AppText.subtitle(body!),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 36, color: scheme.primary),
+            const SizedBox(height: 16),
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.w700,
+                height: 1.25,
+                letterSpacing: -0.3,
+                color: scheme.onSurface,
+              ),
+            ),
+            if (body != null) ...[
+              const SizedBox(height: 8),
+              AppText.subtitle(body!, align: TextAlign.center),
+            ],
+            if (onAction != null && actionLabel != null) ...[
+              const SizedBox(height: 20),
+              AppButton(
+                label: actionLabel!,
+                onPressed: onAction,
+                expand: false,
+              ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }
@@ -360,6 +438,30 @@ class AppBottomNavigation extends StatelessWidget {
           icon: const Icon(Icons.person_outline),
           selectedIcon: const Icon(Icons.person),
           label: profileLabel,
+        ),
+      ],
+    );
+  }
+}
+
+class AppInlineError extends StatelessWidget {
+  const AppInlineError({super.key, required this.message});
+
+  final String message;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(Icons.error_outline_rounded, size: 18, color: scheme.error),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            message,
+            style: TextStyle(color: scheme.error, height: 1.35),
+          ),
         ),
       ],
     );

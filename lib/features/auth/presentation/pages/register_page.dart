@@ -69,57 +69,65 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
     return AuthLayout(
       title: l10n.registerTitle,
       subtitle: l10n.registerSubtitle,
-      child: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            TextFormField(
-              controller: _name,
-              textCapitalization: TextCapitalization.words,
-              decoration: InputDecoration(labelText: l10n.fieldName),
-              validator: (value) => AuthValidators.required(value) == null
-                  ? null
-                  : l10n.validationRequired,
-            ),
-            const SizedBox(height: 12),
-            TextFormField(
-              controller: _email,
-              keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(labelText: l10n.fieldEmail),
-              validator: (value) => switch (AuthValidators.email(value)) {
-                'required' => l10n.validationRequired,
-                'email' => l10n.validationEmail,
-                _ => null,
-              },
-            ),
-            const SizedBox(height: 12),
-            AppPasswordField(
-              controller: _password,
-              label: l10n.fieldPassword,
-              validator: (value) => switch (AuthValidators.password(value)) {
-                'required' => l10n.validationRequired,
-                'password' => l10n.validationPasswordMin,
-                _ => null,
-              },
-            ),
-            const SizedBox(height: 12),
-            AppPasswordField(
-              controller: _confirm,
-              label: l10n.fieldPasswordConfirm,
-              validator: (value) {
-                if (value != _password.text) {
-                  return l10n.validationPasswordMatch;
-                }
-                return null;
-              },
-            ),
-            const SizedBox(height: 24),
-            AppButton(
-              label: l10n.actionRegister,
-              loading: _loading,
-              onPressed: _submit,
-            ),
-          ],
+      child: AutofillGroup(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              TextFormField(
+                controller: _name,
+                textCapitalization: TextCapitalization.words,
+                textInputAction: TextInputAction.next,
+                autofillHints: const [AutofillHints.name],
+                decoration: InputDecoration(labelText: l10n.fieldName),
+                validator: (value) => AuthValidators.required(value) == null
+                    ? null
+                    : l10n.validationRequired,
+              ),
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _email,
+                keyboardType: TextInputType.emailAddress,
+                textInputAction: TextInputAction.next,
+                autofillHints: const [AutofillHints.email],
+                decoration: InputDecoration(labelText: l10n.fieldEmail),
+                validator: (value) => switch (AuthValidators.email(value)) {
+                  'required' => l10n.validationRequired,
+                  'email' => l10n.validationEmail,
+                  _ => null,
+                },
+              ),
+              const SizedBox(height: 12),
+              AppPasswordField(
+                controller: _password,
+                label: l10n.fieldPassword,
+                autofillHints: const [AutofillHints.newPassword],
+                validator: (value) => switch (AuthValidators.password(value)) {
+                  'required' => l10n.validationRequired,
+                  'password' => l10n.validationPasswordMin,
+                  _ => null,
+                },
+              ),
+              const SizedBox(height: 12),
+              AppPasswordField(
+                controller: _confirm,
+                label: l10n.fieldPasswordConfirm,
+                autofillHints: const [AutofillHints.newPassword],
+                validator: (value) {
+                  if (value != _password.text) {
+                    return l10n.validationPasswordMatch;
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 24),
+              AppButton(
+                label: l10n.actionRegister,
+                loading: _loading,
+                onPressed: _submit,
+              ),
+            ],
+          ),
         ),
       ),
     );

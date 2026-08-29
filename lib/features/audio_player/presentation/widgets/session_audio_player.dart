@@ -2,7 +2,6 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mindvibe_app/app/theme/app_theme.dart';
 import 'package:mindvibe_app/app/widgets/app_widgets.dart';
 import 'package:mindvibe_app/core/storage/favorite_store.dart';
 import 'package:mindvibe_app/features/audio_player/presentation/providers/now_playing_controller.dart';
@@ -179,7 +178,6 @@ class _SessionAudioPlayerState extends ConsumerState<SessionAudioPlayer> {
     final volume = playing.volume.clamp(0.0, 1.0);
     final favorited = favorites.contains(display.id);
     final scheme = Theme.of(context).colorScheme;
-    final night = Theme.of(context).brightness == Brightness.dark;
     final player = ref.read(nowPlayingProvider.notifier);
 
     return Column(
@@ -241,6 +239,7 @@ class _SessionAudioPlayerState extends ConsumerState<SessionAudioPlayer> {
         const SizedBox(height: 28),
         if (ui == AudioPlayerUiState.error)
           AppError(
+            title: l10n.errorLoadTitle,
             message: l10n.playerLoadError,
             retryLabel: l10n.actionRetry,
             onRetry: _ensurePlaying,
@@ -248,12 +247,10 @@ class _SessionAudioPlayerState extends ConsumerState<SessionAudioPlayer> {
         else ...[
           SliderTheme(
             data: SliderTheme.of(context).copyWith(
-              activeTrackColor: AppColors.primarySoft,
-              inactiveTrackColor: night
-                  ? Colors.white.withValues(alpha: 0.12)
-                  : AppColors.surfaceMuted,
-              thumbColor: AppColors.primarySoft,
-              overlayColor: AppColors.primarySoft.withValues(alpha: 0.12),
+              activeTrackColor: scheme.primary,
+              inactiveTrackColor: scheme.surfaceContainerHighest,
+              thumbColor: scheme.primary,
+              overlayColor: scheme.primary.withValues(alpha: 0.12),
               trackHeight: 3,
               thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 6),
             ),
@@ -313,24 +310,28 @@ class _SessionAudioPlayerState extends ConsumerState<SessionAudioPlayer> {
                       color: scheme.onSurface,
                     ),
                     const SizedBox(width: 8),
-                    ScaleOnTap(
+                    Semantics(
+                      button: true,
+                      label: ui == AudioPlayerUiState.playing
+                          ? l10n.playerPause
+                          : l10n.playerPlay,
                       child: FilledButton(
                         onPressed: _playOrResume,
                         style: FilledButton.styleFrom(
                           minimumSize: const Size(76, 76),
                           maximumSize: const Size(76, 76),
                           padding: EdgeInsets.zero,
-                          backgroundColor: AppColors.primary,
-                          foregroundColor: AppColors.onPrimary,
+                          backgroundColor: scheme.primary,
+                          foregroundColor: scheme.onPrimary,
                           shape: const CircleBorder(),
                         ),
                         child: AnimatedSwitcher(
                           duration: const Duration(milliseconds: 220),
                           transitionBuilder: fadeScaleSwitcher,
                           child: ui == AudioPlayerUiState.loading
-                              ? const AppLoading.compact(
-                                  key: ValueKey('loading'),
-                                  color: AppColors.onPrimary,
+                              ? AppLoading.compact(
+                                  key: const ValueKey('loading'),
+                                  color: scheme.onPrimary,
                                   compactSize: 26,
                                 )
                               : Icon(
@@ -367,7 +368,7 @@ class _SessionAudioPlayerState extends ConsumerState<SessionAudioPlayer> {
                         : Icons.repeat_rounded,
                   ),
                   color: playing.looping
-                      ? AppColors.primarySoft
+                      ? scheme.primary
                       : scheme.onSurfaceVariant,
                 ),
               ),
@@ -410,25 +411,11 @@ class _SessionAudioPlayerState extends ConsumerState<SessionAudioPlayer> {
                       : volume < 0.4
                       ? Icons.volume_down_rounded
                       : Icons.volume_up_rounded,
-                  color: AppColors.accent,
+                  color: scheme.secondary,
                 ),
               ),
               Expanded(
-                child: SliderTheme(
-                  data: SliderTheme.of(context).copyWith(
-                    activeTrackColor: AppColors.accent,
-                    inactiveTrackColor: night
-                        ? Colors.white.withValues(alpha: 0.12)
-                        : AppColors.border,
-                    thumbColor: AppColors.accent,
-                    overlayColor: AppColors.accent.withValues(alpha: 0.12),
-                    trackHeight: 3,
-                    thumbShape: const RoundSliderThumbShape(
-                      enabledThumbRadius: 6,
-                    ),
-                  ),
-                  child: Slider(value: volume, onChanged: player.setVolume),
-                ),
+                child: Slider(value: volume, onChanged: player.setVolume),
               ),
             ],
           ),
@@ -539,10 +526,8 @@ class _CoverProgress extends StatelessWidget {
           child: CustomPaint(
             painter: _ProgressRingPainter(
               progress: progress,
-              color: AppColors.primarySoft,
-              track: Theme.of(context).brightness == Brightness.dark
-                  ? Colors.white.withValues(alpha: 0.12)
-                  : AppColors.surfaceMuted,
+              color: Theme.of(context).colorScheme.primary,
+              track: Theme.of(context).colorScheme.surfaceContainerHighest,
             ),
             child: Center(child: child),
           ),
@@ -611,7 +596,7 @@ class _QuickAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = active
-        ? AppColors.primarySoft
+        ? Theme.of(context).colorScheme.primary
         : Theme.of(context).colorScheme.onSurfaceVariant;
     return ScaleOnTap(
       child: InkWell(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:mindvibe_app/app/router/app_routes.dart';
 import 'package:mindvibe_app/app/theme/app_theme.dart';
 import 'package:mindvibe_app/app/widgets/app_widgets.dart';
@@ -31,6 +32,7 @@ class ProgressPage extends ConsumerWidget {
       body: progress.when(
         loading: () => AppLoading(label: l10n.loadingLabel),
         error: (error, _) => AppError(
+          title: l10n.errorLoadTitle,
           message: l10n.errorGeneric,
           retryLabel: l10n.actionRetry,
           onRetry: () {
@@ -42,6 +44,7 @@ class ProgressPage extends ConsumerWidget {
         data: (result) {
           return result.when(
             failure: (failure) => AppError(
+              title: l10n.errorLoadTitle,
               message: failureMessage(failure, l10n),
               retryLabel: l10n.actionRetry,
               onRetry: () => ref.invalidate(progressProvider),
@@ -76,24 +79,9 @@ class ProgressPage extends ConsumerWidget {
     TodayTraining? today,
   ) {
     return [
-      Text(
-        l10n.progressEmptyTitle,
-        style: const TextStyle(
-          fontSize: 26,
-          fontWeight: FontWeight.w700,
-          height: 1.2,
-          letterSpacing: -0.4,
-        ),
-      ),
+      AppText.title(l10n.progressEmptyTitle),
       const SizedBox(height: 10),
-      Text(
-        l10n.progressEmptyBody,
-        style: const TextStyle(
-          color: AppColors.muted,
-          height: 1.45,
-          fontSize: 16,
-        ),
-      ),
+      AppText.subtitle(l10n.progressEmptyBody),
       const SizedBox(height: 24),
       AppButton(
         label: l10n.progressEmptyCta,
@@ -126,15 +114,7 @@ class ProgressPage extends ConsumerWidget {
     final recent = items.take(3).toList();
 
     return [
-      Text(
-        l10n.progressStreakDays(snapshot.streakDays),
-        style: const TextStyle(
-          fontSize: 26,
-          fontWeight: FontWeight.w700,
-          height: 1.2,
-          letterSpacing: -0.4,
-        ),
-      ),
+      AppText.title(l10n.progressStreakDays(snapshot.streakDays)),
       const SizedBox(height: 10),
       Text(
         l10n.progressHeroStats(
@@ -148,15 +128,15 @@ class ProgressPage extends ConsumerWidget {
         ),
       ),
       const SizedBox(height: 14),
-      _WeekLine(days: days),
+      _WeekLine(days: days, localeName: l10n.localeName),
       if (insight != null) ...[
         const SizedBox(height: 10),
         Text(
           insight,
           style: TextStyle(
-            color: Theme.of(context).colorScheme.onSurface.withValues(
-              alpha: 0.7,
-            ),
+            color: Theme.of(
+              context,
+            ).colorScheme.onSurface.withValues(alpha: 0.7),
             height: 1.4,
             fontSize: 15,
           ),
@@ -174,16 +154,19 @@ class ProgressPage extends ConsumerWidget {
             ),
             Divider(
               height: 1,
-              color: Theme.of(context).colorScheme.outline.withValues(
-                alpha: 0.7,
-              ),
+              color: Theme.of(
+                context,
+              ).colorScheme.outline.withValues(alpha: 0.7),
             ),
             if (recent.isEmpty)
               Padding(
                 padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
                 child: Text(
                   l10n.historyEmpty,
-                  style: const TextStyle(color: AppColors.muted, height: 1.4),
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    height: 1.4,
+                  ),
                 ),
               )
             else
@@ -191,17 +174,17 @@ class ProgressPage extends ConsumerWidget {
                 if (i > 0)
                   Divider(
                     height: 1,
-                    color: Theme.of(context).colorScheme.outline.withValues(
-                      alpha: 0.7,
-                    ),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.outline.withValues(alpha: 0.7),
                   ),
                 _ActivityLine(l10n: l10n, item: recent[i]),
               ],
             Divider(
               height: 1,
-              color: Theme.of(context).colorScheme.outline.withValues(
-                alpha: 0.7,
-              ),
+              color: Theme.of(
+                context,
+              ).colorScheme.outline.withValues(alpha: 0.7),
             ),
             _LinkRow(
               label: l10n.progressSeeHistory,
@@ -211,16 +194,46 @@ class ProgressPage extends ConsumerWidget {
         ),
       ),
       const SizedBox(height: 16),
+      AppCard(
+        onTap: () => context.push(AppRoutes.xpInfo),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l10n.rankingXp(snapshot.xp),
+                    style: const TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: -0.3,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    snapshot.levelName == null || snapshot.levelName!.isEmpty
+                        ? l10n.progressXpCardBody
+                        : l10n.progressLevelName(snapshot.levelName!),
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      height: 1.35,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Icon(
+              Icons.chevron_right,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
+          ],
+        ),
+      ),
+      const SizedBox(height: 16),
       _MoreFold(
         title: l10n.progressMoreTitle,
         children: [
-          _LinkRow(
-            label: l10n.rankingXp(snapshot.xp),
-            hint: snapshot.levelName == null || snapshot.levelName!.isEmpty
-                ? l10n.progressXpCardBody
-                : l10n.progressLevelName(snapshot.levelName!),
-            onTap: () => context.push(AppRoutes.xpInfo),
-          ),
           _LinkRow(
             label: _milestoneTitle(l10n, milestone),
             hint: _milestoneHint(l10n, snapshot, milestone),
@@ -307,7 +320,9 @@ String _milestoneTitle(AppLocalizations l10n, ProgressMilestone milestone) {
     ProgressMilestoneKind.streak => l10n.progressMilestoneStreak(
       milestone.target,
     ),
-    ProgressMilestoneKind.level => l10n.progressMilestoneXp(milestone.remaining),
+    ProgressMilestoneKind.level => l10n.progressMilestoneXp(
+      milestone.remaining,
+    ),
     ProgressMilestoneKind.minutes => l10n.progressMilestoneMinutes(
       milestone.target,
     ),
@@ -336,32 +351,74 @@ String _milestoneHint(
 }
 
 class _WeekLine extends StatelessWidget {
-  const _WeekLine({required this.days});
+  const _WeekLine({required this.days, required this.localeName});
 
   final List<WeekDayTime> days;
+  final String localeName;
 
   @override
   Widget build(BuildContext context) {
     if (days.isEmpty) {
       return const SizedBox.shrink();
     }
-    final track = Theme.of(context).colorScheme.outline.withValues(alpha: 0.28);
-    return Row(
+    final scheme = Theme.of(context).colorScheme;
+    final track = scheme.outline.withValues(alpha: 0.28);
+    final formatter = DateFormat.E(localeName);
+    return Column(
       children: [
-        for (var i = 0; i < days.length; i++) ...[
-          if (i > 0) const SizedBox(width: 5),
-          Expanded(
-            child: Container(
-              height: 10,
-              decoration: BoxDecoration(
-                color: days[i].seconds > 0 ? AppColors.success : track,
-                borderRadius: BorderRadius.circular(99),
+        Row(
+          children: [
+            for (var i = 0; i < days.length; i++) ...[
+              if (i > 0) const SizedBox(width: 5),
+              Expanded(
+                child: Container(
+                  height: 10,
+                  decoration: BoxDecoration(
+                    color: days[i].seconds > 0
+                        ? AppColors.success
+                        : days[i].isToday()
+                        ? scheme.primary.withValues(alpha: 0.28)
+                        : track,
+                    borderRadius: BorderRadius.circular(99),
+                  ),
+                ),
               ),
-            ),
-          ),
-        ],
+            ],
+          ],
+        ),
+        const SizedBox(height: 6),
+        Row(
+          children: [
+            for (var i = 0; i < days.length; i++) ...[
+              if (i > 0) const SizedBox(width: 5),
+              Expanded(
+                child: Text(
+                  _weekdayLetter(formatter.format(days[i].date)),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: days[i].isToday()
+                        ? FontWeight.w700
+                        : FontWeight.w500,
+                    color: days[i].isToday()
+                        ? scheme.primary
+                        : scheme.onSurfaceVariant,
+                  ),
+                ),
+              ),
+            ],
+          ],
+        ),
       ],
     );
+  }
+
+  String _weekdayLetter(String label) {
+    final trimmed = label.replaceAll('.', '').trim();
+    if (trimmed.isEmpty) {
+      return label;
+    }
+    return String.fromCharCodes(trimmed.runes.take(1)).toUpperCase();
   }
 }
 
@@ -389,7 +446,9 @@ class _ActivityLine extends StatelessWidget {
             width: 10,
             height: 10,
             decoration: BoxDecoration(
-              color: AppColors.primary.withValues(alpha: 0.7),
+              color: Theme.of(
+                context,
+              ).colorScheme.primary.withValues(alpha: 0.7),
               shape: BoxShape.circle,
             ),
           ),
@@ -408,8 +467,8 @@ class _ActivityLine extends StatelessWidget {
           const SizedBox(width: 8),
           Text(
             activityDayLabel(l10n, item.occurredAt),
-            style: const TextStyle(
-              color: AppColors.muted,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
               fontSize: 12,
               fontWeight: FontWeight.w600,
             ),
@@ -451,8 +510,8 @@ class _LinkRow extends StatelessWidget {
                       hint!,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: AppColors.muted,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                         fontSize: 13,
                         height: 1.3,
                       ),
@@ -462,7 +521,10 @@ class _LinkRow extends StatelessWidget {
               ),
             ),
             if (onTap != null)
-              const Icon(Icons.chevron_right, color: AppColors.muted),
+              Icon(
+                Icons.chevron_right,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
           ],
         ),
       ),
@@ -509,9 +571,9 @@ class _MoreFoldState extends State<_MoreFold> {
                       height: 1,
                       indent: 16,
                       endIndent: 16,
-                      color: Theme.of(context).colorScheme.outline.withValues(
-                        alpha: 0.7,
-                      ),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.outline.withValues(alpha: 0.7),
                     ),
                   widget.children[i],
                 ],

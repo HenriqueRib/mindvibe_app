@@ -71,45 +71,51 @@ class _ResetPasswordPageState extends ConsumerState<ResetPasswordPage> {
     return AuthLayout(
       title: l10n.resetTitle,
       subtitle: l10n.resetSubtitle,
-      child: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            TextFormField(
-              controller: _email,
-              keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(labelText: l10n.fieldEmail),
-              validator: (value) => switch (AuthValidators.email(value)) {
-                'required' => l10n.validationRequired,
-                'email' => l10n.validationEmail,
-                _ => null,
-              },
-            ),
-            const SizedBox(height: 12),
-            TextFormField(
-              controller: _token,
-              decoration: InputDecoration(labelText: l10n.fieldResetToken),
-              validator: (value) => AuthValidators.required(value) == null
-                  ? null
-                  : l10n.validationRequired,
-            ),
-            const SizedBox(height: 12),
-            AppPasswordField(
-              controller: _password,
-              label: l10n.fieldPassword,
-              validator: (value) => switch (AuthValidators.password(value)) {
-                'required' => l10n.validationRequired,
-                'password' => l10n.validationPasswordMin,
-                _ => null,
-              },
-            ),
-            const SizedBox(height: 24),
-            AppButton(
-              label: l10n.actionSave,
-              loading: _loading,
-              onPressed: _submit,
-            ),
-          ],
+      child: AutofillGroup(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              TextFormField(
+                controller: _email,
+                keyboardType: TextInputType.emailAddress,
+                textInputAction: TextInputAction.next,
+                autofillHints: const [AutofillHints.email],
+                decoration: InputDecoration(labelText: l10n.fieldEmail),
+                validator: (value) => switch (AuthValidators.email(value)) {
+                  'required' => l10n.validationRequired,
+                  'email' => l10n.validationEmail,
+                  _ => null,
+                },
+              ),
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _token,
+                textInputAction: TextInputAction.next,
+                decoration: InputDecoration(labelText: l10n.fieldResetToken),
+                validator: (value) => AuthValidators.required(value) == null
+                    ? null
+                    : l10n.validationRequired,
+              ),
+              const SizedBox(height: 12),
+              AppPasswordField(
+                controller: _password,
+                label: l10n.fieldPassword,
+                autofillHints: const [AutofillHints.newPassword],
+                validator: (value) => switch (AuthValidators.password(value)) {
+                  'required' => l10n.validationRequired,
+                  'password' => l10n.validationPasswordMin,
+                  _ => null,
+                },
+              ),
+              const SizedBox(height: 24),
+              AppButton(
+                label: l10n.actionSave,
+                loading: _loading,
+                onPressed: _submit,
+              ),
+            ],
+          ),
         ),
       ),
     );

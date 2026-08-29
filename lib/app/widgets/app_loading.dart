@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mindvibe_app/app/theme/app_theme.dart';
 import 'package:mindvibe_app/app/widgets/app_brand_mark.dart';
 import 'package:mindvibe_app/app/widgets/app_motion.dart';
 
@@ -97,7 +96,9 @@ class AppLoading extends StatelessWidget {
                     fontWeight: title == null
                         ? FontWeight.w500
                         : FontWeight.w600,
-                    color: title == null ? AppColors.muted : scheme.onSurface,
+                    color: title == null
+                        ? Theme.of(context).colorScheme.onSurfaceVariant
+                        : scheme.onSurface,
                   ),
                 ),
               ],

@@ -40,11 +40,9 @@ Future<bool> showPrepareSessionModal({
                         const SizedBox(height: 16),
                         AppText.subtitle(body, align: TextAlign.center),
                         const SizedBox(height: 32),
-                        ScaleOnTap(
-                          child: AppButton(
-                            label: confirmLabel,
-                            onPressed: () => Navigator.of(context).pop(true),
-                          ),
+                        AppButton(
+                          label: confirmLabel,
+                          onPressed: () => Navigator.of(context).pop(true),
                         ),
                         const SizedBox(height: 8),
                         AppButton(

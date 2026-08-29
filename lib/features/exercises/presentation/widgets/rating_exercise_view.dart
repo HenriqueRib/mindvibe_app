@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mindvibe_app/app/theme/app_theme.dart';
 import 'package:mindvibe_app/app/widgets/app_widgets.dart';
 import 'package:mindvibe_app/features/exercises/domain/exercise_parsers.dart';
 import 'package:mindvibe_app/l10n/app_localizations.dart';
@@ -50,7 +49,6 @@ class _RatingExerciseViewState extends State<RatingExerciseView> {
               ChoiceChip(
                 label: Text(widget.config.labels[value] ?? '$value'),
                 selected: _value == value,
-                selectedColor: AppColors.surfaceMuted,
                 onSelected: (_) => setState(() => _value = value),
               ),
           ],

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mindvibe_app/app/router/app_routes.dart';
-import 'package:mindvibe_app/app/theme/app_theme.dart';
 import 'package:mindvibe_app/app/widgets/app_widgets.dart';
 import 'package:mindvibe_app/features/training/domain/entities/training_entities.dart';
 import 'package:mindvibe_app/l10n/app_localizations.dart';
@@ -19,20 +18,21 @@ class TodayFocusCard extends StatelessWidget {
   }
 
   Widget _invite(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     return ScaleOnTap(
       child: DecoratedBox(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(24),
           boxShadow: [
             BoxShadow(
-              color: AppColors.primary.withValues(alpha: 0.28),
-              blurRadius: 28,
-              offset: const Offset(0, 12),
+              color: scheme.primary.withValues(alpha: 0.14),
+              blurRadius: 16,
+              offset: const Offset(0, 6),
             ),
           ],
         ),
         child: Material(
-          color: AppColors.primary,
+          color: scheme.primary,
           borderRadius: BorderRadius.circular(24),
           clipBehavior: Clip.antiAlias,
           child: InkWell(
@@ -48,27 +48,27 @@ class TodayFocusCard extends StatelessWidget {
                         width: 56,
                         height: 56,
                         decoration: BoxDecoration(
-                          color: AppColors.onPrimary.withValues(alpha: 0.16),
+                          color: scheme.onPrimary.withValues(alpha: 0.16),
                           borderRadius: BorderRadius.circular(18),
                         ),
-                        child: const Icon(
+                        child: Icon(
                           Icons.psychology_alt_outlined,
-                          color: AppColors.onPrimary,
+                          color: scheme.onPrimary,
                           size: 30,
                         ),
                       ),
                       const Spacer(),
-                      const Icon(
+                      Icon(
                         Icons.arrow_forward_rounded,
-                        color: AppColors.onPrimary,
+                        color: scheme.onPrimary,
                       ),
                     ],
                   ),
                   const SizedBox(height: 18),
                   Text(
                     l10n.clearMindTitle,
-                    style: const TextStyle(
-                      color: AppColors.onPrimary,
+                    style: TextStyle(
+                      color: scheme.onPrimary,
                       fontWeight: FontWeight.w700,
                       fontSize: 26,
                       height: 1.15,
@@ -79,7 +79,7 @@ class TodayFocusCard extends StatelessWidget {
                   Text(
                     l10n.clearMindHomeCta,
                     style: TextStyle(
-                      color: AppColors.onPrimary.withValues(alpha: 0.88),
+                      color: scheme.onPrimary.withValues(alpha: 0.88),
                       fontSize: 16,
                       height: 1.4,
                     ),
@@ -87,7 +87,7 @@ class TodayFocusCard extends StatelessWidget {
                   const SizedBox(height: 20),
                   DecoratedBox(
                     decoration: BoxDecoration(
-                      color: AppColors.onPrimary,
+                      color: scheme.onPrimary,
                       borderRadius: BorderRadius.circular(14),
                     ),
                     child: Padding(
@@ -97,8 +97,8 @@ class TodayFocusCard extends StatelessWidget {
                       ),
                       child: Text(
                         l10n.clearMindStart,
-                        style: const TextStyle(
-                          color: AppColors.primary,
+                        style: TextStyle(
+                          color: scheme.primary,
                           fontWeight: FontWeight.w700,
                           fontSize: 15,
                         ),
@@ -116,24 +116,25 @@ class TodayFocusCard extends StatelessWidget {
 
   Widget _chosen(BuildContext context) {
     final parked = focus!.parkedCount;
+    final scheme = Theme.of(context).colorScheme;
     return ScaleOnTap(
       child: DecoratedBox(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(24),
           boxShadow: [
             BoxShadow(
-              color: AppColors.primary.withValues(alpha: 0.16),
-              blurRadius: 22,
-              offset: const Offset(0, 8),
+              color: scheme.primary.withValues(alpha: 0.10),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
             ),
           ],
         ),
         child: Material(
-          color: AppColors.primary.withValues(alpha: 0.12),
+          color: scheme.primary.withValues(alpha: 0.12),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(24),
             side: BorderSide(
-              color: AppColors.primary.withValues(alpha: 0.35),
+              color: scheme.primary.withValues(alpha: 0.35),
               width: 1.4,
             ),
           ),
@@ -151,30 +152,27 @@ class TodayFocusCard extends StatelessWidget {
                         width: 44,
                         height: 44,
                         decoration: BoxDecoration(
-                          color: AppColors.primary.withValues(alpha: 0.16),
+                          color: scheme.primary.withValues(alpha: 0.16),
                           borderRadius: BorderRadius.circular(14),
                         ),
-                        child: const Icon(
+                        child: Icon(
                           Icons.psychology_alt_outlined,
-                          color: AppColors.primary,
+                          color: scheme.primary,
                         ),
                       ),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
                           l10n.clearMindHomeCard.toUpperCase(),
-                          style: const TextStyle(
-                            color: AppColors.primary,
+                          style: TextStyle(
+                            color: scheme.primary,
                             fontWeight: FontWeight.w700,
                             letterSpacing: 1.0,
                             fontSize: 12,
                           ),
                         ),
                       ),
-                      const Icon(
-                        Icons.arrow_forward_rounded,
-                        color: AppColors.primary,
-                      ),
+                      Icon(Icons.arrow_forward_rounded, color: scheme.primary),
                     ],
                   ),
                   const SizedBox(height: 16),
@@ -191,8 +189,8 @@ class TodayFocusCard extends StatelessWidget {
                     const SizedBox(height: 12),
                     Text(
                       l10n.clearMindParked(parked),
-                      style: const TextStyle(
-                        color: AppColors.muted,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                         height: 1.4,
                         fontSize: 14,
                       ),

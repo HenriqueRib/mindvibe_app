@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:mindvibe_app/app/theme/app_theme.dart';
+import 'package:mindvibe_app/app/router/app_routes.dart';
 import 'package:mindvibe_app/app/widgets/app_widgets.dart';
 import 'package:mindvibe_app/core/error/failure_message.dart';
 import 'package:mindvibe_app/features/progress/presentation/activity_presentation.dart';
@@ -25,12 +26,14 @@ class HistoryPage extends ConsumerWidget {
       body: history.when(
         loading: () => AppLoading(label: l10n.loadingLabel),
         error: (_, _) => AppError(
+          title: l10n.errorLoadTitle,
           message: l10n.errorGeneric,
           retryLabel: l10n.actionRetry,
           onRetry: () => ref.invalidate(historyProvider),
         ),
         data: (result) => result.when(
           failure: (failure) => AppError(
+            title: l10n.errorLoadTitle,
             message: failureMessage(failure, l10n),
             retryLabel: l10n.actionRetry,
             onRetry: () => ref.invalidate(historyProvider),
@@ -45,6 +48,9 @@ class HistoryPage extends ConsumerWidget {
                     child: AppEmpty(
                       title: l10n.emptyTitle,
                       body: l10n.historyEmpty,
+                      icon: Icons.history_rounded,
+                      actionLabel: l10n.progressEmptyCta,
+                      onAction: () => context.go(AppRoutes.home),
                     ),
                   ),
               ],
@@ -105,7 +111,7 @@ class HistoryPage extends ConsumerWidget {
           separatorBuilder: (context, index) => Divider(
             height: 1,
             indent: 72,
-            color: AppColors.border.withValues(alpha: 0.6),
+            color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.6),
           ),
           itemBuilder: (context, index) {
             final item = dayItems[index];
@@ -119,8 +125,10 @@ class HistoryPage extends ConsumerWidget {
                 vertical: 2,
               ),
               leading: CircleAvatar(
-                backgroundColor: AppColors.primary.withValues(alpha: 0.12),
-                foregroundColor: AppColors.primary,
+                backgroundColor: Theme.of(
+                  context,
+                ).colorScheme.primary.withValues(alpha: 0.12),
+                foregroundColor: Theme.of(context).colorScheme.primary,
                 child: Icon(activityIcon(item), size: 20),
               ),
               title: Text(
@@ -129,13 +137,15 @@ class HistoryPage extends ConsumerWidget {
               ),
               subtitle: Text(
                 activityTypeLabel(l10n, item),
-                style: const TextStyle(color: AppColors.muted),
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
               ),
               trailing: Text(
                 time,
-                style: const TextStyle(
-                  color: AppColors.muted,
-                  fontFeatures: [FontFeature.tabularFigures()],
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  fontFeatures: const [FontFeature.tabularFigures()],
                 ),
               ),
             );

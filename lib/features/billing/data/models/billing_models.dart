@@ -64,8 +64,5 @@ List<BillingPayment> paymentsFromJson(dynamic data) {
   if (data is! List) {
     return const [];
   }
-  return data
-      .whereType<Map<String, dynamic>>()
-      .map(paymentFromJson)
-      .toList();
+  return data.whereType<Map<String, dynamic>>().map(paymentFromJson).toList();
 }

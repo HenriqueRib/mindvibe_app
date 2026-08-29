@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:mindvibe_app/app/router/app_routes.dart';
-import 'package:mindvibe_app/app/theme/app_theme.dart';
 import 'package:mindvibe_app/app/widgets/app_widgets.dart';
 import 'package:mindvibe_app/core/error/failure_message.dart';
 import 'package:mindvibe_app/features/audio_player/presentation/widgets/cover_image.dart';
@@ -54,7 +53,6 @@ class _DayClosePageState extends ConsumerState<DayClosePage> {
     final l10n = AppLocalizations.of(context);
     final state = ref.watch(dayCloseControllerProvider);
     final runner = ref.read(dayCloseControllerProvider.notifier);
-    final night = Theme.of(context).brightness == Brightness.dark;
 
     ref.listen(dayCloseControllerProvider, (previous, next) {
       if (previous?.loading == true && !next.loading) {
@@ -65,7 +63,6 @@ class _DayClosePageState extends ConsumerState<DayClosePage> {
     return AppScaffold(
       showBack: true,
       title: l10n.dayCloseTitle,
-      backgroundColor: night ? AppColors.nightBackground : null,
       body: state.loading
           ? AppLoading(label: l10n.loadingLabel)
           : ListView(
@@ -97,11 +94,7 @@ class _DayClosePageState extends ConsumerState<DayClosePage> {
                 ),
                 const SizedBox(height: 20),
                 if (state.failure != null) ...[
-                  Text(
-                    failureMessage(state.failure!, l10n),
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(color: AppColors.error),
-                  ),
+                  AppInlineError(message: failureMessage(state.failure!, l10n)),
                   const SizedBox(height: 12),
                 ],
                 AppButton(
@@ -118,17 +111,20 @@ class _DayClosePageState extends ConsumerState<DayClosePage> {
                 Text(
                   state.saved ? l10n.dayCloseSaved : l10n.dayClosePrivate,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(color: AppColors.muted, height: 1.4),
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    height: 1.4,
+                  ),
                 ),
                 if (state.snapshot.audio != null) ...[
                   const SizedBox(height: 24),
                   Text(
                     l10n.dayCloseAudio,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 13,
-                      color: AppColors.muted,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                       letterSpacing: 0.4,
                     ),
                   ),
@@ -153,10 +149,10 @@ class _DayClosePageState extends ConsumerState<DayClosePage> {
                   Text(
                     l10n.dayCloseWeek,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 13,
-                      color: AppColors.muted,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                       letterSpacing: 0.4,
                     ),
                   ),
@@ -208,12 +204,18 @@ class _AudioCard extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   seconds > 0 ? compactDuration(seconds) : playLabel,
-                  style: const TextStyle(color: AppColors.muted, fontSize: 13),
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    fontSize: 13,
+                  ),
                 ),
               ],
             ),
           ),
-          const Icon(Icons.play_arrow_rounded, color: AppColors.primary),
+          Icon(
+            Icons.play_arrow_rounded,
+            color: Theme.of(context).colorScheme.primary,
+          ),
         ],
       ),
     );
@@ -267,6 +269,7 @@ class _Dot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final now = DateTime.now();
+    final scheme = Theme.of(context).colorScheme;
     final isToday =
         day.date.year == now.year &&
         day.date.month == now.month &&
@@ -287,9 +290,9 @@ class _Dot extends StatelessWidget {
           height: day.closed ? 16 : 10,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: day.closed ? AppColors.primary : Colors.transparent,
+            color: day.closed ? scheme.primary : Colors.transparent,
             border: Border.all(
-              color: day.closed ? AppColors.primary : AppColors.border,
+              color: day.closed ? scheme.primary : scheme.outline,
               width: isToday ? 2 : 1.4,
             ),
           ),

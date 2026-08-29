@@ -44,6 +44,7 @@ class HomePage extends ConsumerWidget {
       loading: () => AppScaffold(body: AppLoading(label: l10n.loadingLabel)),
       error: (error, _) => AppScaffold(
         body: AppError(
+          title: l10n.errorLoadTitle,
           message: l10n.errorGeneric,
           retryLabel: l10n.actionRetry,
           onRetry: () => ref.invalidate(todayProvider),
@@ -68,6 +69,7 @@ class HomePage extends ConsumerWidget {
             }
             return AppScaffold(
               body: AppError(
+                title: l10n.errorLoadTitle,
                 message: failureMessage(failure, l10n),
                 retryLabel: l10n.actionRetry,
                 onRetry: () => ref.invalidate(todayProvider),
@@ -115,6 +117,7 @@ class HomePage extends ConsumerWidget {
         training: training,
         progress: progress,
         programs: programs,
+        pausedSessionId: pausedSessionId,
         onStart: onStart,
       ),
       HomeLayoutKind.training => HomeTrainingLayout(

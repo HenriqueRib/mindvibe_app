@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mindvibe_app/app/theme/app_theme.dart';
 import 'package:mindvibe_app/app/widgets/app_widgets.dart';
 import 'package:mindvibe_app/core/error/failure_message.dart';
 import 'package:mindvibe_app/core/providers/core_providers.dart';
@@ -29,6 +28,11 @@ class PracticeExercisePage extends ConsumerStatefulWidget {
 
 class _PracticeExercisePageState extends ConsumerState<PracticeExercisePage> {
   bool _submitting = false;
+  MemoryConfig? _memory;
+
+  MemoryConfig _memoryOf(Map<String, dynamic> config, List<String> extra) {
+    return _memory ??= MemoryConfig.fromJson(config, extraWords: extra);
+  }
 
   Future<void> _submit(Map<String, dynamic> payload) async {
     if (_submitting) {
@@ -74,16 +78,18 @@ class _PracticeExercisePageState extends ConsumerState<PracticeExercisePage> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final exercise = widget.exercise;
-    final night = Theme.of(context).brightness == Brightness.dark;
     final config = <String, dynamic>{
       ...?exercise.configuration,
       if ((exercise.variant ?? '').isNotEmpty) 'variant': exercise.variant,
     };
     final attention = AttentionConfig.fromJson(config);
-    final memory = MemoryConfig.fromJson(
-      config,
-      extraWords: ref.watch(memoryWordsProvider).valueOrNull ?? const [],
-    );
+    final extraWords = ref.watch(memoryWordsProvider);
+    final memory = extraWords.isLoading && _memory == null
+        ? MemoryConfig.fromJson(
+            config,
+            extraWords: extraWords.valueOrNull ?? const [],
+          )
+        : _memoryOf(config, extraWords.valueOrNull ?? const []);
     final breathing = BreathingCycleConfig.fromJson(config);
 
     final showMemoryWords =
@@ -136,23 +142,16 @@ class _PracticeExercisePageState extends ConsumerState<PracticeExercisePage> {
           ),
         },
       ),
-      _ => Column(
-        children: [
-          AppText.subtitle(l10n.unknownExercise),
-          const Spacer(),
-          AppButton(label: l10n.actionBack, onPressed: () => context.pop()),
-        ],
+      _ => AppEmpty(
+        title: l10n.unknownExercise,
+        body: l10n.emptyBody,
+        icon: Icons.help_outline_rounded,
+        actionLabel: l10n.actionBack,
+        onAction: () => context.pop(),
       ),
     };
 
-    return AppScaffold(
-      showBack: true,
-      title: exercise.title,
-      backgroundColor: exercise.type == 'breathing' && night
-          ? AppColors.nightBackground
-          : null,
-      body: child,
-    );
+    return AppScaffold(showBack: true, title: exercise.title, body: child);
   }
 
   int _cyclesFor(BreathingCycleConfig config, int seconds) {

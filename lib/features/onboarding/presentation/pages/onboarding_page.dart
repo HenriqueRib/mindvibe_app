@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mindvibe_app/app/theme/app_theme.dart';
 import 'package:mindvibe_app/app/widgets/app_widgets.dart';
 import 'package:mindvibe_app/core/error/failure_message.dart';
 import 'package:mindvibe_app/core/providers/core_providers.dart';
@@ -114,7 +113,11 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
             AppButton(
               label: l10n.actionSkip,
               variant: AppButtonVariant.ghost,
-              onPressed: _loading ? null : () => setState(() => _step = 2),
+              onPressed: _loading
+                  ? null
+                  : () => setState(
+                      () => _step = _name.text.trim().length >= 2 ? 2 : 1,
+                    ),
             ),
             const SizedBox(height: 8),
           ],
@@ -139,6 +142,8 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
           TextField(
             controller: _name,
             textCapitalization: TextCapitalization.words,
+            textInputAction: TextInputAction.next,
+            autofillHints: const [AutofillHints.name],
             decoration: InputDecoration(labelText: l10n.fieldName),
             onChanged: (_) => setState(() {}),
           ),
@@ -253,7 +258,9 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                               ? Icons.check_box
                               : Icons.check_box_outline_blank)
                         : (active ? Icons.check_circle : Icons.circle_outlined),
-                    color: active ? AppColors.primary : AppColors.muted,
+                    color: active
+                        ? Theme.of(context).colorScheme.primary
+                        : Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
                 ],
               ),

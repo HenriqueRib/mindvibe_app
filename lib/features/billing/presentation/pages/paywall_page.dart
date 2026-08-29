@@ -80,10 +80,7 @@ class _PaywallPageState extends ConsumerState<PaywallPage>
       _showError(l10n.paywallOpenError);
       return;
     }
-    final opened = await launchUrl(
-      uri,
-      mode: LaunchMode.externalApplication,
-    );
+    final opened = await launchUrl(uri, mode: LaunchMode.externalApplication);
     if (!opened && mounted) {
       _showError(l10n.paywallOpenError);
       return;
@@ -112,12 +109,14 @@ class _PaywallPageState extends ConsumerState<PaywallPage>
       body: entitlement.when(
         loading: () => AppLoading(label: l10n.loadingLabel),
         error: (_, _) => AppError(
+          title: l10n.errorLoadTitle,
           message: l10n.errorGeneric,
           retryLabel: l10n.actionRetry,
           onRetry: () => ref.invalidate(billingEntitlementProvider),
         ),
         data: (result) => result.when(
           failure: (failure) => AppError(
+            title: l10n.errorLoadTitle,
             message: failureMessage(failure, l10n),
             retryLabel: l10n.actionRetry,
             onRetry: () => ref.invalidate(billingEntitlementProvider),
@@ -176,9 +175,9 @@ class _PaywallBody extends StatelessWidget {
         const SizedBox(height: 16),
         Text(
           l10n.paywallPriceHint(price, period),
-          style: const TextStyle(
+          style: TextStyle(
             fontWeight: FontWeight.w700,
-            color: AppColors.primary,
+            color: Theme.of(context).colorScheme.primary,
           ),
         ),
         if (entitlement.endsAt != null) ...[
@@ -201,11 +200,31 @@ class _PaywallBody extends StatelessWidget {
           icon: Icons.lock_outline_rounded,
           label: l10n.paywallPremiumLabel,
           body: l10n.paywallPremiumList,
-          accent: AppColors.primary,
+          accent: Theme.of(context).colorScheme.primary,
         ),
         if (waiting) ...[
           const SizedBox(height: 16),
-          Text(l10n.paywallWaiting),
+          AppCard(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(
+                  Icons.open_in_browser_rounded,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    l10n.paywallWaiting,
+                    style: TextStyle(
+                      height: 1.4,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
         const Spacer(),
         TextButton(

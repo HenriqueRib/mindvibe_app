@@ -35,9 +35,7 @@ class _MindVibeAppState extends ConsumerState<MindVibeApp>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      unawaited(
-        ref.read(sessionControllerProvider.notifier).refreshProfile(),
-      );
+      unawaited(ref.read(sessionControllerProvider.notifier).refreshProfile());
     }
   }
 

@@ -200,7 +200,9 @@ class _AttentionExerciseViewState extends State<AttentionExerciseView> {
         Text(
           _prompt(l10n),
           textAlign: TextAlign.center,
-          style: const TextStyle(color: AppColors.muted),
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
         ),
         const SizedBox(height: 8),
         if (_variant == AttentionVariant.target ||
@@ -210,7 +212,10 @@ class _AttentionExerciseViewState extends State<AttentionExerciseView> {
           Text(
             l10n.attentionPreviousLabel,
             textAlign: TextAlign.center,
-            style: const TextStyle(color: AppColors.muted, fontSize: 12),
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+              fontSize: 12,
+            ),
           ),
           const SizedBox(height: 4),
           Center(child: AttentionShape(symbol: _previous!, size: 28)),
@@ -240,12 +245,16 @@ class _AttentionExerciseViewState extends State<AttentionExerciseView> {
         Text(
           l10n.attentionHits(_engine.hits),
           textAlign: TextAlign.center,
-          style: const TextStyle(color: AppColors.muted),
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
         ),
         Text(
           l10n.attentionMisses(_engine.misses),
           textAlign: TextAlign.center,
-          style: const TextStyle(color: AppColors.muted),
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
         ),
       ],
     );

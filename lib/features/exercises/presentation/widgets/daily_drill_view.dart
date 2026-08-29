@@ -148,16 +148,18 @@ class _ObserveDrillState extends State<_ObserveDrill> {
     }
     return Column(
       children: [
-        Text(
+        AppText.heading(
           l10n.dailyObserveLook(_object!),
-          textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
+          align: TextAlign.center,
         ),
         const SizedBox(height: 12),
         Text(
           dailyObservePrompts[_prompt],
           textAlign: TextAlign.center,
-          style: const TextStyle(color: AppColors.muted, fontSize: 18),
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+            fontSize: 18,
+          ),
         ),
         const Spacer(),
         _RingClock(left: _left, total: widget.seconds),
@@ -253,7 +255,9 @@ class _ReverseDrillState extends State<_ReverseDrill> {
         const SizedBox(height: 8),
         Text(
           l10n.dailyReverseStep(_index + 1, _round.expected.length),
-          style: const TextStyle(color: AppColors.muted),
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
         ),
         const Spacer(),
         Wrap(
@@ -277,7 +281,7 @@ class _ReverseDrillState extends State<_ReverseDrill> {
           Text(
             l10n.dailyReverseWrong,
             textAlign: TextAlign.center,
-            style: const TextStyle(color: AppColors.error),
+            style: TextStyle(color: Theme.of(context).colorScheme.error),
           ),
         ],
         const Spacer(),
@@ -387,7 +391,9 @@ class _CategoriesDrillState extends State<_CategoriesDrill> {
         Text(
           l10n.dailyTimerLeft(_left),
           textAlign: TextAlign.center,
-          style: const TextStyle(color: AppColors.muted),
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
         ),
         const SizedBox(height: 16),
         Text(
@@ -592,7 +598,9 @@ class _CountdownDrillState extends State<_CountdownDrill> {
         const SizedBox(height: 8),
         Text(
           l10n.dailyCountdownMinus,
-          style: const TextStyle(color: AppColors.muted),
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
         ),
         const SizedBox(height: 16),
         Padding(
@@ -601,8 +609,10 @@ class _CountdownDrillState extends State<_CountdownDrill> {
             value: (100 - _current) / 100,
             minHeight: 6,
             borderRadius: BorderRadius.circular(8),
-            color: AppColors.primary,
-            backgroundColor: AppColors.surfaceMuted,
+            color: Theme.of(context).colorScheme.primary,
+            backgroundColor: Theme.of(
+              context,
+            ).colorScheme.surfaceContainerHighest,
           ),
         ),
         const SizedBox(height: 24),
@@ -624,7 +634,7 @@ class _CountdownDrillState extends State<_CountdownDrill> {
           Text(
             l10n.dailyCountdownWrong,
             textAlign: TextAlign.center,
-            style: const TextStyle(color: AppColors.error),
+            style: TextStyle(color: Theme.of(context).colorScheme.error),
           ),
         ],
         const Spacer(),
@@ -848,11 +858,7 @@ class _SingleTaskDrillState extends State<_SingleTaskDrill> {
     }
     return Column(
       children: [
-        Text(
-          l10n.dailyTaskDoing(_task!),
-          textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
-        ),
+        AppText.heading(l10n.dailyTaskDoing(_task!), align: TextAlign.center),
         const SizedBox(height: 8),
         AppText.subtitle(l10n.dailyTaskPhone, align: TextAlign.center),
         const Spacer(),
@@ -941,16 +947,14 @@ class _UsesDrillState extends State<_UsesDrill> {
     return ListView(
       padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom),
       children: [
-        Text(
-          l10n.dailyUsesObject(_object),
-          textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
-        ),
+        AppText.heading(l10n.dailyUsesObject(_object), align: TextAlign.center),
         const SizedBox(height: 4),
         Text(
           '${_items.length}/10 · ${l10n.dailyTimerLeft(_left)}',
           textAlign: TextAlign.center,
-          style: const TextStyle(color: AppColors.muted),
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
         ),
         const SizedBox(height: 16),
         Wrap(
@@ -1080,7 +1084,10 @@ class _SortDrillState extends State<_SortDrill> {
             Text(
               l10n.dailyNeedWrite,
               textAlign: TextAlign.center,
-              style: const TextStyle(color: AppColors.muted, height: 1.4),
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                height: 1.4,
+              ),
             ),
           ],
         ],
@@ -1090,23 +1097,15 @@ class _SortDrillState extends State<_SortDrill> {
       children: [
         Text(
           l10n.dailyCircuitStep(_index + 1, _items.length),
-          style: const TextStyle(
-            color: AppColors.muted,
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.w600,
           ),
         ),
         const SizedBox(height: 12),
         AppText.subtitle(l10n.dailySortPick, align: TextAlign.center),
         const Spacer(),
-        Text(
-          _items[_index],
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.w700,
-            height: 1.35,
-          ),
-        ),
+        AppText.heading(_items[_index], align: TextAlign.center),
         const Spacer(),
         AppButton(
           label: l10n.dailySortResolve,
@@ -1220,8 +1219,8 @@ class _FinishGate extends StatelessWidget {
           Text(
             hint,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: AppColors.muted,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
               height: 1.4,
               fontSize: 14,
             ),
@@ -1254,15 +1253,15 @@ class _Token extends StatelessWidget {
         : done
         ? AppColors.success
         : selected
-        ? AppColors.primary
-        : AppColors.border;
+        ? Theme.of(context).colorScheme.primary
+        : Theme.of(context).colorScheme.outline;
     final fill = error
         ? AppColors.error.withValues(alpha: 0.14)
         : done
         ? AppColors.success.withValues(alpha: 0.16)
         : selected
-        ? AppColors.primary.withValues(alpha: 0.12)
-        : AppColors.surfaceMuted;
+        ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.12)
+        : Theme.of(context).colorScheme.surfaceContainerHighest;
     final child = AnimatedContainer(
       duration: const Duration(milliseconds: 180),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -1294,13 +1293,12 @@ class _RingClock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final night = Theme.of(context).brightness == Brightness.dark;
     final minutes = (left ~/ 60).toString().padLeft(2, '0');
     final seconds = (left % 60).toString().padLeft(2, '0');
     return TimerRing(
       progress: total <= 0 ? 1 : 1 - (left / total),
-      color: AppColors.primary,
-      track: night ? AppColors.nightSurface : AppColors.surfaceMuted,
+      color: Theme.of(context).colorScheme.primary,
+      track: Theme.of(context).colorScheme.surfaceContainerHighest,
       child: Text(
         '$minutes:$seconds',
         style: const TextStyle(

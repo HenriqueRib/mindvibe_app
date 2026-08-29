@@ -30,12 +30,14 @@ class LibraryExercisesPage extends ConsumerWidget {
       body: exercises.when(
         loading: () => AppLoading(label: l10n.loadingLabel),
         error: (_, _) => AppError(
+          title: l10n.errorLoadTitle,
           message: l10n.errorGeneric,
           retryLabel: l10n.actionRetry,
           onRetry: () => ref.invalidate(libraryExercisesProvider),
         ),
         data: (result) => result.when(
           failure: (failure) => AppError(
+            title: l10n.errorLoadTitle,
             message: failureMessage(failure, l10n),
             retryLabel: l10n.actionRetry,
             onRetry: () => ref.invalidate(libraryExercisesProvider),
@@ -49,6 +51,7 @@ class LibraryExercisesPage extends ConsumerWidget {
               return AppEmpty(
                 title: l10n.emptyTitle,
                 body: l10n.libraryExercisesEmpty,
+                icon: Icons.self_improvement_outlined,
               );
             }
             return ListView(
@@ -106,8 +109,10 @@ class LibraryExercisesPage extends ConsumerWidget {
         child: Row(
           children: [
             CircleAvatar(
-              backgroundColor: AppColors.primary.withValues(alpha: 0.12),
-              foregroundColor: AppColors.primary,
+              backgroundColor: Theme.of(
+                context,
+              ).colorScheme.primary.withValues(alpha: 0.12),
+              foregroundColor: Theme.of(context).colorScheme.primary,
               child: Icon(exerciseTypeIcon('daily'), size: 20),
             ),
             const SizedBox(width: 14),
@@ -122,12 +127,17 @@ class LibraryExercisesPage extends ConsumerWidget {
                   const SizedBox(height: 4),
                   Text(
                     l10n.dailyHubBody,
-                    style: const TextStyle(color: AppColors.muted),
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
                   ),
                 ],
               ),
             ),
-            const Icon(Icons.chevron_right, color: AppColors.muted),
+            Icon(
+              Icons.chevron_right,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
           ],
         ),
       ),
@@ -143,8 +153,10 @@ class LibraryExercisesPage extends ConsumerWidget {
         child: Row(
           children: [
             CircleAvatar(
-              backgroundColor: AppColors.primary.withValues(alpha: 0.12),
-              foregroundColor: AppColors.primary,
+              backgroundColor: Theme.of(
+                context,
+              ).colorScheme.primary.withValues(alpha: 0.12),
+              foregroundColor: Theme.of(context).colorScheme.primary,
               child: Icon(exerciseTypeIcon('breathing'), size: 20),
             ),
             const SizedBox(width: 14),
@@ -159,12 +171,17 @@ class LibraryExercisesPage extends ConsumerWidget {
                   const SizedBox(height: 4),
                   Text(
                     l10n.libraryBreathingRoomBody,
-                    style: const TextStyle(color: AppColors.muted),
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
                   ),
                 ],
               ),
             ),
-            const Icon(Icons.chevron_right, color: AppColors.muted),
+            Icon(
+              Icons.chevron_right,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
           ],
         ),
       ),

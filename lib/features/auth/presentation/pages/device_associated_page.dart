@@ -26,7 +26,12 @@ class DeviceAssociatedPage extends ConsumerWidget {
           const SizedBox(height: 32),
           AppButton(
             label: l10n.actionLogin,
-            onPressed: () => context.push(AppRoutes.login),
+            onPressed: () {
+              ref
+                  .read(sessionControllerProvider.notifier)
+                  .prepareAssociatedLogin();
+              context.push(AppRoutes.login);
+            },
           ),
           const SizedBox(height: 12),
           AppButton(

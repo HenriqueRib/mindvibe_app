@@ -49,7 +49,7 @@ Color planAccentForSlug(String? categorySlug) {
     'sleep' => const Color(0xFFB5A4E0),
     'memory' => const Color(0xFF6EA8E8),
     'mindfulness' => const Color(0xFF6FB5A8),
-    _ => const Color(0xFFD7B49A),
+    _ => AppColors.gold,
   };
 }
 
@@ -96,8 +96,8 @@ class PlanGoalPicker extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             l10n.onboardingGoalOthers,
-            style: const TextStyle(
-              color: AppColors.muted,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
               fontWeight: FontWeight.w700,
             ),
           ),
@@ -152,7 +152,9 @@ class _GoalCard extends StatelessWidget {
         children: [
           Icon(
             planGoalIcon(goal),
-            color: selected ? AppColors.primary : AppColors.muted,
+            color: selected
+                ? Theme.of(context).colorScheme.primary
+                : Theme.of(context).colorScheme.onSurfaceVariant,
           ),
           const SizedBox(width: 14),
           Expanded(
@@ -161,8 +163,8 @@ class _GoalCard extends StatelessWidget {
               children: [
                 Text(
                   planGoalTitle(l10n, goal).toUpperCase(),
-                  style: const TextStyle(
-                    color: AppColors.muted,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                     fontWeight: FontWeight.w700,
                     letterSpacing: 1.1,
                     fontSize: 12,
@@ -179,18 +181,28 @@ class _GoalCard extends StatelessWidget {
                 const SizedBox(height: 6),
                 Text(
                   body,
-                  style: const TextStyle(color: AppColors.muted, height: 1.4),
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    height: 1.4,
+                  ),
                 ),
                 if (meta != null) ...[
                   const SizedBox(height: 8),
-                  Text(meta, style: const TextStyle(color: AppColors.muted)),
+                  Text(
+                    meta,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+                  ),
                 ],
               ],
             ),
           ),
           Icon(
             selected ? Icons.check_circle : Icons.circle_outlined,
-            color: selected ? AppColors.primary : AppColors.muted,
+            color: selected
+                ? Theme.of(context).colorScheme.primary
+                : Theme.of(context).colorScheme.onSurfaceVariant,
           ),
         ],
       ),

@@ -104,6 +104,7 @@ class _PlanPageState extends ConsumerState<PlanPage> {
       body: today.when(
         loading: () => AppLoading(label: l10n.loadingLabel),
         error: (error, _) => AppError(
+          title: l10n.errorLoadTitle,
           message: l10n.errorGeneric,
           retryLabel: l10n.actionRetry,
           onRetry: () => ref.invalidate(todayProvider),
@@ -115,6 +116,7 @@ class _PlanPageState extends ConsumerState<PlanPage> {
                 return _empty(context, l10n);
               }
               return AppError(
+                title: l10n.errorLoadTitle,
                 message: failureMessage(failure, l10n),
                 retryLabel: l10n.actionRetry,
                 onRetry: () => ref.invalidate(todayProvider),
@@ -129,19 +131,12 @@ class _PlanPageState extends ConsumerState<PlanPage> {
   }
 
   Widget _empty(BuildContext context, AppLocalizations l10n) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        const Spacer(),
-        AppText.title(l10n.planEmpty, align: TextAlign.center),
-        const SizedBox(height: 12),
-        AppText.subtitle(l10n.homeNoProgramBody, align: TextAlign.center),
-        const Spacer(),
-        AppButton(
-          label: l10n.homeChoosePlan,
-          onPressed: () => context.push(AppRoutes.choosePlan),
-        ),
-      ],
+    return AppEmpty(
+      title: l10n.planEmpty,
+      body: l10n.homeNoProgramBody,
+      icon: Icons.menu_book_outlined,
+      actionLabel: l10n.homeChoosePlan,
+      onAction: () => context.push(AppRoutes.choosePlan),
     );
   }
 
@@ -165,15 +160,7 @@ class _PlanPageState extends ConsumerState<PlanPage> {
 
     return ListView(
       children: [
-        Text(
-          training.program.title,
-          style: const TextStyle(
-            fontSize: 26,
-            fontWeight: FontWeight.w700,
-            height: 1.2,
-            letterSpacing: -0.4,
-          ),
-        ),
+        AppText.title(training.program.title),
         const SizedBox(height: 10),
         Text(
           l10n.planDaysDone(done, total),
@@ -208,16 +195,10 @@ class _PlanPageState extends ConsumerState<PlanPage> {
           Text(
             civilDateIsTomorrow(training.nextAvailableOn)
                 ? l10n.planNextUnlocksTomorrow(
-                    l10n.planDayLabel(
-                      training.nextDayNumber ?? 0,
-                      nextTitle,
-                    ),
+                    l10n.planDayLabel(training.nextDayNumber ?? 0, nextTitle),
                   )
                 : l10n.planNextTraining(
-                    l10n.planDayLabel(
-                      training.nextDayNumber ?? 0,
-                      nextTitle,
-                    ),
+                    l10n.planDayLabel(training.nextDayNumber ?? 0, nextTitle),
                     nextDate,
                   ),
             style: const TextStyle(
@@ -236,9 +217,9 @@ class _PlanPageState extends ConsumerState<PlanPage> {
                 if (i > 0)
                   Divider(
                     height: 1,
-                    color: Theme.of(context).colorScheme.outline.withValues(
-                      alpha: 0.7,
-                    ),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.outline.withValues(alpha: 0.7),
                   ),
                 _DayRow(
                   l10n: l10n,
@@ -262,7 +243,10 @@ class _PlanPageState extends ConsumerState<PlanPage> {
                 weekdays
                     ? l10n.planCadenceHintWeekdays
                     : l10n.planCadenceHintDaily,
-                style: const TextStyle(color: AppColors.muted, height: 1.4),
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  height: 1.4,
+                ),
               ),
               const SizedBox(height: 12),
               Wrap(
@@ -341,9 +325,7 @@ class _DayProgressLine extends StatelessWidget {
         for (var i = 0; i < count; i++) ...[
           if (i > 0) const SizedBox(width: 5),
           Expanded(
-            child: _DaySegment(
-              status: i < days.length ? days[i].status : null,
-            ),
+            child: _DaySegment(status: i < days.length ? days[i].status : null),
           ),
         ],
       ],
@@ -359,12 +341,18 @@ class _DaySegment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final done = status == 'completed';
-    final track = Theme.of(context).colorScheme.outline.withValues(alpha: 0.28);
+    final today = status == 'today';
+    final scheme = Theme.of(context).colorScheme;
+    final track = scheme.outline.withValues(alpha: 0.28);
 
     return Container(
       height: 10,
       decoration: BoxDecoration(
-        color: done ? AppColors.success : track,
+        color: done
+            ? AppColors.success
+            : today
+            ? scheme.primary
+            : track,
         borderRadius: BorderRadius.circular(99),
       ),
     );
@@ -372,11 +360,7 @@ class _DaySegment extends StatelessWidget {
 }
 
 class _DayRow extends StatelessWidget {
-  const _DayRow({
-    required this.l10n,
-    required this.day,
-    this.upcoming = false,
-  });
+  const _DayRow({required this.l10n, required this.day, this.upcoming = false});
 
   final AppLocalizations l10n;
   final ProgramDayPreview day;
@@ -391,7 +375,7 @@ class _DayRow extends StatelessWidget {
         ? AppColors.success
         : highlight
         ? AppColors.accent
-        : AppColors.muted;
+        : Theme.of(context).colorScheme.onSurfaceVariant;
     final hint = switch (day.status) {
       'completed' => l10n.planDayDone,
       'today' => l10n.planDayToday,

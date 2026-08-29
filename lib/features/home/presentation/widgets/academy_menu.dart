@@ -105,10 +105,6 @@ class AcademyMenuPanel extends StatelessWidget {
   final VoidCallback onClose;
   final void Function(VoidCallback action) onSelect;
 
-  static const _ink = Color(0xFFF6F1E8);
-  static const _muted = Color(0xFFC9D0CC);
-  static const _panel = Color(0xFF16302C);
-
   @override
   Widget build(BuildContext context) {
     final width = (MediaQuery.sizeOf(context).width * 0.86).clamp(280.0, 360.0);
@@ -125,7 +121,7 @@ class AcademyMenuPanel extends StatelessWidget {
           child: Text(
             title.toUpperCase(),
             style: const TextStyle(
-              color: Color(0xFFD7B49A),
+              color: AppColors.gold,
               fontSize: 11,
               fontWeight: FontWeight.w700,
               letterSpacing: 1.6,
@@ -171,7 +167,7 @@ class AcademyMenuPanel extends StatelessWidget {
         height: MediaQuery.sizeOf(context).height,
         child: DecoratedBox(
           decoration: const BoxDecoration(
-            color: _panel,
+            color: AppColors.panel,
             borderRadius: BorderRadius.horizontal(right: Radius.circular(32)),
             boxShadow: [
               BoxShadow(
@@ -187,13 +183,13 @@ class AcademyMenuPanel extends StatelessWidget {
             ),
             child: Stack(
               children: [
-                const Positioned(
+                Positioned(
                   right: -40,
                   bottom: 80,
                   child: Icon(
                     Icons.self_improvement_outlined,
                     size: 180,
-                    color: Color(0x14F6F1E8),
+                    color: AppColors.ink.withValues(alpha: 0.08),
                   ),
                 ),
                 const Positioned(
@@ -215,7 +211,7 @@ class AcademyMenuPanel extends StatelessWidget {
                           children: [
                             const Icon(
                               Icons.spa_outlined,
-                              color: AppColors.accent,
+                              color: AppColors.gold,
                               size: 22,
                             ),
                             const SizedBox(width: 10),
@@ -223,7 +219,7 @@ class AcademyMenuPanel extends StatelessWidget {
                               child: Text(
                                 l10n.menuTitle,
                                 style: const TextStyle(
-                                  color: _ink,
+                                  color: AppColors.ink,
                                   fontSize: 18,
                                   fontWeight: FontWeight.w700,
                                   letterSpacing: -0.2,
@@ -233,14 +229,17 @@ class AcademyMenuPanel extends StatelessWidget {
                             IconButton(
                               tooltip: l10n.menuClose,
                               onPressed: onClose,
-                              color: _muted,
+                              color: AppColors.panelMuted,
                               icon: const Icon(Icons.close_rounded),
                             ),
                           ],
                         ),
                         Text(
                           l10n.menuSubtitle,
-                          style: const TextStyle(color: _muted, height: 1.35),
+                          style: const TextStyle(
+                            color: AppColors.panelMuted,
+                            height: 1.35,
+                          ),
                         ),
                         const SizedBox(height: 18),
                         _MenuIdentity(
@@ -267,7 +266,7 @@ class AcademyMenuPanel extends StatelessWidget {
                               ),
                               item(
                                 icon: Icons.account_balance_outlined,
-                                accent: const Color(0xFFD7B49A),
+                                accent: AppColors.gold,
                                 title: l10n.menuPlans,
                                 hint: l10n.menuPlansHint,
                                 action: () =>
@@ -304,7 +303,7 @@ class AcademyMenuPanel extends StatelessWidget {
                               section(l10n.menuSectionTools),
                               item(
                                 icon: Icons.spa_outlined,
-                                accent: const Color(0xFFC46A3A),
+                                accent: AppColors.accent,
                                 title: l10n.homeToolCheckin,
                                 hint: l10n.menuCheckinHint,
                                 action: () =>
@@ -320,7 +319,7 @@ class AcademyMenuPanel extends StatelessWidget {
                               ),
                               item(
                                 icon: Icons.edit_note_outlined,
-                                accent: const Color(0xFFD7B49A),
+                                accent: AppColors.gold,
                                 title: l10n.homeToolJournal,
                                 hint: l10n.menuJournalHint,
                                 action: () =>
@@ -365,7 +364,7 @@ class AcademyMenuPanel extends StatelessWidget {
                               section(l10n.menuSectionJourney),
                               item(
                                 icon: Icons.history_rounded,
-                                accent: const Color(0xFFD7B49A),
+                                accent: AppColors.gold,
                                 title: l10n.historyTitle,
                                 hint: l10n.menuHistoryHint,
                                 action: () =>
@@ -373,7 +372,7 @@ class AcademyMenuPanel extends StatelessWidget {
                               ),
                               item(
                                 icon: Icons.public_outlined,
-                                accent: const Color(0xFFC46A3A),
+                                accent: AppColors.accent,
                                 title: l10n.rankingTitle,
                                 hint: l10n.menuRankingHint,
                                 action: () =>
@@ -405,51 +404,58 @@ class _MenuIdentity extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final name = user?.name.trim() ?? '';
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(18),
-        child: Container(
-          padding: const EdgeInsets.fromLTRB(12, 12, 14, 12),
-          decoration: BoxDecoration(
-            color: const Color(0x14F6F1E8),
-            borderRadius: BorderRadius.circular(18),
-            border: Border.all(color: const Color(0x22F6F1E8)),
-          ),
-          child: Row(
-            children: [
-              _MenuAvatar(user: user),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      name.isEmpty ? l10n.appName : name,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: Color(0xFFF6F1E8),
-                        fontWeight: FontWeight.w700,
-                        fontSize: 15,
+    return Semantics(
+      button: true,
+      label: name.isEmpty ? l10n.appName : name,
+      hint: isPremiumAccount(user)
+          ? l10n.profilePlanPremium
+          : l10n.profilePlanFree,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(18),
+          child: Container(
+            padding: const EdgeInsets.fromLTRB(12, 12, 14, 12),
+            decoration: BoxDecoration(
+              color: AppColors.ink.withValues(alpha: 0.08),
+              borderRadius: BorderRadius.circular(18),
+              border: Border.all(color: AppColors.gold.withValues(alpha: 0.38)),
+            ),
+            child: Row(
+              children: [
+                _MenuAvatar(user: user),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        name.isEmpty ? l10n.appName : name,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          color: AppColors.ink,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 15,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      isPremiumAccount(user)
-                          ? l10n.profilePlanPremium
-                          : l10n.profilePlanFree,
-                      style: const TextStyle(
-                        color: Color(0xFFC9D0CC),
-                        fontSize: 12,
+                      const SizedBox(height: 2),
+                      Text(
+                        isPremiumAccount(user)
+                            ? l10n.profilePlanPremium
+                            : l10n.profilePlanFree,
+                        style: const TextStyle(
+                          color: AppColors.panelMuted,
+                          fontSize: 12,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              const Icon(Icons.chevron_right_rounded, color: Color(0x66F6F1E8)),
-            ],
+                const Icon(Icons.chevron_right_rounded, color: AppColors.gold),
+              ],
+            ),
           ),
         ),
       ),
@@ -482,7 +488,7 @@ class _MenuAvatar extends StatelessWidget {
       );
     } else if (emoji != null && emoji.isNotEmpty) {
       child = ColoredBox(
-        color: const Color(0x33F6F1E8),
+        color: AppColors.ink.withValues(alpha: 0.2),
         child: Center(child: Text(emoji, style: const TextStyle(fontSize: 18))),
       );
     } else {
@@ -494,7 +500,7 @@ class _MenuAvatar extends StatelessWidget {
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w700,
-              color: Color(0xFFF6F1E8),
+              color: AppColors.ink,
             ),
           ),
         ),
@@ -528,64 +534,69 @@ class _MenuRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 6),
-      child: ScaleOnTap(
-        child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            onTap: onTap,
-            borderRadius: BorderRadius.circular(16),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-              child: Row(
-                children: [
-                  Container(
-                    width: 42,
-                    height: 42,
-                    decoration: BoxDecoration(
-                      color: accent.withValues(alpha: 0.18),
-                      borderRadius: BorderRadius.circular(14),
+      child: Semantics(
+        button: true,
+        label: title,
+        hint: hint,
+        child: ScaleOnTap(
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: onTap,
+              borderRadius: BorderRadius.circular(16),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 10,
+                  horizontal: 4,
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 42,
+                      height: 42,
+                      decoration: BoxDecoration(
+                        color: accent.withValues(alpha: 0.18),
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      child: Icon(icon, color: accent, size: 22),
                     ),
-                    child: Icon(icon, color: accent, size: 22),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          title,
-                          style: const TextStyle(
-                            color: Color(0xFFF6F1E8),
-                            fontWeight: FontWeight.w600,
-                            fontSize: 15,
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            title,
+                            style: const TextStyle(
+                              color: AppColors.ink,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 15,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 2),
-                        Text(
-                          hint,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            color: Color(0xFFC9D0CC),
-                            fontSize: 12,
+                          const SizedBox(height: 2),
+                          Text(
+                            hint,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              color: AppColors.panelMuted,
+                              fontSize: 12,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  const Icon(
-                    Icons.chevron_right_rounded,
-                    color: Color(0x66F6F1E8),
-                  ),
-                  if (locked) ...[
-                    const SizedBox(width: 4),
-                    const Icon(
-                      Icons.lock_outline_rounded,
-                      color: Color(0x99F6F1E8),
-                      size: 16,
+                    Icon(
+                      locked
+                          ? Icons.lock_outline_rounded
+                          : Icons.chevron_right_rounded,
+                      color: locked
+                          ? AppColors.gold
+                          : AppColors.ink.withValues(alpha: 0.6),
+                      size: locked ? 18 : 24,
                     ),
                   ],
-                ],
+                ),
               ),
             ),
           ),

@@ -52,12 +52,14 @@ class _RankingPageState extends ConsumerState<RankingPage> {
       body: ranking.when(
         loading: () => AppLoading(label: l10n.loadingLabel),
         error: (_, _) => AppError(
+          title: l10n.errorLoadTitle,
           message: l10n.errorGeneric,
           retryLabel: l10n.actionRetry,
           onRetry: () => ref.invalidate(rankingProvider(_period)),
         ),
         data: (result) => result.when(
           failure: (failure) => AppError(
+            title: l10n.errorLoadTitle,
             message: failureMessage(failure, l10n),
             retryLabel: l10n.actionRetry,
             onRetry: () => ref.invalidate(rankingProvider(_period)),
@@ -104,7 +106,11 @@ class _RankingPageState extends ConsumerState<RankingPage> {
               ],
               const SizedBox(height: 8),
               if (snapshot.entries.isEmpty)
-                AppEmpty(title: l10n.emptyTitle, body: l10n.rankingEmpty)
+                AppEmpty(
+                  title: l10n.emptyTitle,
+                  body: l10n.rankingEmpty,
+                  icon: Icons.emoji_events_outlined,
+                )
               else
                 for (final entry in snapshot.entries) ...[
                   _EntryCard(l10n: l10n, entry: entry),
@@ -149,7 +155,10 @@ class _OptInCard extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 l10n.rankingOptInBody,
-                style: const TextStyle(color: AppColors.muted, height: 1.45),
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  height: 1.45,
+                ),
               ),
               const SizedBox(height: 16),
               AppButton(
@@ -184,7 +193,9 @@ class _OptInCard extends StatelessWidget {
                       const SizedBox(height: 4),
                       Text(
                         _rankingStats(l10n, me!),
-                        style: const TextStyle(color: AppColors.muted),
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
                       ),
                     ],
                   ),
@@ -224,7 +235,10 @@ class _MeCard extends StatelessWidget {
               children: [
                 Text(
                   l10n.rankingYourPlace,
-                  style: const TextStyle(color: AppColors.muted, fontSize: 13),
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    fontSize: 13,
+                  ),
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -237,7 +251,9 @@ class _MeCard extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   _rankingStats(l10n, me),
-                  style: const TextStyle(color: AppColors.muted),
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
                 ),
               ],
             ),
@@ -261,7 +277,7 @@ class _EntryCard extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppSpacing.radius),
         border: entry.isMe
-            ? Border.all(color: AppColors.accent, width: 1.5)
+            ? Border.all(color: scheme.secondary, width: 1.5)
             : null,
       ),
       child: AppCard(
@@ -274,7 +290,7 @@ class _EntryCard extends StatelessWidget {
                 entry.rank == null ? '—' : '${entry.rank}',
                 style: TextStyle(
                   fontWeight: FontWeight.w700,
-                  color: entry.isMe ? AppColors.accent : scheme.onSurface,
+                  color: entry.isMe ? scheme.secondary : scheme.onSurface,
                 ),
               ),
             ),
@@ -296,8 +312,8 @@ class _EntryCard extends StatelessWidget {
                   if (entry.levelName != null)
                     Text(
                       entry.levelName!,
-                      style: const TextStyle(
-                        color: AppColors.muted,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                         fontSize: 13,
                       ),
                     ),
@@ -314,7 +330,10 @@ class _EntryCard extends StatelessWidget {
                 const SizedBox(height: 2),
                 Text(
                   _formatRankingTime(l10n, entry.seconds),
-                  style: const TextStyle(color: AppColors.muted, fontSize: 13),
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    fontSize: 13,
+                  ),
                 ),
               ],
             ),
@@ -355,21 +374,21 @@ class _RankingAvatar extends StatelessWidget {
       );
     } else if (avatarEmoji != null && avatarEmoji!.isNotEmpty) {
       child = ColoredBox(
-        color: AppColors.surfaceMuted,
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
         child: Center(
           child: Text(avatarEmoji!, style: TextStyle(fontSize: size * 0.42)),
         ),
       );
     } else {
       child = ColoredBox(
-        color: AppColors.primary.withValues(alpha: 0.12),
+        color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.12),
         child: Center(
           child: Text(
             initial,
             style: TextStyle(
               fontSize: size * 0.38,
               fontWeight: FontWeight.w700,
-              color: AppColors.primary,
+              color: Theme.of(context).colorScheme.primary,
             ),
           ),
         ),

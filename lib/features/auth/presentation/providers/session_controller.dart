@@ -5,6 +5,7 @@ import 'package:mindvibe_app/core/device/device_id_store.dart';
 import 'package:mindvibe_app/core/error/app_failure.dart';
 import 'package:mindvibe_app/core/error/result.dart';
 import 'package:mindvibe_app/core/providers/core_providers.dart';
+import 'package:mindvibe_app/core/storage/remembered_account_store.dart';
 import 'package:mindvibe_app/core/storage/token_store.dart';
 import 'package:mindvibe_app/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:mindvibe_app/features/auth/data/repositories/auth_repository_impl.dart';
@@ -25,6 +26,7 @@ final sessionControllerProvider =
         authRepository: ref.watch(authRepositoryProvider),
         tokenStore: ref.watch(tokenStoreProvider),
         deviceIdStore: ref.watch(deviceIdStoreProvider),
+        rememberedAccountStore: ref.watch(rememberedAccountStoreProvider),
       );
       ref.watch(unauthorizedSignalProvider).bind(controller.onUnauthorized);
       return controller;
@@ -35,9 +37,11 @@ class SessionController extends StateNotifier<SessionState> {
     required AuthRepository authRepository,
     required TokenStore tokenStore,
     required DeviceIdStore deviceIdStore,
+    required RememberedAccountStore rememberedAccountStore,
   }) : _auth = authRepository,
        _tokenStore = tokenStore,
        _deviceIdStore = deviceIdStore,
+       _rememberedAccount = rememberedAccountStore,
        super(const SessionState(status: SessionStatus.loading)) {
     unawaited(bootstrap());
   }
@@ -45,6 +49,7 @@ class SessionController extends StateNotifier<SessionState> {
   final AuthRepository _auth;
   final TokenStore _tokenStore;
   final DeviceIdStore _deviceIdStore;
+  final RememberedAccountStore _rememberedAccount;
 
   Future<String> deviceUuid() => _deviceIdStore.getOrCreate();
 
@@ -56,6 +61,7 @@ class SessionController extends StateNotifier<SessionState> {
       final user = me.valueOrNull;
       if (user != null) {
         _setAuthenticated(user);
+        unawaited(_rememberedAccount.keepEmail(user.email));
         return;
       }
       if (me.failureOrNull?.type == AppFailureType.unauthorized) {
@@ -68,6 +74,7 @@ class SessionController extends StateNotifier<SessionState> {
   Future<Result<AuthSession>> login({
     required String email,
     required String password,
+    bool rememberAccount = true,
   }) async {
     final result = await _auth.login(
       email: email,
@@ -76,6 +83,12 @@ class SessionController extends StateNotifier<SessionState> {
       platform: currentPlatformName(),
     );
     await _handleAuthResult(result);
+    if (result.isSuccess) {
+      await _rememberedAccount.setFromLogin(
+        email: email,
+        remember: rememberAccount,
+      );
+    }
     return result;
   }
 
@@ -92,6 +105,9 @@ class SessionController extends StateNotifier<SessionState> {
       platform: currentPlatformName(),
     );
     await _handleAuthResult(result);
+    if (result.isSuccess) {
+      await _rememberedAccount.setFromLogin(email: email, remember: true);
+    }
     return result;
   }
 
@@ -158,6 +174,7 @@ class SessionController extends StateNotifier<SessionState> {
   Future<Result<void>> deleteAccount() async {
     final result = await _auth.deleteAccount();
     if (result.isSuccess) {
+      await _rememberedAccount.clear();
       await _lookupGuest();
     }
     return result;
@@ -210,6 +227,10 @@ class SessionController extends StateNotifier<SessionState> {
 
   void markPendingTransfer() {
     state = state.copyWith(pendingDeviceTransfer: true);
+  }
+
+  void prepareAssociatedLogin() {
+    state = state.copyWith(pendingDeviceTransfer: false);
   }
 
   void applyDeviceHasAccount(String? maskedEmail) {

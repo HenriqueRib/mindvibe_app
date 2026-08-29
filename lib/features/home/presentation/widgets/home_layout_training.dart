@@ -77,8 +77,10 @@ class HomeTrainingLayout extends StatelessWidget {
                       children: [
                         Text(
                           homeTodayEyebrow(l10n, training).toUpperCase(),
-                          style: const TextStyle(
-                            color: AppColors.muted,
+                          style: TextStyle(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurfaceVariant,
                             fontWeight: FontWeight.w700,
                             letterSpacing: 1.1,
                             fontSize: 12,
@@ -100,7 +102,7 @@ class HomeTrainingLayout extends StatelessWidget {
                             ],
                             Expanded(
                               child: Text(
-                                training?.dayTitle ?? l10n.homeNoProgram,
+                                training?.dayTitle ?? l10n.homeChoosePlan,
                                 style: const TextStyle(
                                   fontSize: 22,
                                   fontWeight: FontWeight.w700,
@@ -115,12 +117,38 @@ class HomeTrainingLayout extends StatelessWidget {
                           style: TextStyle(
                             color: training?.todayCompleted == true
                                 ? Theme.of(context).colorScheme.onSurface
-                                : AppColors.muted,
+                                : Theme.of(
+                                    context,
+                                  ).colorScheme.onSurfaceVariant,
                             fontWeight: training?.todayCompleted == true
                                 ? FontWeight.w700
                                 : FontWeight.w400,
                           ),
                         ),
+                        if (training != null &&
+                            training!.program.durationDays > 0) ...[
+                          const SizedBox(height: 8),
+                          AppProgressBar(
+                            value:
+                                (training!.dayNumber /
+                                        training!.program.durationDays)
+                                    .clamp(0.0, 1.0),
+                          ),
+                          const SizedBox(height: 6),
+                          Text(
+                            l10n.homeDayProgress(
+                              training!.dayNumber,
+                              training!.program.durationDays,
+                            ),
+                            style: TextStyle(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurfaceVariant,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
                         const SizedBox(height: 18),
                         HomeStartButton(
                           label: homeStartLabel(

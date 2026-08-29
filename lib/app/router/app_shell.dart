@@ -15,12 +15,7 @@ class AppShell extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: Stack(
-        children: [
-          navigationShell,
-          const DailyCheckinPrompt(),
-        ],
-      ),
+      body: Stack(children: [navigationShell, const DailyCheckinPrompt()]),
       bottomNavigationBar: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

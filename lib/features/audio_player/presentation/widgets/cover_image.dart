@@ -57,12 +57,10 @@ class CoverImage extends StatelessWidget {
     );
   }
 
-  Widget _placeholder(BuildContext context, double iconSize) {
+  Widget _placeholder(BuildContext _, double iconSize) {
     return ColoredBox(
-      color: Theme.of(context).brightness == Brightness.dark
-          ? AppColors.nightSurface
-          : AppColors.surfaceMuted,
-      child: Icon(icon, color: AppColors.primarySoft, size: iconSize),
+      color: AppColors.panel,
+      child: Icon(icon, color: AppColors.gold, size: iconSize),
     );
   }
 }

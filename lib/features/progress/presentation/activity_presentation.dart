@@ -91,8 +91,10 @@ class ActivityRow extends StatelessWidget {
     return Row(
       children: [
         CircleAvatar(
-          backgroundColor: AppColors.primary.withValues(alpha: 0.12),
-          foregroundColor: AppColors.primary,
+          backgroundColor: Theme.of(
+            context,
+          ).colorScheme.primary.withValues(alpha: 0.12),
+          foregroundColor: Theme.of(context).colorScheme.primary,
           child: Icon(activityIcon(item), size: 20),
         ),
         const SizedBox(width: 12),
@@ -115,20 +117,28 @@ class ActivityRow extends StatelessWidget {
               const SizedBox(height: 2),
               Text(
                 '${activityDayLabel(l10n, item.occurredAt)} · ${activityTypeLabel(l10n, item)}',
-                style: const TextStyle(color: AppColors.muted, fontSize: 13),
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  fontSize: 13,
+                ),
               ),
             ],
           ),
         ),
         const SizedBox(width: 8),
-        Text(switch (item.type) {
-          'checkin' => _checkinMeta(l10n, item),
-          'journal' => l10n.historyTypeJournal,
-          'thought' => l10n.historyTypeThought,
-          'clear_mind' => l10n.historyTypeClearMind,
-          'day_close' => l10n.historyTypeDayClose,
-          _ => activityDurationLabel(l10n, item.seconds),
-        }, style: const TextStyle(color: AppColors.muted)),
+        Text(
+          switch (item.type) {
+            'checkin' => _checkinMeta(l10n, item),
+            'journal' => l10n.historyTypeJournal,
+            'thought' => l10n.historyTypeThought,
+            'clear_mind' => l10n.historyTypeClearMind,
+            'day_close' => l10n.historyTypeDayClose,
+            _ => activityDurationLabel(l10n, item.seconds),
+          },
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
+        ),
         const SizedBox(width: 6),
         const Icon(Icons.check_circle, color: AppColors.success, size: 18),
       ],

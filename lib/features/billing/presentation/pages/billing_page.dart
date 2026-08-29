@@ -62,10 +62,7 @@ class _BillingPageState extends ConsumerState<BillingPage>
       _toast(l10n.paywallOpenError);
       return;
     }
-    final opened = await launchUrl(
-      uri,
-      mode: LaunchMode.externalApplication,
-    );
+    final opened = await launchUrl(uri, mode: LaunchMode.externalApplication);
     if (!opened && mounted) {
       _toast(l10n.paywallOpenError);
     }
@@ -96,12 +93,14 @@ class _BillingPageState extends ConsumerState<BillingPage>
               child: AppLoading.compact(),
             ),
             error: (_, _) => AppError(
+              title: l10n.errorLoadTitle,
               message: l10n.errorGeneric,
               retryLabel: l10n.actionRetry,
               onRetry: () => ref.invalidate(billingEntitlementProvider),
             ),
             data: (result) => result.when(
               failure: (failure) => AppError(
+                title: l10n.errorLoadTitle,
                 message: failureMessage(failure, l10n),
                 retryLabel: l10n.actionRetry,
                 onRetry: () => ref.invalidate(billingEntitlementProvider),
@@ -123,12 +122,14 @@ class _BillingPageState extends ConsumerState<BillingPage>
               child: AppLoading.compact(),
             ),
             error: (_, _) => AppError(
+              title: l10n.errorLoadTitle,
               message: l10n.errorGeneric,
               retryLabel: l10n.actionRetry,
               onRetry: () => ref.invalidate(billingPaymentsProvider),
             ),
             data: (result) => result.when(
               failure: (failure) => AppError(
+                title: l10n.errorLoadTitle,
                 message: failureMessage(failure, l10n),
                 retryLabel: l10n.actionRetry,
                 onRetry: () => ref.invalidate(billingPaymentsProvider),
@@ -138,6 +139,7 @@ class _BillingPageState extends ConsumerState<BillingPage>
                   return AppEmpty(
                     title: l10n.emptyTitle,
                     body: l10n.billingHistoryEmpty,
+                    icon: Icons.receipt_long_outlined,
                   );
                 }
                 return Column(
@@ -250,7 +252,7 @@ class _PaymentTile extends StatelessWidget {
                 : Icons.receipt_long_outlined,
             color: payment.status == 'approved'
                 ? AppColors.success
-                : AppColors.muted,
+                : Theme.of(context).colorScheme.onSurfaceVariant,
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -266,7 +268,9 @@ class _PaymentTile extends StatelessWidget {
                   when == null
                       ? status
                       : '$status · ${DateFormat.yMMMd(l10n.localeName).format(when)}',
-                  style: const TextStyle(color: AppColors.muted),
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
                 ),
               ],
             ),

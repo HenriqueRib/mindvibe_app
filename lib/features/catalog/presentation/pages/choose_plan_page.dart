@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mindvibe_app/app/widgets/app_widgets.dart';
 import 'package:mindvibe_app/core/config/app_config.dart';
+import 'package:mindvibe_app/core/error/failure_message.dart';
 import 'package:mindvibe_app/features/catalog/presentation/enroll_program.dart';
 import 'package:mindvibe_app/features/catalog/presentation/widgets/plan_goal_picker.dart';
 import 'package:mindvibe_app/features/training/domain/entities/training_entities.dart';
@@ -57,15 +58,27 @@ class _ChoosePlanPageState extends ConsumerState<ChoosePlanPage> {
       body: catalog.when(
         loading: () => AppLoading(label: l10n.loadingLabel),
         error: (_, _) => AppError(
+          title: l10n.errorLoadTitle,
           message: l10n.errorGeneric,
           retryLabel: l10n.actionRetry,
           onRetry: () => ref.invalidate(catalogProvider),
         ),
         data: (result) => result.when(
-          failure: (_) => AppEmpty(title: l10n.catalogEmpty),
+          failure: (failure) => AppError(
+            title: l10n.errorLoadTitle,
+            message: failureMessage(failure, l10n),
+            retryLabel: l10n.actionRetry,
+            onRetry: () => ref.invalidate(catalogProvider),
+          ),
           success: (programs) {
             if (programs.isEmpty) {
-              return AppEmpty(title: l10n.catalogEmpty);
+              return AppEmpty(
+                title: l10n.catalogEmpty,
+                body: l10n.emptyBody,
+                icon: Icons.explore_outlined,
+                actionLabel: l10n.actionBack,
+                onAction: () => Navigator.of(context).maybePop(),
+              );
             }
             return ListView(
               children: [

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mindvibe_app/app/theme/app_theme.dart';
 import 'package:mindvibe_app/app/widgets/app_widgets.dart';
 import 'package:mindvibe_app/features/audio_player/presentation/providers/now_playing_controller.dart';
 import 'package:mindvibe_app/features/audio_player/presentation/widgets/session_audio_player.dart';
@@ -15,24 +14,17 @@ class NowPlayingPage extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final playing = ref.watch(nowPlayingProvider);
     final track = playing.track;
-    final night = Theme.of(context).brightness == Brightness.dark;
 
     return AppScaffold(
       showBack: true,
       title: track?.subtitle ?? l10n.playerNowPlaying,
-      backgroundColor: night ? AppColors.nightBackground : null,
       body: track == null
-          ? Column(
-              children: [
-                const Spacer(),
-                AppEmpty(title: l10n.emptyTitle),
-                const Spacer(),
-                AppButton(
-                  label: l10n.actionBack,
-                  variant: AppButtonVariant.secondary,
-                  onPressed: () => context.pop(),
-                ),
-              ],
+          ? AppEmpty(
+              title: l10n.emptyTitle,
+              body: l10n.emptyBody,
+              icon: Icons.headset_off_outlined,
+              actionLabel: l10n.actionBack,
+              onAction: () => context.pop(),
             )
           : LayoutBuilder(
               builder: (context, constraints) {

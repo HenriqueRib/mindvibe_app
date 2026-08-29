@@ -13,11 +13,12 @@ class ExerciseTimerBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     final totalMs = total.inMilliseconds <= 0 ? 1 : total.inMilliseconds;
     final left = remaining.isNegative ? Duration.zero : remaining;
     final progress = (left.inMilliseconds / totalMs).clamp(0.0, 1.0);
     final ending = left.inSeconds <= 10;
-    final color = ending ? AppColors.accent : AppColors.primary;
+    final color = ending ? AppColors.accent : scheme.primary;
     final minutes = left.inMinutes.remainder(60).toString().padLeft(2, '0');
     final seconds = left.inSeconds.remainder(60).toString().padLeft(2, '0');
 
@@ -33,7 +34,7 @@ class ExerciseTimerBar extends StatelessWidget {
               return LinearProgressIndicator(
                 value: value,
                 minHeight: 8,
-                backgroundColor: AppColors.surfaceMuted,
+                backgroundColor: scheme.surfaceContainerHighest,
                 color: color,
               );
             },
@@ -45,7 +46,7 @@ class ExerciseTimerBar extends StatelessWidget {
           style: TextStyle(
             fontWeight: FontWeight.w700,
             fontFeatures: const [FontFeature.tabularFigures()],
-            color: ending ? AppColors.accent : AppColors.muted,
+            color: ending ? AppColors.accent : scheme.onSurfaceVariant,
           ),
           child: Text('$minutes:$seconds'),
         ),

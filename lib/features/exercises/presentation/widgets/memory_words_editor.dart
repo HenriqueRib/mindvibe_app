@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mindvibe_app/app/theme/app_theme.dart';
 import 'package:mindvibe_app/app/widgets/app_widgets.dart';
 import 'package:mindvibe_app/core/providers/core_providers.dart';
 import 'package:mindvibe_app/l10n/app_localizations.dart';
@@ -115,7 +114,10 @@ class _MemoryWordsSheetState extends State<_MemoryWordsSheet> {
             const SizedBox(height: 8),
             Text(
               l10n.memoryWordsHint,
-              style: const TextStyle(color: AppColors.muted, height: 1.4),
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                height: 1.4,
+              ),
             ),
             const SizedBox(height: 16),
             Row(
@@ -140,7 +142,9 @@ class _MemoryWordsSheetState extends State<_MemoryWordsSheet> {
                 padding: const EdgeInsets.only(bottom: 12),
                 child: Text(
                   l10n.memoryWordsEmpty,
-                  style: const TextStyle(color: AppColors.muted),
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
                 ),
               )
             else

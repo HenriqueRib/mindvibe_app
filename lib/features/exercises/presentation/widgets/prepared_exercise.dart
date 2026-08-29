@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mindvibe_app/app/theme/app_theme.dart';
 import 'package:mindvibe_app/app/widgets/app_widgets.dart';
 import 'package:mindvibe_app/features/exercises/domain/exercise_parsers.dart';
 import 'package:mindvibe_app/features/exercises/presentation/widgets/attention_shape.dart';
@@ -57,17 +56,26 @@ class _PreparedExerciseState extends State<PreparedExercise> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 360),
-      child: _started
-          ? KeyedSubtree(
-              key: const ValueKey('running'),
-              child: widget.builder(_seconds),
-            )
-          : KeyedSubtree(
-              key: const ValueKey('briefing'),
-              child: FadeSlideIn(child: _briefing(l10n)),
-            ),
+    return SizedBox.expand(
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 360),
+        layoutBuilder: (currentChild, previousChildren) {
+          return Stack(
+            fit: StackFit.expand,
+            alignment: Alignment.center,
+            children: [...previousChildren, ?currentChild],
+          );
+        },
+        child: _started
+            ? KeyedSubtree(
+                key: const ValueKey('running'),
+                child: SizedBox.expand(child: widget.builder(_seconds)),
+              )
+            : KeyedSubtree(
+                key: const ValueKey('briefing'),
+                child: _briefing(l10n),
+              ),
+      ),
     );
   }
 
@@ -128,10 +136,9 @@ class _PreparedExerciseState extends State<PreparedExercise> {
         widget.type == 'attention' &&
         (variant.isEmpty || variant == 'target' || variant == 'nogo');
 
-    return Column(
+    final content = Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const Spacer(),
         AppText.title(title, align: TextAlign.center),
         const SizedBox(height: 16),
         AppText.subtitle(body, align: TextAlign.center),
@@ -146,9 +153,9 @@ class _PreparedExerciseState extends State<PreparedExercise> {
                 ? l10n.attentionNogoLabel
                 : l10n.attentionTargetLabel,
             textAlign: TextAlign.center,
-            style: const TextStyle(
+            style: TextStyle(
               fontWeight: FontWeight.w700,
-              color: AppColors.muted,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
             ),
           ),
           const SizedBox(height: 16),
@@ -180,11 +187,19 @@ class _PreparedExerciseState extends State<PreparedExercise> {
             ],
           ),
         ],
-        const Spacer(),
-        AppButton(
-          label: l10n.exerciseBriefingStart,
-          onPressed: () => setState(() => _started = true),
-        ),
+      ],
+    );
+    final start = AppButton(
+      label: l10n.exerciseBriefingStart,
+      onPressed: () => setState(() => _started = true),
+    );
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Expanded(child: SingleChildScrollView(child: content)),
+        const SizedBox(height: 16),
+        start,
       ],
     );
   }

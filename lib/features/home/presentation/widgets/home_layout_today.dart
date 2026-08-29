@@ -21,6 +21,7 @@ class HomeTodayLayout extends StatelessWidget {
     required this.onStart,
     this.training,
     this.progress,
+    this.pausedSessionId,
   });
 
   final AppLocalizations l10n;
@@ -29,6 +30,7 @@ class HomeTodayLayout extends StatelessWidget {
   final TodayTraining? training;
   final ProgressSnapshot? progress;
   final List<ProgramSummary> programs;
+  final int? pausedSessionId;
   final VoidCallback? onStart;
 
   @override
@@ -123,7 +125,7 @@ class HomeTodayLayout extends StatelessWidget {
                                               ),
                                               child: Icon(
                                                 Icons.check_circle_rounded,
-                                                color: Color(0xFF7CBA6F),
+                                                color: AppColors.successOnDark,
                                                 size: 26,
                                               ),
                                             ),
@@ -131,7 +133,7 @@ class HomeTodayLayout extends StatelessWidget {
                                           Expanded(
                                             child: Text(
                                               training?.dayTitle ??
-                                                  l10n.homeNoProgram,
+                                                  l10n.homeChoosePlan,
                                               style: const TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 26,
@@ -159,6 +161,23 @@ class HomeTodayLayout extends StatelessWidget {
                                               : FontWeight.w400,
                                         ),
                                       ),
+                                      if (training != null &&
+                                          training!.program.durationDays >
+                                              0) ...[
+                                        const SizedBox(height: 8),
+                                        Text(
+                                          l10n.homeDayProgress(
+                                            training!.dayNumber,
+                                            training!.program.durationDays,
+                                          ),
+                                          style: const TextStyle(
+                                            color: Colors.white70,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w600,
+                                            letterSpacing: 0.2,
+                                          ),
+                                        ),
+                                      ],
                                     ],
                                   ),
                                 ),
@@ -167,6 +186,19 @@ class HomeTodayLayout extends StatelessWidget {
                                   value: ring,
                                   onPressed: onStart,
                                   completed: training?.todayCompleted == true,
+                                  semanticLabel: homeStartLabel(
+                                    l10n,
+                                    training,
+                                    pausedSessionId: pausedSessionId,
+                                  ),
+                                  resumed:
+                                      pausedSessionId != null &&
+                                      training != null &&
+                                      training!.sessions.isNotEmpty &&
+                                      training!.sessions.first.id ==
+                                          pausedSessionId &&
+                                      training!.todayCompleted != true,
+                                  hasProgram: training != null,
                                 ),
                               ],
                             ),
@@ -231,9 +263,9 @@ class HomeTodayLayout extends StatelessWidget {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.eco_outlined,
-                            color: AppColors.primary,
+                            color: Theme.of(context).colorScheme.primary,
                           ),
                           const SizedBox(width: 12),
                           Expanded(
@@ -263,48 +295,67 @@ class _PlayRing extends StatelessWidget {
   const _PlayRing({
     required this.value,
     required this.onPressed,
+    required this.semanticLabel,
     this.completed = false,
+    this.resumed = false,
+    this.hasProgram = true,
   });
 
   final double value;
   final VoidCallback? onPressed;
+  final String semanticLabel;
   final bool completed;
+  final bool resumed;
+  final bool hasProgram;
 
   @override
   Widget build(BuildContext context) {
-    return ScaleOnTap(
-      child: GestureDetector(
-        onTap: onPressed,
-        child: SizedBox(
-          width: 72,
-          height: 72,
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              SizedBox(
-                width: 72,
-                height: 72,
-                child: CircularProgressIndicator(
-                  value: value <= 0 ? 0.08 : value,
-                  strokeWidth: 3.5,
-                  backgroundColor: Colors.white24,
-                  color: const Color(0xFF7CBA6F),
-                ),
+    final icon = completed
+        ? Icons.check_rounded
+        : resumed
+        ? Icons.replay_rounded
+        : hasProgram
+        ? Icons.play_arrow_rounded
+        : Icons.arrow_forward_rounded;
+
+    return Semantics(
+      button: true,
+      enabled: onPressed != null,
+      label: semanticLabel,
+      child: ScaleOnTap(
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: onPressed,
+            customBorder: const CircleBorder(),
+            child: SizedBox(
+              width: 76,
+              height: 76,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  SizedBox(
+                    width: 72,
+                    height: 72,
+                    child: CircularProgressIndicator(
+                      value: value <= 0 ? 0.08 : value,
+                      strokeWidth: 3.5,
+                      backgroundColor: Colors.white24,
+                      color: AppColors.successOnDark,
+                    ),
+                  ),
+                  Container(
+                    width: 56,
+                    height: 56,
+                    decoration: const BoxDecoration(
+                      color: AppColors.success,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(icon, color: Colors.white, size: 32),
+                  ),
+                ],
               ),
-              Container(
-                width: 56,
-                height: 56,
-                decoration: const BoxDecoration(
-                  color: Color(0xFF3D7A5A),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  completed ? Icons.check_rounded : Icons.play_arrow_rounded,
-                  color: Colors.white,
-                  size: 32,
-                ),
-              ),
-            ],
+            ),
           ),
         ),
       ),

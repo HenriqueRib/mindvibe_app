@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mindvibe_app/app/theme/app_theme.dart';
+import 'package:mindvibe_app/app/widgets/app_brand_mark.dart';
 import 'package:mindvibe_app/app/widgets/app_widgets.dart';
 import 'package:mindvibe_app/l10n/app_localizations.dart';
 
@@ -21,7 +22,9 @@ class AuthLayout extends StatelessWidget {
       showBack: Navigator.of(context).canPop(),
       body: ListView(
         children: [
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
+          const AppBrandMark(size: 48),
+          const SizedBox(height: 16),
           Text(
             AppLocalizations.of(context).appName,
             style: const TextStyle(

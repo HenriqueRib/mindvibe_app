@@ -23,9 +23,6 @@ class BillingRemoteDataSource {
   }
 
   Future<Result<List<BillingPayment>>> payments() {
-    return _client.get(
-      '/billing/payments',
-      parse: paymentsFromJson,
-    );
+    return _client.get('/billing/payments', parse: paymentsFromJson);
   }
 }

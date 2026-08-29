@@ -45,22 +45,13 @@ class _SessionPageState extends ConsumerState<SessionPage> {
   bool _submitting = false;
   bool _prepareConsumed = false;
   bool _leaving = false;
-  Timer? _clock;
+  final _memoryByExercise = <int, MemoryConfig>{};
 
-  @override
-  void initState() {
-    super.initState();
-    _clock = Timer.periodic(const Duration(seconds: 1), (_) {
-      if (mounted) {
-        setState(() {});
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _clock?.cancel();
-    super.dispose();
+  MemoryConfig _memoryOf(ExerciseSpec exercise, List<String> extra) {
+    return _memoryByExercise.putIfAbsent(
+      exercise.id,
+      () => MemoryConfig.fromJson(exercise.configuration, extraWords: extra),
+    );
   }
 
   @override
@@ -88,8 +79,6 @@ class _SessionPageState extends ConsumerState<SessionPage> {
       }
     });
 
-    final night = Theme.of(context).brightness == Brightness.dark;
-
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, _) {
@@ -100,25 +89,18 @@ class _SessionPageState extends ConsumerState<SessionPage> {
       },
       child: AppScaffold(
         showBack: state.stage != SessionStage.completing,
-        title: state.stage == SessionStage.loading ||
+        title:
+            state.stage == SessionStage.loading ||
                 state.stage == SessionStage.completing
             ? null
             : state.session?.title,
-        backgroundColor: night ? AppColors.nightBackground : null,
         actions: [
           if (state.stage == SessionStage.playing &&
               state.playingStartedAt != null)
             Padding(
               padding: const EdgeInsets.only(right: 16),
               child: Center(
-                child: Text(
-                  _elapsed(state.playingStartedAt!),
-                  style: const TextStyle(
-                    fontFeatures: [FontFeature.tabularFigures()],
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
-                  ),
-                ),
+                child: _SessionElapsed(startedAt: state.playingStartedAt!),
               ),
             ),
         ],
@@ -131,8 +113,10 @@ class _SessionPageState extends ConsumerState<SessionPage> {
             ),
             child: switch (state.stage) {
               SessionStage.loading => const SessionAtmosphereView.loading(),
-              SessionStage.completing => const SessionAtmosphereView.completing(),
+              SessionStage.completing =>
+                const SessionAtmosphereView.completing(),
               SessionStage.error => AppError(
+                title: l10n.errorLoadTitle,
                 message: failureMessage(state.failure!, l10n),
                 retryLabel: l10n.actionRetry,
                 onRetry: () {
@@ -143,7 +127,10 @@ class _SessionPageState extends ConsumerState<SessionPage> {
                   runner.start();
                 },
               ),
-              SessionStage.prepare => _prepare(l10n, state, runner),
+              SessionStage.prepare =>
+                widget.skipPrepare
+                    ? const SessionAtmosphereView.loading()
+                    : _prepare(l10n, state, runner),
               SessionStage.completed => _completed(l10n, state),
               SessionStage.playing => _playing(l10n, state, runner),
             },
@@ -184,16 +171,6 @@ class _SessionPageState extends ConsumerState<SessionPage> {
     }
   }
 
-  String _elapsed(DateTime startedAt) {
-    final elapsed = DateTime.now().difference(startedAt);
-    final minutes = elapsed.inMinutes.remainder(60).toString().padLeft(2, '0');
-    final seconds = elapsed.inSeconds.remainder(60).toString().padLeft(2, '0');
-    if (elapsed.inHours > 0) {
-      return '${elapsed.inHours}:$minutes:$seconds';
-    }
-    return '$minutes:$seconds';
-  }
-
   Widget _prepare(
     AppLocalizations l10n,
     LiveSessionState state,
@@ -215,9 +192,7 @@ class _SessionPageState extends ConsumerState<SessionPage> {
             ),
           ),
           const Spacer(),
-          ScaleOnTap(
-            child: AppButton(label: l10n.prepareStart, onPressed: runner.begin),
-          ),
+          AppButton(label: l10n.prepareStart, onPressed: runner.begin),
         ],
       ),
     );
@@ -225,57 +200,92 @@ class _SessionPageState extends ConsumerState<SessionPage> {
 
   Widget _completed(AppLocalizations l10n, LiveSessionState state) {
     final completion = state.completion;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        AppText.title(l10n.sessionCompleteTitle),
-        const SizedBox(height: 12),
-        AppText.subtitle(l10n.homeCompleted),
-        if (completion != null) ...[
-          const SizedBox(height: 24),
-          AppCard(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  l10n.sessionXpAwarded(completion.xpAwarded),
-                  style: const TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text('${l10n.homeStreak}: ${completion.streakDays}'),
-                if (completion.levelName != null)
-                  Text('${l10n.progressLevel}: ${completion.levelName}'),
-              ],
+    final scheme = Theme.of(context).colorScheme;
+    return FadeSlideIn(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const Spacer(),
+          Center(
+            child: Container(
+              width: 72,
+              height: 72,
+              decoration: BoxDecoration(
+                color: AppColors.success.withValues(alpha: 0.16),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.check_rounded,
+                size: 40,
+                color: AppColors.success,
+              ),
             ),
           ),
-          if (completion.perceivedFocusCopy != null) ...[
-            const SizedBox(height: 16),
-            AppCard(child: Text(completion.perceivedFocusCopy!)),
+          const SizedBox(height: 20),
+          AppText.title(l10n.sessionCompleteTitle, align: TextAlign.center),
+          const SizedBox(height: 8),
+          AppText.subtitle(l10n.sessionCompleteBody, align: TextAlign.center),
+          if (completion != null) ...[
+            const SizedBox(height: 24),
+            AppCard(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: _CompletionStat(
+                      value: '+${completion.xpAwarded}',
+                      label: l10n.progressXp,
+                    ),
+                  ),
+                  Expanded(
+                    child: _CompletionStat(
+                      value: '${completion.streakDays}',
+                      label: l10n.homeStreak,
+                    ),
+                  ),
+                  if (completion.levelName != null &&
+                      completion.levelName!.isNotEmpty)
+                    Expanded(
+                      child: _CompletionStat(
+                        value: completion.levelName!,
+                        label: l10n.progressLevel,
+                      ),
+                    ),
+                ],
+              ),
+            ),
+            if (completion.perceivedFocusCopy != null) ...[
+              const SizedBox(height: 12),
+              AppCard(
+                child: Text(
+                  completion.perceivedFocusCopy!,
+                  style: TextStyle(height: 1.45, color: scheme.onSurface),
+                ),
+              ),
+            ],
           ],
+          const Spacer(),
+          AppText.subtitle(l10n.homeCompleted, align: TextAlign.center),
+          const SizedBox(height: 16),
+          AppButton(
+            label: l10n.sessionSeeYouTomorrow,
+            onPressed: () {
+              ref.invalidate(todayProvider);
+              ref.invalidate(progressProvider);
+              context.go(AppRoutes.home);
+            },
+          ),
+          const SizedBox(height: 8),
+          AppButton(
+            label: l10n.homeSeePlan,
+            variant: AppButtonVariant.ghost,
+            onPressed: () {
+              ref.invalidate(todayProvider);
+              ref.invalidate(progressProvider);
+              context.go(AppRoutes.plan);
+            },
+          ),
         ],
-        const Spacer(),
-        AppButton(
-          label: l10n.sessionSeeYouTomorrow,
-          onPressed: () {
-            ref.invalidate(todayProvider);
-            ref.invalidate(progressProvider);
-            context.go(AppRoutes.home);
-          },
-        ),
-        const SizedBox(height: 8),
-        AppButton(
-          label: l10n.homeSeePlan,
-          variant: AppButtonVariant.ghost,
-          onPressed: () {
-            ref.invalidate(todayProvider);
-            ref.invalidate(progressProvider);
-            context.go(AppRoutes.plan);
-          },
-        ),
-      ],
+      ),
     );
   }
 
@@ -286,18 +296,20 @@ class _SessionPageState extends ConsumerState<SessionPage> {
   ) {
     final block = state.currentBlock;
     if (block == null) {
-      return AppEmpty(title: l10n.emptyTitle);
+      return AppEmpty(
+        title: l10n.emptyTitle,
+        body: l10n.sessionEmptyBody,
+        actionLabel: l10n.actionBack,
+        onAction: () => context.go(AppRoutes.home),
+      );
     }
     if (!block.access.contentAccess) {
-      return Column(
-        children: [
-          AppText.title(l10n.paywallTitle),
-          const Spacer(),
-          AppButton(
-            label: l10n.actionSubscribe,
-            onPressed: () => context.push(AppRoutes.paywall),
-          ),
-        ],
+      return AppEmpty(
+        title: l10n.paywallTitle,
+        body: l10n.paywallBody,
+        icon: Icons.lock_outline_rounded,
+        actionLabel: l10n.actionSubscribe,
+        onAction: () => context.push(AppRoutes.paywall),
       );
     }
     return Column(
@@ -328,12 +340,12 @@ class _SessionPageState extends ConsumerState<SessionPage> {
       'audio' => _audioBlock(l10n, block, runner),
       'exercise' => _exerciseBlock(l10n, block, runner),
       'assessment' => _assessmentBlock(l10n, block, runner),
-      _ => Column(
-        children: [
-          AppText.subtitle(l10n.unknownExercise),
-          const Spacer(),
-          AppButton(label: l10n.actionSkip, onPressed: runner.next),
-        ],
+      _ => AppEmpty(
+        title: l10n.unknownExercise,
+        body: l10n.emptyBody,
+        icon: Icons.help_outline_rounded,
+        actionLabel: l10n.actionSkip,
+        onAction: runner.next,
       ),
     };
   }
@@ -345,12 +357,12 @@ class _SessionPageState extends ConsumerState<SessionPage> {
   ) {
     final url = block.audio?.url;
     if (url == null || url.isEmpty) {
-      return Column(
-        children: [
-          AppText.subtitle(l10n.errorGeneric),
-          const Spacer(),
-          AppButton(label: l10n.actionContinue, onPressed: runner.next),
-        ],
+      return AppEmpty(
+        title: l10n.errorLoadTitle,
+        body: l10n.errorGeneric,
+        icon: Icons.headset_off_outlined,
+        actionLabel: l10n.actionContinue,
+        onAction: runner.next,
       );
     }
     return Column(
@@ -454,9 +466,7 @@ class _SessionPageState extends ConsumerState<SessionPage> {
           builder: (seconds) {
             return SizedBox.expand(
               child: ColoredBox(
-                color: Theme.of(context).brightness == Brightness.dark
-                    ? AppColors.nightBackground
-                    : Theme.of(context).scaffoldBackgroundColor,
+                color: Theme.of(context).scaffoldBackgroundColor,
                 child: BreathingExerciseView(
                   config: config,
                   sessionSeconds: seconds,
@@ -493,10 +503,12 @@ class _SessionPageState extends ConsumerState<SessionPage> {
         );
       }(),
       'memory' => () {
-        final memory = MemoryConfig.fromJson(
-          exercise.configuration,
-          extraWords: ref.watch(memoryWordsProvider).valueOrNull ?? const [],
-        );
+        final extraWords = ref.watch(memoryWordsProvider);
+        final extra = extraWords.valueOrNull ?? const [];
+        final memory =
+            extraWords.isLoading && !_memoryByExercise.containsKey(exercise.id)
+            ? MemoryConfig.fromJson(exercise.configuration, extraWords: extra)
+            : _memoryOf(exercise, extra);
         final showWords =
             memory.variant == MemoryVariant.words ||
             memory.variant == MemoryVariant.delayed;
@@ -519,12 +531,12 @@ class _SessionPageState extends ConsumerState<SessionPage> {
           ),
         );
       }(),
-      _ => Column(
-        children: [
-          AppText.subtitle(l10n.unknownExercise),
-          const Spacer(),
-          AppButton(label: l10n.actionSkip, onPressed: runner.next),
-        ],
+      _ => AppEmpty(
+        title: l10n.unknownExercise,
+        body: l10n.emptyBody,
+        icon: Icons.help_outline_rounded,
+        actionLabel: l10n.actionSkip,
+        onAction: runner.next,
       ),
     };
   }
@@ -569,6 +581,39 @@ class _SessionPageState extends ConsumerState<SessionPage> {
   }
 }
 
+class _CompletionStat extends StatelessWidget {
+  const _CompletionStat({required this.value, required this.label});
+
+  final String value;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Column(
+      children: [
+        Text(
+          value,
+          textAlign: TextAlign.center,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          label,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+            color: scheme.onSurfaceVariant,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class _SessionProgressHeader extends StatelessWidget {
   const _SessionProgressHeader({
     required this.current,
@@ -606,6 +651,53 @@ class _SessionProgressHeader extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _SessionElapsed extends StatefulWidget {
+  const _SessionElapsed({required this.startedAt});
+
+  final DateTime startedAt;
+
+  @override
+  State<_SessionElapsed> createState() => _SessionElapsedState();
+}
+
+class _SessionElapsedState extends State<_SessionElapsed> {
+  Timer? _clock;
+
+  @override
+  void initState() {
+    super.initState();
+    _clock = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (mounted) {
+        setState(() {});
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _clock?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final elapsed = DateTime.now().difference(widget.startedAt);
+    final minutes = elapsed.inMinutes.remainder(60).toString().padLeft(2, '0');
+    final seconds = elapsed.inSeconds.remainder(60).toString().padLeft(2, '0');
+    final label = elapsed.inHours > 0
+        ? '${elapsed.inHours}:$minutes:$seconds'
+        : '$minutes:$seconds';
+    return Text(
+      label,
+      style: const TextStyle(
+        fontFeatures: [FontFeature.tabularFigures()],
+        fontWeight: FontWeight.w600,
+        fontSize: 16,
+      ),
     );
   }
 }

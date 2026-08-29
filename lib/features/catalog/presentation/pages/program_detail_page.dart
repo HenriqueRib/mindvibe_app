@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mindvibe_app/app/router/app_routes.dart';
 import 'package:mindvibe_app/app/theme/app_theme.dart';
 import 'package:mindvibe_app/app/widgets/app_widgets.dart';
+import 'package:mindvibe_app/core/error/failure_message.dart';
 import 'package:mindvibe_app/features/audio_player/presentation/widgets/cover_image.dart';
 import 'package:mindvibe_app/features/catalog/presentation/enroll_program.dart';
 import 'package:mindvibe_app/features/catalog/presentation/widgets/catalog_plan_card.dart';
@@ -36,17 +37,20 @@ class ProgramDetailPage extends ConsumerWidget {
       body: detail.when(
         loading: () => AppLoading(label: l10n.loadingLabel),
         error: (_, _) => AppError(
+          title: l10n.errorLoadTitle,
           message: l10n.errorGeneric,
           retryLabel: l10n.actionRetry,
           onRetry: () => ref.invalidate(programDetailProvider(programId)),
         ),
         data: (result) => result.when(
-          failure: (_) => AppEmpty(title: l10n.catalogEmpty),
-          success: (program) => _DetailBody(
-            program: program,
-            current: current,
-            l10n: l10n,
+          failure: (failure) => AppError(
+            title: l10n.errorLoadTitle,
+            message: failureMessage(failure, l10n),
+            retryLabel: l10n.actionRetry,
+            onRetry: () => ref.invalidate(programDetailProvider(programId)),
           ),
+          success: (program) =>
+              _DetailBody(program: program, current: current, l10n: l10n),
         ),
       ),
     );
@@ -54,11 +58,7 @@ class ProgramDetailPage extends ConsumerWidget {
 }
 
 class _DetailBody extends ConsumerWidget {
-  const _DetailBody({
-    required this.program,
-    required this.l10n,
-    this.current,
-  });
+  const _DetailBody({required this.program, required this.l10n, this.current});
 
   final ProgramDetail program;
   final TodayTraining? current;
@@ -113,24 +113,7 @@ class _DetailBody extends ConsumerWidget {
               Positioned(
                 right: 24,
                 top: 16,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    color: const Color(0xE6F6F1E8),
-                    borderRadius: BorderRadius.circular(99),
-                  ),
-                  child: Text(
-                    l10n.catalogEnrollCurrent,
-                    style: const TextStyle(
-                      color: AppColors.primary,
-                      fontSize: 11,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                ),
+                child: CoverLabelBadge(label: l10n.catalogEnrollCurrent),
               ),
           ],
         ),
@@ -172,6 +155,25 @@ class _DetailBody extends ConsumerWidget {
                     ),
                 ],
               ),
+              if (isCurrent && summary.durationDays > 0) ...[
+                const SizedBox(height: 20),
+                AppProgressBar(
+                  value: ((summary.daysCompleted ?? 0) / summary.durationDays)
+                      .clamp(0.0, 1.0),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  l10n.homeDayProgress(
+                    (summary.currentDayNumber ?? summary.daysCompleted ?? 1)
+                        .clamp(1, summary.durationDays),
+                    summary.durationDays,
+                  ),
+                  style: TextStyle(
+                    color: scheme.onSurfaceVariant,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
               if (lead.isNotEmpty) ...[
                 const SizedBox(height: 22),
                 Text(
@@ -313,11 +315,7 @@ class _MetaChip extends StatelessWidget {
 }
 
 class _DayRow extends StatelessWidget {
-  const _DayRow({
-    required this.day,
-    required this.l10n,
-    required this.accent,
-  });
+  const _DayRow({required this.day, required this.l10n, required this.accent});
 
   final ProgramDayPreview day;
   final AppLocalizations l10n;
@@ -333,10 +331,7 @@ class _DayRow extends StatelessWidget {
             width: 28,
             child: Text(
               '${day.dayNumber}',
-              style: TextStyle(
-                fontWeight: FontWeight.w800,
-                color: accent,
-              ),
+              style: TextStyle(fontWeight: FontWeight.w800, color: accent),
             ),
           ),
           Expanded(

@@ -129,17 +129,15 @@ class _ClearMindPageState extends ConsumerState<ClearMindPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final night = Theme.of(context).brightness == Brightness.dark;
 
     return AppScaffold(
       showBack: true,
       title: l10n.clearMindTitle,
-      backgroundColor: night ? AppColors.nightBackground : null,
       body: AnimatedSwitcher(
         duration: const Duration(milliseconds: 280),
         child: switch (_step) {
           _ClearMindStep.intro => _intro(l10n),
-          _ClearMindStep.pause => _pause(l10n, night),
+          _ClearMindStep.pause => _pause(l10n),
           _ClearMindStep.dump => _dump(l10n),
           _ClearMindStep.pick => _pick(l10n),
           _ClearMindStep.done => _done(l10n),
@@ -162,7 +160,7 @@ class _ClearMindPageState extends ConsumerState<ClearMindPage> {
     );
   }
 
-  Widget _pause(AppLocalizations l10n, bool night) {
+  Widget _pause(AppLocalizations l10n) {
     return Column(
       key: const ValueKey('pause'),
       children: [
@@ -170,8 +168,8 @@ class _ClearMindPageState extends ConsumerState<ClearMindPage> {
         const Spacer(),
         TimerRing(
           progress: 1 - (_remaining / _pauseTotal),
-          color: AppColors.primary,
-          track: night ? AppColors.nightSurface : AppColors.surfaceMuted,
+          color: Theme.of(context).colorScheme.primary,
+          track: Theme.of(context).colorScheme.surfaceContainerHighest,
           child: Text(
             '$_remaining',
             style: const TextStyle(
@@ -255,7 +253,10 @@ class _ClearMindPageState extends ConsumerState<ClearMindPage> {
         Text(
           l10n.clearMindPickHint,
           textAlign: TextAlign.center,
-          style: const TextStyle(color: AppColors.muted, height: 1.4),
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+            height: 1.4,
+          ),
         ),
         const SizedBox(height: 20),
         for (var i = 0; i < items.length; i++) ...[
@@ -290,11 +291,7 @@ class _ClearMindPageState extends ConsumerState<ClearMindPage> {
         ],
         if (_error != null) ...[
           const SizedBox(height: 16),
-          Text(
-            _error!,
-            textAlign: TextAlign.center,
-            style: const TextStyle(color: AppColors.error),
-          ),
+          AppInlineError(message: _error!),
         ],
         const SizedBox(height: 24),
         AppButton(
@@ -316,8 +313,8 @@ class _ClearMindPageState extends ConsumerState<ClearMindPage> {
         Text(
           l10n.clearMindDoneEyebrow.toUpperCase(),
           textAlign: TextAlign.center,
-          style: const TextStyle(
-            color: AppColors.muted,
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.w700,
             letterSpacing: 1.1,
             fontSize: 12,
@@ -337,7 +334,10 @@ class _ClearMindPageState extends ConsumerState<ClearMindPage> {
         Text(
           parked <= 0 ? l10n.clearMindParkedNone : l10n.clearMindParked(parked),
           textAlign: TextAlign.center,
-          style: const TextStyle(color: AppColors.muted, height: 1.4),
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+            height: 1.4,
+          ),
         ),
         const SizedBox(height: 32),
         AppButton(label: l10n.clearMindDone, onPressed: () => context.pop()),

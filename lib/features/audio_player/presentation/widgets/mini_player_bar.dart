@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mindvibe_app/app/router/app_routes.dart';
-import 'package:mindvibe_app/app/theme/app_theme.dart';
 import 'package:mindvibe_app/app/widgets/app_widgets.dart';
 import 'package:mindvibe_app/features/audio_player/presentation/providers/now_playing_controller.dart';
 import 'package:mindvibe_app/features/audio_player/presentation/widgets/cover_image.dart';
@@ -38,9 +37,12 @@ class MiniPlayerBar extends ConsumerWidget {
         offset: 10,
         child: Material(
           color: scheme.surface,
-          elevation: 8,
-          child: SafeArea(
-            top: false,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              border: Border(
+                top: BorderSide(color: scheme.outline.withValues(alpha: 0.45)),
+              ),
+            ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -48,60 +50,65 @@ class MiniPlayerBar extends ConsumerWidget {
                   value: progress.clamp(0, 1),
                   minHeight: 2,
                   backgroundColor: scheme.outline.withValues(alpha: 0.3),
-                  color: AppColors.primarySoft,
+                  color: scheme.primary,
                 ),
-                ListTile(
-                  dense: true,
-                  onTap: () => context.push(AppRoutes.nowPlaying),
-                  contentPadding: const EdgeInsets.fromLTRB(12, 4, 4, 4),
-                  leading: CoverImage(
-                    url: track.coverUrl,
-                    size: 44,
-                    radius: 10,
-                  ),
-                  title: Text(
-                    track.title,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontWeight: FontWeight.w600),
-                  ),
-                  subtitle: Text(
-                    track.subtitle ?? l10n.playerNowPlaying,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        tooltip: playing.ui == AudioPlayerUiState.playing
-                            ? l10n.playerPause
-                            : l10n.playerPlay,
-                        onPressed: () =>
-                            ref.read(nowPlayingProvider.notifier).toggle(),
-                        icon: playing.ui == AudioPlayerUiState.loading
-                            ? const AppLoading.compact()
-                            : Icon(
-                                playing.ui == AudioPlayerUiState.playing
-                                    ? Icons.pause_rounded
-                                    : Icons.play_arrow_rounded,
-                              ),
-                      ),
-                      IconButton(
-                        tooltip: l10n.playerNext,
-                        onPressed: playing.hasNext
-                            ? () => ref
-                                  .read(nowPlayingProvider.notifier)
-                                  .playNext()
-                            : null,
-                        icon: const Icon(Icons.skip_next_rounded),
-                      ),
-                      IconButton(
-                        onPressed: () =>
-                            ref.read(nowPlayingProvider.notifier).stop(),
-                        icon: const Icon(Icons.close_rounded),
-                      ),
-                    ],
+                Semantics(
+                  container: true,
+                  label: '${track.title}. ${l10n.playerNowPlaying}',
+                  child: ListTile(
+                    dense: true,
+                    onTap: () => context.push(AppRoutes.nowPlaying),
+                    contentPadding: const EdgeInsets.fromLTRB(12, 4, 4, 4),
+                    leading: CoverImage(
+                      url: track.coverUrl,
+                      size: 44,
+                      radius: 10,
+                    ),
+                    title: Text(
+                      track.title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                    subtitle: Text(
+                      track.subtitle ?? l10n.playerNowPlaying,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          tooltip: playing.ui == AudioPlayerUiState.playing
+                              ? l10n.playerPause
+                              : l10n.playerPlay,
+                          onPressed: () =>
+                              ref.read(nowPlayingProvider.notifier).toggle(),
+                          icon: playing.ui == AudioPlayerUiState.loading
+                              ? const AppLoading.compact()
+                              : Icon(
+                                  playing.ui == AudioPlayerUiState.playing
+                                      ? Icons.pause_rounded
+                                      : Icons.play_arrow_rounded,
+                                ),
+                        ),
+                        IconButton(
+                          tooltip: l10n.playerNext,
+                          onPressed: playing.hasNext
+                              ? () => ref
+                                    .read(nowPlayingProvider.notifier)
+                                    .playNext()
+                              : null,
+                          icon: const Icon(Icons.skip_next_rounded),
+                        ),
+                        IconButton(
+                          tooltip: l10n.playerStop,
+                          onPressed: () =>
+                              ref.read(nowPlayingProvider.notifier).stop(),
+                          icon: const Icon(Icons.close_rounded),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],

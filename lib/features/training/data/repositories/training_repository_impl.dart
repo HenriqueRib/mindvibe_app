@@ -278,9 +278,7 @@ class TrainingRepositoryImpl implements TrainingRepository {
         if (data is! Map) {
           return null;
         }
-        return dailyFocusFromJson(
-          Map<String, dynamic>.from(data)['today'],
-        );
+        return dailyFocusFromJson(Map<String, dynamic>.from(data)['today']);
       },
     );
   }

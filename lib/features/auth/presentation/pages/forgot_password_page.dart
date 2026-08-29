@@ -55,6 +55,7 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final scheme = Theme.of(context).colorScheme;
     return AuthLayout(
       title: l10n.forgotTitle,
       subtitle: l10n.forgotSubtitle,
@@ -62,6 +63,12 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
           ? Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Icon(
+                  Icons.mark_email_read_outlined,
+                  size: 40,
+                  color: scheme.primary,
+                ),
+                const SizedBox(height: 16),
                 AppText.subtitle(l10n.forgotSent),
                 const SizedBox(height: 24),
                 AppButton(
@@ -70,27 +77,33 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
                 ),
               ],
             )
-          : Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  TextFormField(
-                    controller: _email,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: InputDecoration(labelText: l10n.fieldEmail),
-                    validator: (value) => switch (AuthValidators.email(value)) {
-                      'required' => l10n.validationRequired,
-                      'email' => l10n.validationEmail,
-                      _ => null,
-                    },
-                  ),
-                  const SizedBox(height: 24),
-                  AppButton(
-                    label: l10n.actionSend,
-                    loading: _loading,
-                    onPressed: _submit,
-                  ),
-                ],
+          : AutofillGroup(
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: _email,
+                      keyboardType: TextInputType.emailAddress,
+                      textInputAction: TextInputAction.send,
+                      autofillHints: const [AutofillHints.email],
+                      decoration: InputDecoration(labelText: l10n.fieldEmail),
+                      onFieldSubmitted: (_) => _submit(),
+                      validator: (value) =>
+                          switch (AuthValidators.email(value)) {
+                            'required' => l10n.validationRequired,
+                            'email' => l10n.validationEmail,
+                            _ => null,
+                          },
+                    ),
+                    const SizedBox(height: 24),
+                    AppButton(
+                      label: l10n.actionSend,
+                      loading: _loading,
+                      onPressed: _submit,
+                    ),
+                  ],
+                ),
               ),
             ),
     );

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:mindvibe_app/app/theme/app_theme.dart';
 import 'package:mindvibe_app/app/widgets/app_widgets.dart';
 import 'package:mindvibe_app/core/error/failure_message.dart';
 import 'package:mindvibe_app/features/tools/presentation/providers/journal_controller.dart';
@@ -52,7 +51,6 @@ class _JournalPageState extends ConsumerState<JournalPage> {
     final l10n = AppLocalizations.of(context);
     final state = ref.watch(journalControllerProvider);
     final runner = ref.read(journalControllerProvider.notifier);
-    final night = Theme.of(context).brightness == Brightness.dark;
 
     ref.listen(journalControllerProvider, (previous, next) {
       if (previous?.loading == true && !next.loading) {
@@ -63,7 +61,6 @@ class _JournalPageState extends ConsumerState<JournalPage> {
     return AppScaffold(
       showBack: true,
       title: l10n.journalTitle,
-      backgroundColor: night ? AppColors.nightBackground : null,
       body: state.loading
           ? AppLoading(label: l10n.loadingLabel)
           : ListView(
@@ -90,7 +87,10 @@ class _JournalPageState extends ConsumerState<JournalPage> {
                 Text(
                   l10n.journalPromptHint(state.prompt.name),
                   textAlign: TextAlign.center,
-                  style: const TextStyle(color: AppColors.muted, height: 1.4),
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    height: 1.4,
+                  ),
                 ),
                 const SizedBox(height: 20),
                 for (var index = 0; index < 3; index++) ...[
@@ -109,11 +109,7 @@ class _JournalPageState extends ConsumerState<JournalPage> {
                 ],
                 const SizedBox(height: 20),
                 if (state.failure != null) ...[
-                  Text(
-                    failureMessage(state.failure!, l10n),
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(color: AppColors.error),
-                  ),
+                  AppInlineError(message: failureMessage(state.failure!, l10n)),
                   const SizedBox(height: 12),
                 ],
                 AppButton(
@@ -127,17 +123,20 @@ class _JournalPageState extends ConsumerState<JournalPage> {
                 Text(
                   state.saved ? l10n.journalSaved : l10n.journalPrivate,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(color: AppColors.muted, height: 1.4),
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    height: 1.4,
+                  ),
                 ),
                 if (state.snapshot.days.isNotEmpty) ...[
                   const SizedBox(height: 28),
                   Text(
                     l10n.journalWeek,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 13,
-                      color: AppColors.muted,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                       letterSpacing: 0.4,
                     ),
                   ),
@@ -179,19 +178,17 @@ class _PromptChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    return ScaleOnTap(
-      child: FilterChip(
-        label: Text(label),
-        selected: selected,
-        showCheckmark: false,
-        onSelected: (_) => onTap(),
-        selectedColor: AppColors.primary,
-        labelStyle: TextStyle(
-          color: selected ? AppColors.onPrimary : scheme.onSurface,
-          fontWeight: FontWeight.w600,
-        ),
-        side: BorderSide(color: selected ? AppColors.primary : scheme.outline),
+    return FilterChip(
+      label: Text(label),
+      selected: selected,
+      showCheckmark: false,
+      onSelected: (_) => onTap(),
+      selectedColor: scheme.primary,
+      labelStyle: TextStyle(
+        color: selected ? scheme.onPrimary : scheme.onSurface,
+        fontWeight: FontWeight.w600,
       ),
+      side: BorderSide(color: selected ? scheme.primary : scheme.outline),
     );
   }
 }
@@ -243,6 +240,7 @@ class _Dot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final now = DateTime.now();
+    final scheme = Theme.of(context).colorScheme;
     final isToday =
         day.date.year == now.year &&
         day.date.month == now.month &&
@@ -263,9 +261,9 @@ class _Dot extends StatelessWidget {
           height: day.written ? 16 : 10,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: day.written ? AppColors.primary : Colors.transparent,
+            color: day.written ? scheme.primary : Colors.transparent,
             border: Border.all(
-              color: day.written ? AppColors.primary : AppColors.border,
+              color: day.written ? scheme.primary : scheme.outline,
               width: isToday ? 2 : 1.4,
             ),
           ),

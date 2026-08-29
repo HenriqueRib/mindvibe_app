@@ -121,21 +121,21 @@ class HomeUserAvatar extends StatelessWidget {
       );
     } else if (emoji != null && emoji.isNotEmpty) {
       child = ColoredBox(
-        color: AppColors.surfaceMuted,
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
         child: Center(
           child: Text(emoji, style: TextStyle(fontSize: size * 0.42)),
         ),
       );
     } else {
       child = ColoredBox(
-        color: AppColors.primary.withValues(alpha: 0.18),
+        color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.18),
         child: Center(
           child: Text(
             initial,
             style: TextStyle(
               fontSize: size * 0.38,
               fontWeight: FontWeight.w700,
-              color: AppColors.primary,
+              color: Theme.of(context).colorScheme.primary,
             ),
           ),
         ),
@@ -200,10 +200,14 @@ class HomeGreetingBar extends StatelessWidget {
             ],
           ),
         ),
-        ScaleOnTap(
-          child: GestureDetector(
-            onTap: () => StatefulNavigationShell.of(context).goBranch(2),
-            child: HomeUserAvatar(user: user),
+        Semantics(
+          button: true,
+          label: l10n.tabProfile,
+          child: ScaleOnTap(
+            child: GestureDetector(
+              onTap: () => StatefulNavigationShell.of(context).goBranch(2),
+              child: HomeUserAvatar(user: user),
+            ),
           ),
         ),
       ],
@@ -287,7 +291,11 @@ class HomeStatsStrip extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
               child: Column(
                 children: [
-                  Icon(items[i].$1, color: AppColors.primary, size: 20),
+                  Icon(
+                    items[i].$1,
+                    color: Theme.of(context).colorScheme.primary,
+                    size: 20,
+                  ),
                   const SizedBox(height: 8),
                   Text(
                     items[i].$2,
@@ -342,7 +350,12 @@ class HomeExploreGrid extends StatelessWidget {
             for (final item in homeExploreItems)
               SizedBox(
                 width: width,
-                child: ScaleOnTap(
+                child: Semantics(
+                  button: true,
+                  label: item.label(l10n),
+                  hint: homeSlugRequiresPremium(item.slug) && !isPremium
+                      ? l10n.paywallTitle
+                      : null,
                   child: AppCard(
                     onTap: () => openHomeDestination(
                       context,
@@ -370,7 +383,7 @@ class HomeExploreGrid extends StatelessWidget {
                           const Icon(
                             Icons.lock_outline_rounded,
                             size: 16,
-                            color: Color(0xFFD7B49A),
+                            color: AppColors.gold,
                           ),
                       ],
                     ),
@@ -405,59 +418,66 @@ class HomeCategoryStrip extends StatelessWidget {
       children: [
         for (final item in homeAreaItems)
           Expanded(
-            child: ScaleOnTap(
-              child: InkWell(
-                onTap: () => openHomeDestination(
-                  context,
-                  slug: item.slug,
-                  programs: programs,
-                  isPremium: isPremium,
-                ),
-                borderRadius: BorderRadius.circular(16),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: Column(
-                    children: [
-                      Container(
-                        width: 48,
-                        height: 48,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: color.withValues(alpha: 0.28),
+            child: Semantics(
+              button: true,
+              label: item.label(l10n),
+              hint: homeSlugRequiresPremium(item.slug) && !isPremium
+                  ? l10n.paywallTitle
+                  : null,
+              child: ScaleOnTap(
+                child: InkWell(
+                  onTap: () => openHomeDestination(
+                    context,
+                    slug: item.slug,
+                    programs: programs,
+                    isPremium: isPremium,
+                  ),
+                  borderRadius: BorderRadius.circular(16),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Column(
+                      children: [
+                        Container(
+                          width: 48,
+                          height: 48,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: color.withValues(alpha: 0.28),
+                            ),
+                          ),
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Icon(item.icon, color: color, size: 22),
+                              if (homeSlugRequiresPremium(item.slug) &&
+                                  !isPremium)
+                                const Positioned(
+                                  right: 2,
+                                  bottom: 2,
+                                  child: Icon(
+                                    Icons.lock_rounded,
+                                    size: 12,
+                                    color: AppColors.gold,
+                                  ),
+                                ),
+                            ],
                           ),
                         ),
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Icon(item.icon, color: color, size: 22),
-                            if (homeSlugRequiresPremium(item.slug) &&
-                                !isPremium)
-                              const Positioned(
-                                right: 2,
-                                bottom: 2,
-                                child: Icon(
-                                  Icons.lock_rounded,
-                                  size: 12,
-                                  color: Color(0xFFD7B49A),
-                                ),
-                              ),
-                          ],
+                        const SizedBox(height: 8),
+                        Text(
+                          item.label(l10n),
+                          textAlign: TextAlign.center,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: color,
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        item.label(l10n),
-                        textAlign: TextAlign.center,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: color,
-                          fontSize: 11,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -482,14 +502,12 @@ class HomeStartButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScaleOnTap(
-      child: AppButton(
-        label: label,
-        onPressed: onPressed,
-        variant: completed
-            ? AppButtonVariant.secondary
-            : AppButtonVariant.primary,
-      ),
+    return AppButton(
+      label: label,
+      onPressed: onPressed,
+      variant: completed
+          ? AppButtonVariant.secondary
+          : AppButtonVariant.primary,
     );
   }
 }
@@ -521,7 +539,10 @@ String homeStartLabel(
 }
 
 String homeTodayEyebrow(AppLocalizations l10n, TodayTraining? training) {
-  if (training?.todayCompleted == true) {
+  if (training == null) {
+    return l10n.homeChooseEyebrow;
+  }
+  if (training.todayCompleted) {
     return l10n.homeCompletedEyebrow;
   }
   return l10n.homeTodayEyebrow;

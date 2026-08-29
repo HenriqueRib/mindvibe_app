@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mindvibe_app/app/router/app_routes.dart';
-import 'package:mindvibe_app/app/theme/app_theme.dart';
 import 'package:mindvibe_app/app/widgets/app_widgets.dart';
 import 'package:mindvibe_app/core/error/failure_message.dart';
 import 'package:mindvibe_app/features/tools/presentation/providers/checkin_controller.dart';
@@ -72,12 +71,18 @@ class _DailyCheckinPromptState extends ConsumerState<DailyCheckinPrompt>
     final path = GoRouter.of(
       context,
     ).routerDelegate.currentConfiguration.uri.path;
-    return path == AppRoutes.home ||
-        path == AppRoutes.progress ||
-        path == AppRoutes.profile;
+    return path == AppRoutes.home || path == AppRoutes.progress;
   }
 
-  void _maybeOpen() {
+  Future<void> _maybeOpen() async {
+    if (!mounted ||
+        _open ||
+        _skippedThisForeground ||
+        !_needsCheckin ||
+        !_onMainTabs(context)) {
+      return;
+    }
+    await Future<void>.delayed(const Duration(milliseconds: 700));
     if (!mounted ||
         _open ||
         _skippedThisForeground ||
@@ -86,15 +91,14 @@ class _DailyCheckinPromptState extends ConsumerState<DailyCheckinPrompt>
       return;
     }
     _open = true;
-    showCheckinPromptModal(context).whenComplete(() {
-      _open = false;
-      if (!mounted) {
-        return;
-      }
-      if (_needsCheckin) {
-        _skippedThisForeground = true;
-      }
-    });
+    await showCheckinPromptModal(context);
+    if (!mounted) {
+      return;
+    }
+    _open = false;
+    if (_needsCheckin) {
+      _skippedThisForeground = true;
+    }
   }
 
   @override
@@ -111,7 +115,7 @@ class _DailyCheckinPromptState extends ConsumerState<DailyCheckinPrompt>
 Future<void> showCheckinPromptModal(BuildContext context) {
   return showGeneralDialog<void>(
     context: context,
-    barrierDismissible: false,
+    barrierDismissible: true,
     barrierLabel: AppLocalizations.of(context).checkinTitle,
     barrierColor: Colors.black.withValues(alpha: 0.62),
     transitionDuration: const Duration(milliseconds: 280),
@@ -186,8 +190,8 @@ class CheckinPromptModal extends ConsumerWidget {
                       Text(
                         l10n.checkinHint,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: AppColors.muted,
+                        style: TextStyle(
+                          color: scheme.onSurfaceVariant,
                           height: 1.4,
                         ),
                       ),
@@ -212,16 +216,14 @@ class CheckinPromptModal extends ConsumerWidget {
                         if (state.failure != null)
                           Padding(
                             padding: const EdgeInsets.only(bottom: 12),
-                            child: Text(
-                              failureMessage(state.failure!, l10n),
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(color: AppColors.error),
+                            child: AppInlineError(
+                              message: failureMessage(state.failure!, l10n),
                             ),
                           ),
                         if (state.saving)
                           Text(
                             l10n.checkinSaving,
-                            style: const TextStyle(color: AppColors.muted),
+                            style: TextStyle(color: scheme.onSurfaceVariant),
                           )
                         else if (state.ready)
                           Text(

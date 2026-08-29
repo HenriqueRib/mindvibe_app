@@ -38,6 +38,7 @@ class HomeProgressLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final streak = progress?.streakDays ?? training?.streakDays ?? 0;
+    final scheme = Theme.of(context).colorScheme;
     final ring = training != null && training!.program.durationDays > 0
         ? (training!.dayNumber / training!.program.durationDays).clamp(0.0, 1.0)
         : (streak / 21).clamp(0.0, 1.0);
@@ -61,17 +62,17 @@ class HomeProgressLayout extends StatelessWidget {
                       children: [
                         Text(
                           l10n.homeCurrentStreak,
-                          style: const TextStyle(
-                            color: AppColors.muted,
+                          style: TextStyle(
+                            color: scheme.onSurfaceVariant,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                         const SizedBox(height: 10),
                         Row(
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.local_fire_department,
-                              color: AppColors.accent,
+                              color: scheme.secondary,
                               size: 28,
                             ),
                             const SizedBox(width: 8),
@@ -102,12 +103,12 @@ class HomeProgressLayout extends StatelessWidget {
                             backgroundColor: Theme.of(
                               context,
                             ).colorScheme.outline.withValues(alpha: 0.35),
-                            color: AppColors.primary,
+                            color: Theme.of(context).colorScheme.primary,
                           ),
                         ),
-                        const Icon(
+                        Icon(
                           Icons.psychology_outlined,
-                          color: AppColors.primary,
+                          color: Theme.of(context).colorScheme.primary,
                           size: 32,
                         ),
                       ],
@@ -117,49 +118,18 @@ class HomeProgressLayout extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 24),
-          FadeSlideIn(
-            index: 2,
-            child: Text(
-              l10n.homeAreaProgress,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-            ),
-          ),
-          const SizedBox(height: 12),
-          FadeSlideIn(
-            index: 3,
-            child: AppCard(
-              child: Column(
-                children: [
-                  for (var i = 0; i < homeAreaItems.length; i++) ...[
-                    if (i > 0) const SizedBox(height: 14),
-                    _AreaBar(
-                      item: homeAreaItems[i],
-                      l10n: l10n,
-                      value: programAreaProgress(
-                        programForSlug(programs, homeAreaItems[i].slug),
-                      ),
-                    ),
-                  ],
-                ],
-              ),
-            ),
-          ),
           if (training != null) ...[
             const SizedBox(height: 24),
             FadeSlideIn(
-              index: 4,
+              index: 2,
               child: Text(
                 l10n.homeNextTraining,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                ),
+                style: Theme.of(context).textTheme.titleMedium,
               ),
             ),
             const SizedBox(height: 12),
             FadeSlideIn(
-              index: 5,
+              index: 3,
               child: AppCard(
                 padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
                 child: Row(
@@ -192,7 +162,9 @@ class HomeProgressLayout extends StatelessWidget {
                             style: TextStyle(
                               color: training!.todayCompleted
                                   ? Theme.of(context).colorScheme.onSurface
-                                  : AppColors.muted,
+                                  : Theme.of(
+                                      context,
+                                    ).colorScheme.onSurfaceVariant,
                               fontWeight: training!.todayCompleted
                                   ? FontWeight.w700
                                   : FontWeight.w400,
@@ -223,8 +195,12 @@ class HomeProgressLayout extends StatelessWidget {
                       FilledButton(
                         onPressed: onStart,
                         style: FilledButton.styleFrom(
-                          backgroundColor: AppColors.primary,
-                          foregroundColor: AppColors.onPrimary,
+                          backgroundColor: Theme.of(
+                            context,
+                          ).colorScheme.primary,
+                          foregroundColor: Theme.of(
+                            context,
+                          ).colorScheme.onPrimary,
                           padding: const EdgeInsets.symmetric(
                             horizontal: 14,
                             vertical: 10,
@@ -245,6 +221,34 @@ class HomeProgressLayout extends StatelessWidget {
           ],
           const SizedBox(height: 24),
           FadeSlideIn(
+            index: 4,
+            child: Text(
+              l10n.homeAreaProgress,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+          ),
+          const SizedBox(height: 12),
+          FadeSlideIn(
+            index: 3,
+            child: AppCard(
+              child: Column(
+                children: [
+                  for (var i = 0; i < homeAreaItems.length; i++) ...[
+                    if (i > 0) const SizedBox(height: 14),
+                    _AreaBar(
+                      item: homeAreaItems[i],
+                      l10n: l10n,
+                      value: programAreaProgress(
+                        programForSlug(programs, homeAreaItems[i].slug),
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 24),
+          FadeSlideIn(
             index: 6,
             child: TodayFocusCard(l10n: l10n, focus: progress?.todayFocus),
           ),
@@ -262,7 +266,7 @@ class HomeProgressLayout extends StatelessWidget {
             index: 6,
             child: Text(
               l10n.homeMyTools,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+              style: Theme.of(context).textTheme.titleMedium,
             ),
           ),
           const SizedBox(height: 12),
@@ -352,52 +356,60 @@ class HomeProgressLayout extends StatelessWidget {
   }) {
     return Expanded(
       child: ScaleOnTap(
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(16),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            child: Column(
-              children: [
-                Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    Container(
-                      width: 56,
-                      height: 56,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surface,
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                          color: Theme.of(context).colorScheme.outline,
+        child: Semantics(
+          button: true,
+          label: label,
+          hint: locked ? AppLocalizations.of(context).paywallTitle : null,
+          child: InkWell(
+            onTap: onTap,
+            borderRadius: BorderRadius.circular(16),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: Column(
+                children: [
+                  Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Container(
+                        width: 56,
+                        height: 56,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surface,
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: Theme.of(context).colorScheme.outline,
+                          ),
                         ),
-                      ),
-                      child: Icon(icon, color: AppColors.primary),
-                    ),
-                    if (locked)
-                      const Positioned(
-                        right: -2,
-                        top: -2,
                         child: Icon(
-                          Icons.lock_rounded,
-                          size: 14,
-                          color: Color(0xFFD7B49A),
+                          icon,
+                          color: Theme.of(context).colorScheme.primary,
                         ),
                       ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  label,
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
+                      if (locked)
+                        const Positioned(
+                          right: -2,
+                          top: -2,
+                          child: Icon(
+                            Icons.lock_rounded,
+                            size: 14,
+                            color: AppColors.gold,
+                          ),
+                        ),
+                    ],
                   ),
-                ),
-              ],
+                  const SizedBox(height: 8),
+                  Text(
+                    label,
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -430,8 +442,8 @@ class _AreaBar extends StatelessWidget {
             ),
             Text(
               '$percent%',
-              style: const TextStyle(
-                color: AppColors.muted,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
                 fontWeight: FontWeight.w600,
               ),
             ),

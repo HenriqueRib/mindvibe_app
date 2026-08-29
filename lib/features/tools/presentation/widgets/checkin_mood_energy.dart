@@ -47,7 +47,8 @@ class CheckinMoodEnergy extends StatelessWidget {
           title: l10n.checkinEnergyTitle,
           selected: energy,
           labels: [
-            for (var level = 1; level <= 5; level++) l10n.checkinEnergy('$level'),
+            for (var level = 1; level <= 5; level++)
+              l10n.checkinEnergy('$level'),
           ],
           icons: const [
             Icons.battery_0_bar_outlined,
@@ -101,7 +102,11 @@ class CheckinAxis extends StatelessWidget {
                   child: _Dot(
                     selected: selected == level,
                     icon: icons[level - 1],
-                    color: checkinTone(level),
+                    label: labels[level - 1],
+                    color: checkinTone(
+                      level,
+                      scheme: Theme.of(context).colorScheme,
+                    ),
                     onTap: () => onSelect(level),
                   ),
                 ),
@@ -117,33 +122,40 @@ class _Dot extends StatelessWidget {
   const _Dot({
     required this.selected,
     required this.icon,
+    required this.label,
     required this.color,
     required this.onTap,
   });
 
   final bool selected;
   final IconData icon;
+  final String label;
   final Color color;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    return ScaleOnTap(
-      child: InkWell(
-        onTap: onTap,
-        customBorder: const CircleBorder(),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 180),
-          height: 56,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: selected ? color : color.withValues(alpha: 0.12),
-            border: Border.all(
-              color: selected ? color : color.withValues(alpha: 0.28),
-              width: selected ? 2 : 1,
+    return Semantics(
+      button: true,
+      selected: selected,
+      label: label,
+      child: ScaleOnTap(
+        child: InkWell(
+          onTap: onTap,
+          customBorder: const CircleBorder(),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 180),
+            height: 56,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: selected ? color : color.withValues(alpha: 0.12),
+              border: Border.all(
+                color: selected ? color : color.withValues(alpha: 0.28),
+                width: selected ? 2 : 1,
+              ),
             ),
+            child: Icon(icon, color: selected ? Colors.white : color, size: 26),
           ),
-          child: Icon(icon, color: selected ? Colors.white : color, size: 26),
         ),
       ),
     );

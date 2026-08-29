@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mindvibe_app/app/theme/app_theme.dart';
 import 'package:mindvibe_app/app/widgets/app_widgets.dart';
 import 'package:mindvibe_app/features/tools/presentation/providers/silent_room_controller.dart';
 import 'package:mindvibe_app/features/tools/presentation/widgets/timer_ring.dart';
@@ -14,12 +13,10 @@ class SilentRoomPage extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final room = ref.watch(silentRoomProvider);
     final runner = ref.read(silentRoomProvider.notifier);
-    final night = Theme.of(context).brightness == Brightness.dark;
 
     return AppScaffold(
       showBack: true,
       title: l10n.silentRoomTitle,
-      backgroundColor: night ? AppColors.nightBackground : null,
       body: Column(
         children: [
           AppText.subtitle(l10n.silentRoomHint, align: TextAlign.center),
@@ -47,8 +44,8 @@ class SilentRoomPage extends ConsumerWidget {
             duration: const Duration(milliseconds: 2200),
             child: TimerRing(
               progress: room.completed ? 1 : room.progress,
-              color: AppColors.primary,
-              track: night ? AppColors.nightSurface : AppColors.surfaceMuted,
+              color: Theme.of(context).colorScheme.primary,
+              track: Theme.of(context).colorScheme.surfaceContainerHighest,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -56,8 +53,8 @@ class SilentRoomPage extends ConsumerWidget {
                     room.completed
                         ? l10n.silentRoomDone
                         : l10n.silentRoomPresence,
-                    style: const TextStyle(
-                      color: AppColors.muted,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                       fontWeight: FontWeight.w600,
                     ),
                   ),

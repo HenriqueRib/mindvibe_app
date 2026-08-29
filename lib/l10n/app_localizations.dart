@@ -214,12 +214,6 @@ abstract class AppLocalizations {
   /// **'Trocar associação'**
   String get actionTransferDevice;
 
-  /// No description provided for @actionComingSoon.
-  ///
-  /// In pt_BR, this message translates to:
-  /// **'Em breve'**
-  String get actionComingSoon;
-
   /// No description provided for @fieldName.
   ///
   /// In pt_BR, this message translates to:
@@ -327,6 +321,12 @@ abstract class AppLocalizations {
   /// In pt_BR, this message translates to:
   /// **'Continue seu treino de onde parou.'**
   String get loginSubtitle;
+
+  /// No description provided for @loginRememberAccount.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Lembrar minha conta'**
+  String get loginRememberAccount;
 
   /// No description provided for @registerTitle.
   ///
@@ -669,6 +669,12 @@ abstract class AppLocalizations {
   /// In pt_BR, this message translates to:
   /// **'Escolha o que você quer melhorar e entre no seu plano.'**
   String get homeNoProgramBody;
+
+  /// No description provided for @homeChooseEyebrow.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Próximo passo'**
+  String get homeChooseEyebrow;
 
   /// No description provided for @homeSessionSoon.
   ///
@@ -2296,23 +2302,11 @@ abstract class AppLocalizations {
   /// **'Sair da conta neste aparelho?'**
   String get profileLogoutConfirm;
 
-  /// No description provided for @profilePlaceholder.
-  ///
-  /// In pt_BR, this message translates to:
-  /// **'Ajustes de conta, lembretes e exclusão chegam a seguir.'**
-  String get profilePlaceholder;
-
   /// No description provided for @progressTitle.
   ///
   /// In pt_BR, this message translates to:
   /// **'Progresso'**
   String get progressTitle;
-
-  /// No description provided for @progressPlaceholder.
-  ///
-  /// In pt_BR, this message translates to:
-  /// **'Seu histórico, XP e o relatório do dia 7 aparecem aqui na próxima etapa.'**
-  String get progressPlaceholder;
 
   /// No description provided for @profileDeleteAccount.
   ///
@@ -2343,12 +2337,6 @@ abstract class AppLocalizations {
   /// In pt_BR, this message translates to:
   /// **'Política de privacidade'**
   String get profilePrivacy;
-
-  /// No description provided for @profileLegalPlaceholder.
-  ///
-  /// In pt_BR, this message translates to:
-  /// **'O texto jurídico ainda será publicado. Até lá, este é só um atalho reservado.'**
-  String get profileLegalPlaceholder;
 
   /// No description provided for @profileSaved.
   ///
@@ -3034,6 +3022,18 @@ abstract class AppLocalizations {
   /// **'Treino concluído'**
   String get sessionCompleteTitle;
 
+  /// No description provided for @sessionCompleteBody.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Você concluiu o treino de hoje.'**
+  String get sessionCompleteBody;
+
+  /// No description provided for @sessionEmptyBody.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Este treino não tem um próximo passo agora. Volte para o início.'**
+  String get sessionEmptyBody;
+
   /// No description provided for @sessionSeeYouTomorrow.
   ///
   /// In pt_BR, this message translates to:
@@ -3237,6 +3237,12 @@ abstract class AppLocalizations {
   /// In pt_BR, this message translates to:
   /// **'Pausar'**
   String get playerPause;
+
+  /// No description provided for @playerStop.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Parar áudio'**
+  String get playerStop;
 
   /// No description provided for @playerNext.
   ///
@@ -3651,6 +3657,18 @@ abstract class AppLocalizations {
   /// In pt_BR, this message translates to:
   /// **'Nada por aqui ainda'**
   String get emptyTitle;
+
+  /// No description provided for @emptyBody.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Quando houver algo para mostrar, aparece aqui.'**
+  String get emptyBody;
+
+  /// No description provided for @errorLoadTitle.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Não foi possível carregar'**
+  String get errorLoadTitle;
 
   /// No description provided for @loadingLabel.
   ///

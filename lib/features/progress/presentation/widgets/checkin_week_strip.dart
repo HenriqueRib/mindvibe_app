@@ -5,11 +5,11 @@ import 'package:mindvibe_app/app/widgets/app_widgets.dart';
 import 'package:mindvibe_app/features/training/domain/entities/training_entities.dart';
 import 'package:mindvibe_app/l10n/app_localizations.dart';
 
-Color checkinTone(int level) {
+Color checkinTone(int level, {ColorScheme? scheme}) {
   return switch (level.clamp(1, 5)) {
     1 => const Color(0xFF8B5A52),
     2 => AppColors.accent,
-    3 => AppColors.muted,
+    3 => scheme?.onSurfaceVariant ?? AppColors.muted,
     4 => AppColors.primarySoft,
     _ => AppColors.primary,
   };
@@ -47,10 +47,13 @@ class CheckinClimateRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     final today = checkin.today;
     final weight = today?.weightLevel;
     final filled = today != null;
-    final color = filled ? checkinTone(weight ?? 3) : AppColors.accent;
+    final color = filled
+        ? checkinTone(weight ?? 3, scheme: scheme)
+        : scheme.secondary;
     final title = filled
         ? l10n.checkinWeight('$weight')
         : l10n.progressCheckinTitle;
@@ -58,44 +61,51 @@ class CheckinClimateRow extends StatelessWidget {
         ? checkinPairLabel(l10n, today)
         : l10n.progressCheckinCta;
 
-    return InkWell(
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        child: Row(
-          children: [
-            Container(
-              width: 10,
-              height: 10,
-              decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Text(
-                title,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  color: Theme.of(context).colorScheme.onSurface,
+    return Semantics(
+      button: true,
+      label: title,
+      hint: hint,
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          child: Row(
+            children: [
+              Container(
+                width: 10,
+                height: 10,
+                decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(width: 8),
-            Flexible(
-              child: Text(
-                hint,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.right,
-                style: TextStyle(
-                  color: filled ? AppColors.muted : AppColors.accent,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
+              const SizedBox(width: 8),
+              Flexible(
+                child: Text(
+                  hint,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.right,
+                  style: TextStyle(
+                    color: filled
+                        ? Theme.of(context).colorScheme.onSurfaceVariant
+                        : scheme.secondary,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -126,8 +136,8 @@ class CheckinClimateCard extends StatelessWidget {
         children: [
           Text(
             l10n.progressCheckinTitle,
-            style: const TextStyle(
-              color: AppColors.muted,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
               fontWeight: FontWeight.w700,
               letterSpacing: 0.4,
             ),
@@ -145,8 +155,8 @@ class CheckinClimateCard extends StatelessWidget {
             const SizedBox(height: 6),
             Text(
               l10n.progressCheckinCta,
-              style: const TextStyle(
-                color: AppColors.accent,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.secondary,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -158,7 +168,10 @@ class CheckinClimateCard extends StatelessWidget {
             const SizedBox(height: 6),
             Text(
               checkinPairLabel(l10n, today),
-              style: const TextStyle(color: AppColors.muted, height: 1.35),
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                height: 1.35,
+              ),
             ),
           ],
           if (checkin.days.isNotEmpty) ...[
@@ -168,8 +181,8 @@ class CheckinClimateCard extends StatelessWidget {
           const SizedBox(height: 14),
           Text(
             l10n.progressStreakCheckinHint,
-            style: const TextStyle(
-              color: AppColors.muted,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
               height: 1.4,
               fontSize: 13,
             ),
@@ -221,8 +234,11 @@ class _DayDot extends StatelessWidget {
     final onSurface = Theme.of(context).colorScheme.onSurface;
     final muted = Theme.of(context).colorScheme.onSurfaceVariant;
     final tone = recorded
-        ? checkinTone(day.weightLevel ?? 3)
-        : AppColors.border;
+        ? checkinTone(
+            day.weightLevel ?? 3,
+            scheme: Theme.of(context).colorScheme,
+          )
+        : Theme.of(context).colorScheme.outline;
     final raw = DateFormat('E', locale).format(day.date).replaceAll('.', '');
     final short = raw.isEmpty
         ? ''

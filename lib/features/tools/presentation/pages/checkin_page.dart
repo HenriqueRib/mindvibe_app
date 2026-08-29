@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mindvibe_app/app/router/app_routes.dart';
-import 'package:mindvibe_app/app/theme/app_theme.dart';
 import 'package:mindvibe_app/app/widgets/app_widgets.dart';
 import 'package:mindvibe_app/core/error/failure_message.dart';
 import 'package:mindvibe_app/features/progress/presentation/widgets/checkin_week_strip.dart';
@@ -18,12 +17,10 @@ class CheckinPage extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final state = ref.watch(checkinControllerProvider);
     final runner = ref.read(checkinControllerProvider.notifier);
-    final night = Theme.of(context).brightness == Brightness.dark;
 
     return AppScaffold(
       showBack: true,
       title: l10n.checkinTitle,
-      backgroundColor: night ? AppColors.nightBackground : null,
       body: state.loading
           ? AppLoading(label: l10n.loadingLabel)
           : ListView(
@@ -39,11 +36,7 @@ class CheckinPage extends ConsumerWidget {
                 ),
                 const SizedBox(height: 32),
                 if (state.failure != null) ...[
-                  Text(
-                    failureMessage(state.failure!, l10n),
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(color: AppColors.error),
-                  ),
+                  AppInlineError(message: failureMessage(state.failure!, l10n)),
                   const SizedBox(height: 12),
                 ],
                 AnimatedSwitcher(
@@ -91,7 +84,7 @@ class _Status extends StatelessWidget {
       return Text(
         l10n.checkinSaving,
         textAlign: TextAlign.center,
-        style: const TextStyle(color: AppColors.muted),
+        style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
       );
     }
     if (!state.ready) {
@@ -109,7 +102,10 @@ class _Status extends StatelessWidget {
         Text(
           state.saved ? l10n.checkinSaved : l10n.checkinUpdateHint,
           textAlign: TextAlign.center,
-          style: const TextStyle(color: AppColors.muted, height: 1.4),
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+            height: 1.4,
+          ),
         ),
       ],
     );

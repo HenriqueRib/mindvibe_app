@@ -3,7 +3,6 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:mindvibe_app/app/theme/app_theme.dart';
 import 'package:mindvibe_app/app/widgets/app_widgets.dart';
 import 'package:mindvibe_app/features/training/domain/entities/training_entities.dart';
 import 'package:mindvibe_app/l10n/app_localizations.dart';
@@ -27,7 +26,7 @@ class WeekTimeChart extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     final points = days.length == 7 ? days : weekDaysFromHistory(const []);
     final total = points.fold<int>(0, (sum, day) => sum + day.seconds);
-    final night = Theme.of(context).brightness == Brightness.dark;
+    final scheme = Theme.of(context).colorScheme;
 
     return AppCard(
       child: Column(
@@ -41,7 +40,7 @@ class WeekTimeChart extends StatelessWidget {
           if (total == 0)
             Text(
               l10n.progressWeekChartEmpty,
-              style: const TextStyle(color: AppColors.muted, height: 1.4),
+              style: TextStyle(color: scheme.onSurfaceVariant, height: 1.4),
             )
           else ...[
             Text(
@@ -56,7 +55,7 @@ class WeekTimeChart extends StatelessWidget {
               const SizedBox(height: 6),
               Text(
                 insight!,
-                style: const TextStyle(color: AppColors.muted, height: 1.4),
+                style: TextStyle(color: scheme.onSurfaceVariant, height: 1.4),
               ),
             ],
           ],
@@ -73,7 +72,10 @@ class WeekTimeChart extends StatelessWidget {
                     days: points,
                     progress: t,
                     locale: l10n.localeName,
-                    night: night,
+                    muted: scheme.onSurfaceVariant,
+                    onSurface: scheme.onSurface,
+                    primary: scheme.primary,
+                    track: scheme.surfaceContainerHighest,
                     formatMinutes: (seconds) => _compactMinutes(seconds),
                   ),
                   child: const SizedBox.expand(),
@@ -131,14 +133,20 @@ class _WeekTimePainter extends CustomPainter {
     required this.days,
     required this.progress,
     required this.locale,
-    required this.night,
+    required this.muted,
+    required this.onSurface,
+    required this.primary,
+    required this.track,
     required this.formatMinutes,
   });
 
   final List<WeekDayTime> days;
   final double progress;
   final String locale;
-  final bool night;
+  final Color muted;
+  final Color onSurface;
+  final Color primary;
+  final Color track;
   final String Function(int seconds) formatMinutes;
 
   @override
@@ -157,10 +165,10 @@ class _WeekTimePainter extends CustomPainter {
     );
     final axisMax = _niceMax(maxSeconds);
     final gridPaint = Paint()
-      ..color = (night ? Colors.white : AppColors.text).withValues(alpha: 0.08)
+      ..color = onSurface.withValues(alpha: 0.08)
       ..strokeWidth = 1;
-    const labelStyle = TextStyle(
-      color: AppColors.muted,
+    final labelStyle = TextStyle(
+      color: muted,
       fontSize: 11,
       fontWeight: FontWeight.w500,
     );
@@ -205,10 +213,10 @@ class _WeekTimePainter extends CustomPainter {
         topRight: const Radius.circular(10),
       );
       final color = day.seconds == 0
-          ? (night ? const Color(0xFF2A302E) : AppColors.surfaceMuted)
+          ? track
           : isToday
-          ? AppColors.primary
-          : AppColors.primarySoft;
+          ? primary
+          : primary.withValues(alpha: 0.55);
       canvas.drawRRect(rect, Paint()..color = color);
 
       if (day.seconds > 0 && progress > 0.85) {
@@ -217,7 +225,7 @@ class _WeekTimePainter extends CustomPainter {
           formatMinutes(day.seconds),
           Offset(centerX - slot / 2, rect.top - 16),
           TextStyle(
-            color: isToday ? AppColors.primary : AppColors.muted,
+            color: isToday ? primary : muted,
             fontSize: 10,
             fontWeight: FontWeight.w600,
           ),
@@ -231,7 +239,7 @@ class _WeekTimePainter extends CustomPainter {
         _weekday(day.date),
         Offset(centerX - slot / 2, chart.bottom + 8),
         TextStyle(
-          color: isToday ? AppColors.text : AppColors.muted,
+          color: isToday ? onSurface : muted,
           fontSize: 12,
           fontWeight: isToday ? FontWeight.w700 : FontWeight.w500,
         ),
@@ -299,7 +307,10 @@ class _WeekTimePainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant _WeekTimePainter oldDelegate) {
     return oldDelegate.progress != progress ||
-        oldDelegate.night != night ||
+        oldDelegate.muted != muted ||
+        oldDelegate.onSurface != onSurface ||
+        oldDelegate.primary != primary ||
+        oldDelegate.track != track ||
         oldDelegate.days != days;
   }
 }

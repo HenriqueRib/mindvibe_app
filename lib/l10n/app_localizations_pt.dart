@@ -66,9 +66,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get actionTransferDevice => 'Trocar associação';
 
   @override
-  String get actionComingSoon => 'Em breve';
-
-  @override
   String get fieldName => 'Nome';
 
   @override
@@ -123,6 +120,9 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get loginSubtitle => 'Continue seu treino de onde parou.';
+
+  @override
+  String get loginRememberAccount => 'Lembrar minha conta';
 
   @override
   String get registerTitle => 'Criar conta';
@@ -314,6 +314,9 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get homeNoProgramBody =>
       'Escolha o que você quer melhorar e entre no seu plano.';
+
+  @override
+  String get homeChooseEyebrow => 'Próximo passo';
 
   @override
   String get homeSessionSoon =>
@@ -1193,15 +1196,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get profileLogoutConfirm => 'Sair da conta neste aparelho?';
 
   @override
-  String get profilePlaceholder =>
-      'Ajustes de conta, lembretes e exclusão chegam a seguir.';
-
-  @override
   String get progressTitle => 'Progresso';
-
-  @override
-  String get progressPlaceholder =>
-      'Seu histórico, XP e o relatório do dia 7 aparecem aqui na próxima etapa.';
 
   @override
   String get profileDeleteAccount => 'Excluir conta';
@@ -1218,10 +1213,6 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get profilePrivacy => 'Política de privacidade';
-
-  @override
-  String get profileLegalPlaceholder =>
-      'O texto jurídico ainda será publicado. Até lá, este é só um atalho reservado.';
 
   @override
   String get profileSaved => 'Perfil atualizado.';
@@ -1662,6 +1653,13 @@ class AppLocalizationsPt extends AppLocalizations {
   String get sessionCompleteTitle => 'Treino concluído';
 
   @override
+  String get sessionCompleteBody => 'Você concluiu o treino de hoje.';
+
+  @override
+  String get sessionEmptyBody =>
+      'Este treino não tem um próximo passo agora. Volte para o início.';
+
+  @override
   String get sessionSeeYouTomorrow => 'Até amanhã';
 
   @override
@@ -1782,6 +1780,9 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get playerPause => 'Pausar';
+
+  @override
+  String get playerStop => 'Parar áudio';
 
   @override
   String get playerNext => 'Próxima';
@@ -2014,6 +2015,12 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get emptyTitle => 'Nada por aqui ainda';
+
+  @override
+  String get emptyBody => 'Quando houver algo para mostrar, aparece aqui.';
+
+  @override
+  String get errorLoadTitle => 'Não foi possível carregar';
 
   @override
   String get loadingLabel => 'Carregando…';
@@ -2482,9 +2489,6 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   String get actionTransferDevice => 'Trocar associação';
 
   @override
-  String get actionComingSoon => 'Em breve';
-
-  @override
   String get fieldName => 'Nome';
 
   @override
@@ -2539,6 +2543,9 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
 
   @override
   String get loginSubtitle => 'Continue seu treino de onde parou.';
+
+  @override
+  String get loginRememberAccount => 'Lembrar minha conta';
 
   @override
   String get registerTitle => 'Criar conta';
@@ -2730,6 +2737,9 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   @override
   String get homeNoProgramBody =>
       'Escolha o que você quer melhorar e entre no seu plano.';
+
+  @override
+  String get homeChooseEyebrow => 'Próximo passo';
 
   @override
   String get homeSessionSoon =>
@@ -3609,15 +3619,7 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   String get profileLogoutConfirm => 'Sair da conta neste aparelho?';
 
   @override
-  String get profilePlaceholder =>
-      'Ajustes de conta, lembretes e exclusão chegam a seguir.';
-
-  @override
   String get progressTitle => 'Progresso';
-
-  @override
-  String get progressPlaceholder =>
-      'Seu histórico, XP e o relatório do dia 7 aparecem aqui na próxima etapa.';
 
   @override
   String get profileDeleteAccount => 'Excluir conta';
@@ -3634,10 +3636,6 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
 
   @override
   String get profilePrivacy => 'Política de privacidade';
-
-  @override
-  String get profileLegalPlaceholder =>
-      'O texto jurídico ainda será publicado. Até lá, este é só um atalho reservado.';
 
   @override
   String get profileSaved => 'Perfil atualizado.';
@@ -4078,6 +4076,13 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   String get sessionCompleteTitle => 'Treino concluído';
 
   @override
+  String get sessionCompleteBody => 'Você concluiu o treino de hoje.';
+
+  @override
+  String get sessionEmptyBody =>
+      'Este treino não tem um próximo passo agora. Volte para o início.';
+
+  @override
   String get sessionSeeYouTomorrow => 'Até amanhã';
 
   @override
@@ -4198,6 +4203,9 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
 
   @override
   String get playerPause => 'Pausar';
+
+  @override
+  String get playerStop => 'Parar áudio';
 
   @override
   String get playerNext => 'Próxima';
@@ -4430,6 +4438,12 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
 
   @override
   String get emptyTitle => 'Nada por aqui ainda';
+
+  @override
+  String get emptyBody => 'Quando houver algo para mostrar, aparece aqui.';
+
+  @override
+  String get errorLoadTitle => 'Não foi possível carregar';
 
   @override
   String get loadingLabel => 'Carregando…';

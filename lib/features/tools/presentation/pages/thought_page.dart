@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mindvibe_app/app/router/app_routes.dart';
-import 'package:mindvibe_app/app/theme/app_theme.dart';
 import 'package:mindvibe_app/app/widgets/app_widgets.dart';
 import 'package:mindvibe_app/core/error/failure_message.dart';
 import 'package:mindvibe_app/features/home/presentation/home_actions.dart';
@@ -64,14 +63,12 @@ class _ThoughtPageState extends ConsumerState<ThoughtPage> {
     final l10n = AppLocalizations.of(context);
     final state = ref.watch(thoughtControllerProvider);
     final runner = ref.read(thoughtControllerProvider.notifier);
-    final night = Theme.of(context).brightness == Brightness.dark;
     final atLimit = state.lot.isFull;
     ref.watch(todayProvider);
 
     return AppScaffold(
       showBack: true,
       title: l10n.thoughtTitle,
-      backgroundColor: night ? AppColors.nightBackground : null,
       body: state.loading
           ? AppLoading(label: l10n.loadingLabel)
           : ListView(
@@ -97,26 +94,25 @@ class _ThoughtPageState extends ConsumerState<ThoughtPage> {
                 Text(
                   l10n.thoughtPrivate,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: AppColors.muted,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                     fontSize: 13,
                     height: 1.4,
                   ),
                 ),
                 const SizedBox(height: 20),
                 if (state.failure != null) ...[
-                  Text(
-                    failureMessage(state.failure!, l10n),
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(color: AppColors.error),
-                  ),
+                  AppInlineError(message: failureMessage(state.failure!, l10n)),
                   const SizedBox(height: 12),
                 ],
                 if (atLimit) ...[
                   Text(
                     l10n.thoughtLotFull,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(color: AppColors.muted, height: 1.4),
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      height: 1.4,
+                    ),
                   ),
                   const SizedBox(height: 12),
                 ],
@@ -141,8 +137,8 @@ class _ThoughtPageState extends ConsumerState<ThoughtPage> {
                   Text(
                     l10n.thoughtContinue,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: AppColors.muted,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                       fontWeight: FontWeight.w600,
                       fontSize: 13,
                       letterSpacing: 0.3,
@@ -178,10 +174,10 @@ class _ThoughtPageState extends ConsumerState<ThoughtPage> {
                 Text(
                   l10n.thoughtLot,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: 13,
-                    color: AppColors.muted,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                     letterSpacing: 0.4,
                   ),
                 ),
@@ -190,7 +186,10 @@ class _ThoughtPageState extends ConsumerState<ThoughtPage> {
                   Text(
                     l10n.thoughtLotEmpty,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(color: AppColors.muted, height: 1.4),
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      height: 1.4,
+                    ),
                   )
                 else
                   for (final thought in state.lot.items) ...[
@@ -244,12 +243,10 @@ class _FollowChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScaleOnTap(
-      child: ActionChip(
-        avatar: Icon(icon, size: 18),
-        label: Text(label),
-        onPressed: onTap,
-      ),
+    return ActionChip(
+      avatar: Icon(icon, size: 18),
+      label: Text(label),
+      onPressed: onTap,
     );
   }
 }

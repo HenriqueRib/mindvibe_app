@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mindvibe_app/app/theme/app_theme.dart';
 import 'package:mindvibe_app/app/widgets/app_widgets.dart';
 import 'package:mindvibe_app/features/audio_player/presentation/providers/now_playing_controller.dart';
 import 'package:mindvibe_app/features/audio_player/presentation/widgets/session_audio_player.dart';
@@ -40,7 +39,6 @@ class ListenPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final night = Theme.of(context).brightness == Brightness.dark;
     final url = moment.url;
     final tracks = queue
         .map(trackFromMoment)
@@ -50,9 +48,14 @@ class ListenPage extends StatelessWidget {
     return AppScaffold(
       showBack: true,
       title: moment.categoryName,
-      backgroundColor: night ? AppColors.nightBackground : null,
       body: url == null || url.isEmpty
-          ? AppEmpty(title: l10n.errorGeneric)
+          ? AppEmpty(
+              title: l10n.libraryAudiosEmpty,
+              body: l10n.emptyBody,
+              icon: Icons.headset_off_outlined,
+              actionLabel: l10n.actionBack,
+              onAction: () => Navigator.of(context).maybePop(),
+            )
           : LayoutBuilder(
               builder: (context, constraints) {
                 return SingleChildScrollView(

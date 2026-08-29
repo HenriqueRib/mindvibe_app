@@ -14,7 +14,6 @@ class PomodoroPage extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final pomodoro = ref.watch(pomodoroProvider);
     final runner = ref.read(pomodoroProvider.notifier);
-    final night = Theme.of(context).brightness == Brightness.dark;
     final phaseLabel = pomodoro.phase == PomodoroPhase.focus
         ? l10n.pomodoroFocus
         : l10n.pomodoroBreak;
@@ -22,7 +21,6 @@ class PomodoroPage extends ConsumerWidget {
     return AppScaffold(
       showBack: true,
       title: l10n.pomodoroTitle,
-      backgroundColor: night ? AppColors.nightBackground : null,
       body: Column(
         children: [
           AppText.subtitle(l10n.pomodoroHint, align: TextAlign.center),
@@ -62,9 +60,9 @@ class PomodoroPage extends ConsumerWidget {
             child: TimerRing(
               progress: pomodoro.progress,
               color: pomodoro.phase == PomodoroPhase.focus
-                  ? AppColors.primary
+                  ? Theme.of(context).colorScheme.primary
                   : AppColors.accent,
-              track: night ? AppColors.nightSurface : AppColors.surfaceMuted,
+              track: Theme.of(context).colorScheme.surfaceContainerHighest,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -73,8 +71,8 @@ class PomodoroPage extends ConsumerWidget {
                     child: Text(
                       phaseLabel,
                       key: ValueKey(phaseLabel),
-                      style: const TextStyle(
-                        color: AppColors.muted,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -95,7 +93,9 @@ class PomodoroPage extends ConsumerWidget {
           const SizedBox(height: 16),
           Text(
             l10n.pomodoroRounds(pomodoro.rounds),
-            style: const TextStyle(color: AppColors.muted),
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
           ),
           const Spacer(),
           AppButton(

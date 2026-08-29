@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mindvibe_app/app/router/app_routes.dart';
-import 'package:mindvibe_app/app/theme/app_theme.dart';
 import 'package:mindvibe_app/app/widgets/app_widgets.dart';
+import 'package:mindvibe_app/core/error/failure_message.dart';
 import 'package:mindvibe_app/core/storage/favorite_store.dart';
 import 'package:mindvibe_app/features/audio_player/presentation/widgets/cover_image.dart';
 import 'package:mindvibe_app/features/catalog/domain/audio_category.dart';
@@ -59,15 +59,25 @@ class _MomentsPageState extends ConsumerState<MomentsPage> {
       body: moments.when(
         loading: () => AppLoading(label: l10n.loadingLabel),
         error: (_, _) => AppError(
+          title: l10n.errorLoadTitle,
           message: l10n.errorGeneric,
           retryLabel: l10n.actionRetry,
           onRetry: () => ref.invalidate(momentsProvider),
         ),
         data: (result) => result.when(
-          failure: (_) => AppEmpty(title: l10n.catalogEmpty),
+          failure: (failure) => AppError(
+            title: l10n.errorLoadTitle,
+            message: failureMessage(failure, l10n),
+            retryLabel: l10n.actionRetry,
+            onRetry: () => ref.invalidate(momentsProvider),
+          ),
           success: (items) {
             if (items.isEmpty) {
-              return AppEmpty(title: l10n.libraryAudiosEmpty);
+              return AppEmpty(
+                title: l10n.libraryAudiosEmpty,
+                body: l10n.emptyBody,
+                icon: Icons.headset_off_outlined,
+              );
             }
             final ordered = [...items]
               ..sort((a, b) {
@@ -117,7 +127,13 @@ class _MomentsPageState extends ConsumerState<MomentsPage> {
                 ],
                 const SizedBox(height: 12),
                 if (filtered.isEmpty)
-                  Expanded(child: AppEmpty(title: l10n.libraryAudiosEmpty))
+                  Expanded(
+                    child: AppEmpty(
+                      title: l10n.libraryAudiosEmpty,
+                      body: l10n.emptyBody,
+                      icon: Icons.headset_off_outlined,
+                    ),
+                  )
                 else
                   Expanded(
                     child: ListView.separated(
@@ -194,8 +210,8 @@ class _MomentsPageState extends ConsumerState<MomentsPage> {
               label: chips[i].$2,
               icon: chips[i].$3,
               selected: _filter == chips[i].$1,
-              selectedColor: AppColors.accent,
-              selectedForeground: AppColors.onPrimary,
+              selectedColor: scheme.secondary,
+              selectedForeground: scheme.onSecondary,
               unselectedColor: scheme.surface,
               unselectedForeground: scheme.onSurface,
               borderColor: scheme.outline,
@@ -335,22 +351,26 @@ class _AudioCard extends StatelessWidget {
               favorited
                   ? Icons.favorite_rounded
                   : Icons.favorite_border_rounded,
-              color: favorited ? AppColors.accent : scheme.onSurfaceVariant,
+              color: favorited ? scheme.secondary : scheme.onSurfaceVariant,
             ),
           ),
           Material(
-            color: AppColors.accent,
+            color: scheme.secondary,
             shape: const CircleBorder(),
             child: InkWell(
               onTap: onPlay,
               customBorder: const CircleBorder(),
-              child: const SizedBox(
-                width: 44,
-                height: 44,
-                child: Icon(
-                  Icons.play_arrow_rounded,
-                  color: AppColors.onPrimary,
-                  size: 28,
+              child: Semantics(
+                button: true,
+                label: l10n.playerPlay,
+                child: SizedBox(
+                  width: 44,
+                  height: 44,
+                  child: Icon(
+                    Icons.play_arrow_rounded,
+                    color: scheme.onSecondary,
+                    size: 28,
+                  ),
                 ),
               ),
             ),

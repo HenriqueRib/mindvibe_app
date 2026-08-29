@@ -73,6 +73,12 @@ class _DeveloperMessagePageState extends ConsumerState<DeveloperMessagePage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const Spacer(),
+                Icon(
+                  Icons.check_circle_outline_rounded,
+                  size: 48,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                const SizedBox(height: 16),
                 AppText.title(l10n.profileMessageSent, align: TextAlign.center),
                 const Spacer(),
                 AppButton(

@@ -176,7 +176,9 @@ final routerProvider = Provider<GoRouter>((ref) {
           return AppRoutes.daily;
         },
         builder: (context, state) {
-          final steps = (state.extra as List).whereType<ExerciseSpec>().toList();
+          final steps = (state.extra as List)
+              .whereType<ExerciseSpec>()
+              .toList();
           return PageWithMiniPlayer(child: DailyCircuitPage(steps: steps));
         },
       ),

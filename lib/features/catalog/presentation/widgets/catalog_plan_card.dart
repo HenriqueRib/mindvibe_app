@@ -36,9 +36,9 @@ class CatalogPlanCard extends StatelessWidget {
           boxShadow: isCurrent
               ? [
                   BoxShadow(
-                    color: accent.withValues(alpha: 0.28),
-                    blurRadius: 22,
-                    offset: const Offset(0, 8),
+                    color: accent.withValues(alpha: 0.14),
+                    blurRadius: 14,
+                    offset: const Offset(0, 6),
                   ),
                 ]
               : null,
@@ -67,7 +67,7 @@ class CatalogPlanCard extends StatelessWidget {
                     Positioned(
                       right: 14,
                       top: 14,
-                      child: _CurrentBadge(label: l10n.catalogEnrollCurrent),
+                      child: CoverLabelBadge(label: l10n.catalogEnrollCurrent),
                     ),
                 ],
               ),
@@ -117,7 +117,11 @@ class CatalogPlanCard extends StatelessWidget {
                         ),
                         if (minutes != null && minutes > 0) ...[
                           const SizedBox(width: 14),
-                          Icon(Icons.schedule_outlined, size: 16, color: accent),
+                          Icon(
+                            Icons.schedule_outlined,
+                            size: 16,
+                            color: accent,
+                          ),
                           const SizedBox(width: 6),
                           Text(
                             '$minutes ${l10n.homeMinutes}',
@@ -135,6 +139,30 @@ class CatalogPlanCard extends StatelessWidget {
                         ),
                       ],
                     ),
+                    if (program.durationDays > 0 &&
+                        (program.daysCompleted ?? 0) > 0) ...[
+                      const SizedBox(height: 14),
+                      AppProgressBar(
+                        value:
+                            ((program.daysCompleted ?? 0) /
+                                    program.durationDays)
+                                .clamp(0.0, 1.0),
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        l10n.homeDayProgress(
+                          (program.currentDayNumber ??
+                                  (program.daysCompleted ?? 0))
+                              .clamp(1, program.durationDays),
+                          program.durationDays,
+                        ),
+                        style: TextStyle(
+                          color: scheme.onSurfaceVariant,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
                   ],
                 ),
               ),
@@ -170,8 +198,8 @@ class PlanSlugBadge extends StatelessWidget {
       ),
       child: Text(
         slug,
-        style: TextStyle(
-          color: Color.lerp(accent, Colors.white, 0.35),
+        style: const TextStyle(
+          color: AppColors.ink,
           fontSize: 11,
           fontWeight: FontWeight.w800,
           letterSpacing: 0.6,
@@ -182,8 +210,8 @@ class PlanSlugBadge extends StatelessWidget {
   }
 }
 
-class _CurrentBadge extends StatelessWidget {
-  const _CurrentBadge({required this.label});
+class CoverLabelBadge extends StatelessWidget {
+  const CoverLabelBadge({super.key, required this.label});
 
   final String label;
 
@@ -192,7 +220,7 @@ class _CurrentBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
-        color: const Color(0xE6F6F1E8),
+        color: AppColors.ink.withValues(alpha: 0.9),
         borderRadius: BorderRadius.circular(99),
       ),
       child: Text(

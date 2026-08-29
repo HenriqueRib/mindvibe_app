@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:mindvibe_app/app/theme/app_theme.dart';
 import 'package:mindvibe_app/app/widgets/app_widgets.dart';
 import 'package:mindvibe_app/features/exercises/domain/exercise_parsers.dart';
 import 'package:mindvibe_app/features/exercises/presentation/widgets/exercise_timer_bar.dart';
@@ -26,24 +25,24 @@ class MemoryExerciseView extends StatefulWidget {
 }
 
 class _MemoryExerciseViewState extends State<MemoryExerciseView> {
+  late final MemoryConfig _config = widget.config;
   late _MemoryPhase _phase = _MemoryPhase.study;
   final _selected = <String>{};
   final _sequence = <String>[];
   var _orderIndex = 0;
   Timer? _stepTimer;
-  Timer? _clock;
   final _startedAt = DateTime.now();
   bool _finished = false;
 
-  MemoryVariant get _variant => widget.config.variant;
+  MemoryVariant get _variant => _config.variant;
 
   bool get _icons => _variant == MemoryVariant.icons;
 
   int get _studySeconds {
     if (_variant == MemoryVariant.order) {
-      return widget.config.displaySeconds;
+      return _config.displaySeconds;
     }
-    final display = widget.config.displaySeconds;
+    final display = _config.displaySeconds;
     final session = widget.sessionSeconds;
     if (session == null) {
       return display;
@@ -56,7 +55,7 @@ class _MemoryExerciseViewState extends State<MemoryExerciseView> {
   }
 
   int get _holdSeconds {
-    final delay = widget.config.delaySeconds;
+    final delay = _config.delaySeconds;
     final session = widget.sessionSeconds;
     if (session == null) {
       return delay;
@@ -75,39 +74,32 @@ class _MemoryExerciseViewState extends State<MemoryExerciseView> {
     }
     if (_variant == MemoryVariant.delayed) {
       return Duration(
-        seconds: widget.config.displaySeconds + widget.config.delaySeconds + 20,
+        seconds: _config.displaySeconds + _config.delaySeconds + 20,
       );
     }
     if (_variant == MemoryVariant.order) {
       return Duration(
-        seconds: widget.config.displaySeconds * widget.config.words.length + 30,
+        seconds: _config.displaySeconds * _config.words.length + 30,
       );
     }
-    return Duration(seconds: widget.config.displaySeconds);
-  }
-
-  Duration get _remaining {
-    final left = _total - DateTime.now().difference(_startedAt);
-    return left.isNegative ? Duration.zero : left;
+    return Duration(seconds: _config.displaySeconds);
   }
 
   @override
   void initState() {
     super.initState();
     _scheduleStudy();
-    _clock = Timer.periodic(const Duration(milliseconds: 200), (_) {
-      if (!mounted || _finished) {
-        return;
-      }
-      setState(() {});
-      if (_remaining <= Duration.zero) {
-        if (_phase != _MemoryPhase.select) {
-          setState(() => _phase = _MemoryPhase.select);
-          return;
-        }
-        _finish();
-      }
-    });
+  }
+
+  void _onTimeUp() {
+    if (!mounted || _finished) {
+      return;
+    }
+    if (_phase != _MemoryPhase.select) {
+      setState(() => _phase = _MemoryPhase.select);
+      return;
+    }
+    _finish();
   }
 
   void _scheduleStudy() {
@@ -120,7 +112,7 @@ class _MemoryExerciseViewState extends State<MemoryExerciseView> {
       return;
     }
     if (_variant == MemoryVariant.order) {
-      if (_orderIndex < widget.config.words.length - 1) {
+      if (_orderIndex < _config.words.length - 1) {
         setState(() => _orderIndex += 1);
         _scheduleStudy();
         return;
@@ -146,17 +138,15 @@ class _MemoryExerciseViewState extends State<MemoryExerciseView> {
     }
     _finished = true;
     _stepTimer?.cancel();
-    _clock?.cancel();
     final picked = _variant == MemoryVariant.order
         ? _sequence
         : _selected.toList();
-    widget.onCompleted(widget.config.score(picked));
+    widget.onCompleted(_config.score(picked));
   }
 
   @override
   void dispose() {
     _stepTimer?.cancel();
-    _clock?.cancel();
     super.dispose();
   }
 
@@ -186,7 +176,11 @@ class _MemoryExerciseViewState extends State<MemoryExerciseView> {
       key: ValueKey('study-$_orderIndex'),
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        ExerciseTimerBar(remaining: _remaining, total: _total),
+        _LiveTimerBar(
+          startedAt: _startedAt,
+          total: _total,
+          onExpired: _onTimeUp,
+        ),
         const SizedBox(height: 20),
         FadeSlideIn(child: AppText.title(title, align: TextAlign.center)),
         const SizedBox(height: 24),
@@ -194,19 +188,23 @@ class _MemoryExerciseViewState extends State<MemoryExerciseView> {
           Expanded(
             child: Center(
               child: FadeSlideIn(
-                child: _itemCard(widget.config.words[_orderIndex], large: true),
+                child: _itemCard(_config.words[_orderIndex], large: true),
               ),
             ),
           )
         else
-          Wrap(
-            alignment: WrapAlignment.center,
-            spacing: 10,
-            runSpacing: 10,
-            children: [
-              for (var i = 0; i < widget.config.words.length; i++)
-                FadeSlideIn(index: i, child: _itemCard(widget.config.words[i])),
-            ],
+          Expanded(
+            child: SingleChildScrollView(
+              child: Wrap(
+                alignment: WrapAlignment.center,
+                spacing: 10,
+                runSpacing: 10,
+                children: [
+                  for (var i = 0; i < _config.words.length; i++)
+                    FadeSlideIn(index: i, child: _itemCard(_config.words[i])),
+                ],
+              ),
+            ),
           ),
       ],
     );
@@ -217,7 +215,11 @@ class _MemoryExerciseViewState extends State<MemoryExerciseView> {
       key: const ValueKey('hold'),
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        ExerciseTimerBar(remaining: _remaining, total: _total),
+        _LiveTimerBar(
+          startedAt: _startedAt,
+          total: _total,
+          onExpired: _onTimeUp,
+        ),
         const Spacer(),
         FadeSlideIn(
           child: AppText.title(l10n.memoryHoldTitle, align: TextAlign.center),
@@ -237,7 +239,11 @@ class _MemoryExerciseViewState extends State<MemoryExerciseView> {
       key: const ValueKey('select'),
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        ExerciseTimerBar(remaining: _remaining, total: _total),
+        _LiveTimerBar(
+          startedAt: _startedAt,
+          total: _total,
+          onExpired: _onTimeUp,
+        ),
         const SizedBox(height: 16),
         FadeSlideIn(child: AppText.title(title, align: TextAlign.center)),
         const SizedBox(height: 16),
@@ -249,25 +255,25 @@ class _MemoryExerciseViewState extends State<MemoryExerciseView> {
                     spacing: 10,
                     runSpacing: 10,
                     children: [
-                      for (var i = 0; i < widget.config.options.length; i++)
+                      for (var i = 0; i < _config.options.length; i++)
                         FadeSlideIn(
                           index: i,
-                          child: _choiceChip(widget.config.options[i]),
+                          child: _choiceChip(_config.options[i]),
                         ),
                     ],
                   ),
                 )
               : ListView(
                   children: [
-                    for (var i = 0; i < widget.config.options.length; i++)
+                    for (var i = 0; i < _config.options.length; i++)
                       FadeSlideIn(
                         index: i,
                         child: CheckboxListTile(
-                          value: _selected.contains(widget.config.options[i]),
-                          title: Text(widget.config.options[i]),
+                          value: _selected.contains(_config.options[i]),
+                          title: Text(_config.options[i]),
                           onChanged: (checked) {
                             setState(() {
-                              final word = widget.config.options[i];
+                              final word = _config.options[i];
                               if (checked ?? false) {
                                 _selected.add(word);
                               } else {
@@ -290,7 +296,11 @@ class _MemoryExerciseViewState extends State<MemoryExerciseView> {
       key: const ValueKey('order'),
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        ExerciseTimerBar(remaining: _remaining, total: _total),
+        _LiveTimerBar(
+          startedAt: _startedAt,
+          total: _total,
+          onExpired: _onTimeUp,
+        ),
         const SizedBox(height: 16),
         FadeSlideIn(
           child: AppText.title(
@@ -308,12 +318,12 @@ class _MemoryExerciseViewState extends State<MemoryExerciseView> {
               for (var i = 0; i < _sequence.length; i++)
                 Chip(
                   avatar: CircleAvatar(
-                    backgroundColor: AppColors.primarySoft,
+                    backgroundColor: Theme.of(context).colorScheme.primary,
                     child: Text(
                       '${i + 1}',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 12,
-                        color: AppColors.text,
+                        color: Theme.of(context).colorScheme.onPrimary,
                       ),
                     ),
                   ),
@@ -329,7 +339,7 @@ class _MemoryExerciseViewState extends State<MemoryExerciseView> {
               spacing: 10,
               runSpacing: 10,
               children: [
-                for (final option in widget.config.options)
+                for (final option in _config.options)
                   _choiceChip(
                     option,
                     selected: _sequence.contains(option),
@@ -362,6 +372,7 @@ class _MemoryExerciseViewState extends State<MemoryExerciseView> {
 
   Widget _choiceChip(String value, {bool? selected, VoidCallback? onTap}) {
     final on = selected ?? _selected.contains(value);
+    final scheme = Theme.of(context).colorScheme;
     return GestureDetector(
       onTap:
           onTap ??
@@ -382,11 +393,11 @@ class _MemoryExerciseViewState extends State<MemoryExerciseView> {
         ),
         decoration: BoxDecoration(
           color: on
-              ? AppColors.primarySoft.withValues(alpha: 0.35)
-              : AppColors.surfaceMuted,
+              ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.28)
+              : scheme.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: on ? AppColors.primary : AppColors.border,
+            color: on ? Theme.of(context).colorScheme.primary : scheme.outline,
             width: on ? 2 : 1,
           ),
         ),
@@ -402,11 +413,12 @@ class _MemoryExerciseViewState extends State<MemoryExerciseView> {
   }
 
   Widget _itemCard(String value, {bool large = false}) {
+    final muted = Theme.of(context).colorScheme.surfaceContainerHighest;
     if (_icons || large) {
       return Container(
         padding: EdgeInsets.all(large ? 28 : 16),
         decoration: BoxDecoration(
-          color: AppColors.surfaceMuted,
+          color: muted,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Text(
@@ -418,6 +430,57 @@ class _MemoryExerciseViewState extends State<MemoryExerciseView> {
         ),
       );
     }
-    return Chip(label: Text(value), backgroundColor: AppColors.surfaceMuted);
+    return Chip(label: Text(value), backgroundColor: muted);
+  }
+}
+
+class _LiveTimerBar extends StatefulWidget {
+  const _LiveTimerBar({
+    required this.startedAt,
+    required this.total,
+    required this.onExpired,
+  });
+
+  final DateTime startedAt;
+  final Duration total;
+  final VoidCallback onExpired;
+
+  @override
+  State<_LiveTimerBar> createState() => _LiveTimerBarState();
+}
+
+class _LiveTimerBarState extends State<_LiveTimerBar> {
+  Timer? _timer;
+  var _expired = false;
+
+  Duration get _remaining {
+    final left = widget.total - DateTime.now().difference(widget.startedAt);
+    return left.isNegative ? Duration.zero : left;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _timer = Timer.periodic(const Duration(milliseconds: 200), (_) {
+      if (!mounted) {
+        return;
+      }
+      setState(() {});
+      if (!_expired && _remaining <= Duration.zero) {
+        _expired = true;
+        widget.onExpired();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ExerciseTimerBar(remaining: _remaining, total: widget.total);
   }
 }

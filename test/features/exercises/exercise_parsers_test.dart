@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mindvibe_app/features/exercises/domain/exercise_parsers.dart';
 
@@ -36,13 +38,23 @@ void main() {
   });
 
   test('memory pontua acertos e erros', () {
-    final config = MemoryConfig.fromJson({
-      'words': ['casa', 'mesa', 'livro'],
-      'distractors': ['sol', 'rio'],
-      'display_seconds': 8,
-    });
+    const config = MemoryConfig(
+      words: ['casa', 'mesa', 'livro'],
+      options: ['casa', 'mesa', 'livro', 'sol', 'rio'],
+      displaySeconds: 8,
+    );
     final score = config.score(['casa', 'sol']);
     expect(score.hits, 1);
     expect(score.misses, 3);
+  });
+
+  test('memory lê word_count mesmo quando vem como texto', () {
+    final config = MemoryConfig.fromJson({
+      'word_count': '4',
+      'display_seconds': '8',
+      'words': ['casa', 'mesa', 'livro', 'água'],
+    }, random: Random(1));
+    expect(config.words.length, 4);
+    expect(config.displaySeconds, 8);
   });
 }

@@ -9,14 +9,13 @@ class AppBrandMark extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mark = ClipRRect(
-      borderRadius: BorderRadius.circular(size * 0.2237),
-      child: Image.asset(
-        'assets/branding/APP_ICON_CERTO.png',
-        width: size,
-        height: size,
-        filterQuality: FilterQuality.high,
-      ),
+    final mark = Image.asset(
+      'assets/branding/APP_ICON_CERTO.png',
+      width: size,
+      height: size,
+      filterQuality: FilterQuality.high,
+      isAntiAlias: true,
+      fit: BoxFit.contain,
     );
     if (!pulse) {
       return mark;

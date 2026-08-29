@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mindvibe_app/app/theme/app_theme.dart';
 import 'package:mindvibe_app/app/widgets/app_widgets.dart';
 import 'package:mindvibe_app/core/error/failure_message.dart';
 import 'package:mindvibe_app/features/exercises/presentation/widgets/daily_drill_view.dart';
@@ -86,7 +85,6 @@ class _DailyCircuitPageState extends ConsumerState<DailyCircuitPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final night = Theme.of(context).brightness == Brightness.dark;
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, _) {
@@ -97,7 +95,6 @@ class _DailyCircuitPageState extends ConsumerState<DailyCircuitPage> {
       child: AppScaffold(
         showBack: true,
         title: l10n.dailyCircuitTitle,
-        backgroundColor: night ? AppColors.nightBackground : null,
         body: Stack(
           children: [
             Column(
@@ -112,8 +109,8 @@ class _DailyCircuitPageState extends ConsumerState<DailyCircuitPage> {
                           width: 28,
                           height: 2,
                           color: i < _index
-                              ? AppColors.primary
-                              : AppColors.border,
+                              ? Theme.of(context).colorScheme.primary
+                              : Theme.of(context).colorScheme.outline,
                         ),
                     ],
                   ],
@@ -121,8 +118,8 @@ class _DailyCircuitPageState extends ConsumerState<DailyCircuitPage> {
                 const SizedBox(height: 12),
                 Text(
                   l10n.dailyCircuitStep(_index + 1, widget.steps.length),
-                  style: const TextStyle(
-                    color: AppColors.muted,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -170,7 +167,9 @@ class _StepDot extends StatelessWidget {
       height: active ? 14 : 10,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: done || active ? AppColors.primary : AppColors.border,
+        color: done || active
+            ? Theme.of(context).colorScheme.primary
+            : Theme.of(context).colorScheme.outline,
       ),
     );
   }

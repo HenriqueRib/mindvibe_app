@@ -47,12 +47,14 @@ class _DailyHubPageState extends ConsumerState<DailyHubPage> {
       body: exercises.when(
         loading: () => AppLoading(label: l10n.loadingLabel),
         error: (_, _) => AppError(
+          title: l10n.errorLoadTitle,
           message: l10n.errorGeneric,
           retryLabel: l10n.actionRetry,
           onRetry: () => ref.invalidate(libraryExercisesProvider),
         ),
         data: (result) => result.when(
           failure: (failure) => AppError(
+            title: l10n.errorLoadTitle,
             message: failureMessage(failure, l10n),
             retryLabel: l10n.actionRetry,
             onRetry: () => ref.invalidate(libraryExercisesProvider),
@@ -63,6 +65,7 @@ class _DailyHubPageState extends ConsumerState<DailyHubPage> {
               return AppEmpty(
                 title: l10n.dailyHubTitle,
                 body: l10n.dailyHubBody,
+                icon: Icons.fitness_center_outlined,
               );
             }
             final steps = pickCircuit(rooms, saturated: saturated);
@@ -81,8 +84,10 @@ class _DailyHubPageState extends ConsumerState<DailyHubPage> {
                       children: [
                         Text(
                           l10n.dailyCircuitTitle.toUpperCase(),
-                          style: const TextStyle(
-                            color: AppColors.muted,
+                          style: TextStyle(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurfaceVariant,
                             fontWeight: FontWeight.w700,
                             letterSpacing: 1.0,
                             fontSize: 12,
@@ -255,7 +260,7 @@ class _CircuitStepRow extends StatelessWidget {
           decoration: BoxDecoration(
             color: done
                 ? AppColors.success.withValues(alpha: 0.18)
-                : AppColors.primary.withValues(alpha: 0.12),
+                : Theme.of(context).colorScheme.primary.withValues(alpha: 0.12),
             borderRadius: BorderRadius.circular(10),
           ),
           child: done
@@ -266,9 +271,9 @@ class _CircuitStepRow extends StatelessWidget {
                 )
               : Text(
                   '$index',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.w700,
-                    color: AppColors.primary,
+                    color: Theme.of(context).colorScheme.primary,
                   ),
                 ),
         ),
@@ -280,7 +285,10 @@ class _CircuitStepRow extends StatelessWidget {
               Text(title, style: const TextStyle(fontWeight: FontWeight.w700)),
               Text(
                 '5 min · $family',
-                style: const TextStyle(color: AppColors.muted, fontSize: 13),
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  fontSize: 13,
+                ),
               ),
             ],
           ),

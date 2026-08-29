@@ -196,9 +196,10 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                           height: 52,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                            color: AppColors.surfaceMuted.withValues(
-                              alpha: 0.6,
-                            ),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .surfaceContainerHighest
+                                .withValues(alpha: 0.8),
                             borderRadius: BorderRadius.circular(16),
                           ),
                           child: Text(
@@ -303,7 +304,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                     leading: Icon(
                       Icons.language_outlined,
                       color: AppLocale.matches(current, option)
-                          ? AppColors.primary
+                          ? Theme.of(context).colorScheme.primary
                           : null,
                     ),
                     title: Text(
@@ -312,7 +313,10 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                           : l10n.languagePortuguese,
                     ),
                     trailing: AppLocale.matches(current, option)
-                        ? const Icon(Icons.check, color: AppColors.primary)
+                        ? Icon(
+                            Icons.check,
+                            color: Theme.of(context).colorScheme.primary,
+                          )
                         : null,
                     onTap: () => Navigator.of(context).pop(option),
                   ),
@@ -365,15 +369,23 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 ),
                 for (final option in HomeLayoutKind.values)
                   ListTile(
-                    leading: Icon(switch (option) {
-                      HomeLayoutKind.today => Icons.wb_sunny_outlined,
-                      HomeLayoutKind.training => Icons.play_circle_outline,
-                      HomeLayoutKind.progress => Icons.insights_outlined,
-                    }, color: option == current ? AppColors.primary : null),
+                    leading: Icon(
+                      switch (option) {
+                        HomeLayoutKind.today => Icons.wb_sunny_outlined,
+                        HomeLayoutKind.training => Icons.play_circle_outline,
+                        HomeLayoutKind.progress => Icons.insights_outlined,
+                      },
+                      color: option == current
+                          ? Theme.of(context).colorScheme.primary
+                          : null,
+                    ),
                     title: Text(_layoutLabel(l10n, option)),
                     subtitle: Text(_layoutHint(l10n, option)),
                     trailing: option == current
-                        ? const Icon(Icons.check, color: AppColors.primary)
+                        ? Icon(
+                            Icons.check,
+                            color: Theme.of(context).colorScheme.primary,
+                          )
                         : null,
                     onTap: () => Navigator.of(context).pop(option),
                   ),
@@ -437,41 +449,60 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
         children: [
           Row(
             children: [
-              ScaleOnTap(
-                child: GestureDetector(
-                  onTap: user == null || _saving
-                      ? null
-                      : () => _openAvatarSheet(user),
-                  child: _AvatarMark(user: user),
+              Semantics(
+                button: true,
+                label: l10n.profileAvatarHint,
+                child: ScaleOnTap(
+                  child: GestureDetector(
+                    onTap: user == null || _saving
+                        ? null
+                        : () => _openAvatarSheet(user),
+                    child: _AvatarMark(user: user),
+                  ),
                 ),
               ),
               const SizedBox(width: 16),
               Expanded(
-                child: GestureDetector(
-                  onTap: user == null || _saving ? null : () => _editName(user),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        user?.name ?? '',
-                        style: const TextStyle(
-                          fontSize: 26,
-                          fontWeight: FontWeight.w700,
-                          height: 1.2,
-                          letterSpacing: -0.4,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Semantics(
+                      button: true,
+                      label: l10n.profileEditName,
+                      child: GestureDetector(
+                        onTap: user == null || _saving
+                            ? null
+                            : () => _editName(user),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              user?.name ?? '',
+                              style: Theme.of(context).textTheme.headlineMedium
+                                  ?.copyWith(fontWeight: FontWeight.w700),
+                            ),
+                            const SizedBox(height: 6),
+                            Text(
+                              user?.email ?? '',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurfaceVariant,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      const SizedBox(height: 6),
-                      Text(
-                        user?.email ?? '',
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.muted,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      GestureDetector(
+                    ),
+                    const SizedBox(height: 10),
+                    Semantics(
+                      button: true,
+                      label: (user?.isPremium ?? false)
+                          ? l10n.profilePlanPremium
+                          : l10n.profilePlanFree,
+                      child: GestureDetector(
                         onTap: user == null
                             ? null
                             : () => context.push(
@@ -486,8 +517,12 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                           ),
                           decoration: BoxDecoration(
                             color: (user?.isPremium ?? false)
-                                ? AppColors.primary.withValues(alpha: 0.12)
-                                : AppColors.surfaceMuted,
+                                ? Theme.of(
+                                    context,
+                                  ).colorScheme.primary.withValues(alpha: 0.12)
+                                : Theme.of(
+                                    context,
+                                  ).colorScheme.surfaceContainerHighest,
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Text(
@@ -496,16 +531,18 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                 : l10n.profilePlanFree,
                             style: TextStyle(
                               color: (user?.isPremium ?? false)
-                                  ? AppColors.primary
-                                  : AppColors.muted,
+                                  ? Theme.of(context).colorScheme.primary
+                                  : Theme.of(
+                                      context,
+                                    ).colorScheme.onSurfaceVariant,
                               fontWeight: FontWeight.w700,
                               fontSize: 12,
                             ),
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -709,7 +746,8 @@ class _ValueRow extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.right,
                   style: TextStyle(
-                    color: color ?? AppColors.muted,
+                    color:
+                        color ?? Theme.of(context).colorScheme.onSurfaceVariant,
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
                   ),
@@ -720,7 +758,7 @@ class _ValueRow extends StatelessWidget {
               const SizedBox(width: 4),
               Icon(
                 Icons.chevron_right,
-                color: color ?? AppColors.muted,
+                color: color ?? Theme.of(context).colorScheme.onSurfaceVariant,
                 size: 20,
               ),
             ],
@@ -804,19 +842,19 @@ class _AvatarMark extends StatelessWidget {
       child = CoverImage(url: url, size: 72, radius: 36, icon: Icons.person);
     } else if (emoji != null && emoji.isNotEmpty) {
       child = ColoredBox(
-        color: AppColors.surfaceMuted,
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
         child: Center(child: Text(emoji, style: const TextStyle(fontSize: 32))),
       );
     } else {
       child = ColoredBox(
-        color: AppColors.primary.withValues(alpha: 0.12),
+        color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.12),
         child: Center(
           child: Text(
             initial,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.w700,
-              color: AppColors.primary,
+              color: Theme.of(context).colorScheme.primary,
             ),
           ),
         ),

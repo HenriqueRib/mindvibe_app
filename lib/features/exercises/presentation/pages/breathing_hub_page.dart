@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mindvibe_app/app/router/app_routes.dart';
-import 'package:mindvibe_app/app/theme/app_theme.dart';
 import 'package:mindvibe_app/app/widgets/app_widgets.dart';
 import 'package:mindvibe_app/core/error/failure_message.dart';
 import 'package:mindvibe_app/features/audio_player/presentation/widgets/cover_image.dart';
@@ -29,6 +28,7 @@ class BreathingHubPage extends ConsumerWidget {
       body: exercises.when(
         loading: () => AppLoading(label: l10n.loadingLabel),
         error: (_, _) => AppError(
+          title: l10n.errorLoadTitle,
           message: l10n.errorGeneric,
           retryLabel: l10n.actionRetry,
           onRetry: () {
@@ -39,6 +39,7 @@ class BreathingHubPage extends ConsumerWidget {
         data: (exerciseResult) {
           if (!exerciseResult.isSuccess) {
             return AppError(
+              title: l10n.errorLoadTitle,
               message: failureMessage(exerciseResult.failureOrNull!, l10n),
               retryLabel: l10n.actionRetry,
               onRetry: () => ref.invalidate(libraryExercisesProvider),
@@ -58,6 +59,7 @@ class BreathingHubPage extends ConsumerWidget {
             return AppEmpty(
               title: l10n.breathingHubEmpty,
               body: l10n.breathingHubBody,
+              icon: Icons.air_rounded,
             );
           }
           return ListView(
@@ -170,9 +172,12 @@ class BreathingHubPage extends ConsumerWidget {
         minutes <= 0
             ? l10n.homeExerciseBreathing
             : '$minutes ${l10n.homeMinutes}',
-        style: const TextStyle(color: AppColors.muted),
+        style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
       ),
-      trailing: const Icon(Icons.play_arrow_rounded, color: AppColors.primary),
+      trailing: Icon(
+        Icons.play_arrow_rounded,
+        color: Theme.of(context).colorScheme.primary,
+      ),
       onTap: () => context.push(
         AppRoutes.listen,
         extra: ListenLaunch(moment: moment, queue: queue),

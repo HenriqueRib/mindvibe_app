@@ -174,11 +174,12 @@ class MemoryConfig {
   }) {
     final data = json ?? const <String, dynamic>{};
     final variant = memoryVariantFrom(data['variant'] as String?);
-    final wordCount = ((data['word_count'] as num?)?.toInt() ?? 6).clamp(3, 12);
-    final displaySeconds =
-        (data['display_seconds'] as num?)?.toInt() ??
-        (variant == MemoryVariant.order ? 2 : 8);
-    final delaySeconds = (data['delay_seconds'] as num?)?.toInt() ?? 10;
+    final wordCount = (_readInt(data['word_count'], 6)).clamp(3, 12);
+    final displaySeconds = _readInt(
+      data['display_seconds'],
+      variant == MemoryVariant.order ? 2 : 8,
+    );
+    final delaySeconds = _readInt(data['delay_seconds'], 10);
     final provided = _cleanWords(data['words'] as List?);
     final distractors = _cleanWords(data['distractors'] as List?);
     final rng = random ?? Random();
@@ -358,4 +359,14 @@ List<String> _uniqueWords(Iterable<String> words) {
     }
   }
   return unique;
+}
+
+int _readInt(Object? value, int fallback) {
+  if (value is num) {
+    return value.toInt();
+  }
+  if (value is String) {
+    return int.tryParse(value.trim()) ?? fallback;
+  }
+  return fallback;
 }
