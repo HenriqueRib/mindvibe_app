@@ -2494,6 +2494,90 @@ abstract class AppLocalizations {
   /// **'Volume do áudio'**
   String get feedbackAudioVolume;
 
+  /// No description provided for @profileExportData.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Exportar meus dados'**
+  String get profileExportData;
+
+  /// No description provided for @profileExportReady.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Seus dados estão prontos para compartilhar.'**
+  String get profileExportReady;
+
+  /// No description provided for @profileExportError.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Não foi possível exportar agora.'**
+  String get profileExportError;
+
+  /// No description provided for @profileInvite.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Convidar amigos'**
+  String get profileInvite;
+
+  /// No description provided for @profileInviteMessage.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Treino mental no MindVibe. Vem comigo: {url}'**
+  String profileInviteMessage(String url);
+
+  /// No description provided for @profileAbout.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Sobre o app'**
+  String get profileAbout;
+
+  /// No description provided for @profileAboutVersion.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Versão {version}'**
+  String profileAboutVersion(String version);
+
+  /// No description provided for @profileRateApp.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Avaliar na loja'**
+  String get profileRateApp;
+
+  /// No description provided for @profileOpenSite.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Abrir o site'**
+  String get profileOpenSite;
+
+  /// No description provided for @profileDailyGoal.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Meta diária'**
+  String get profileDailyGoal;
+
+  /// No description provided for @profileDailyGoalNone.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Sem meta'**
+  String get profileDailyGoalNone;
+
+  /// No description provided for @profileDailyGoalMinutes.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'{minutes} min'**
+  String profileDailyGoalMinutes(int minutes);
+
+  /// No description provided for @profileDailyGoalProgress.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'{done} de {goal} min hoje'**
+  String profileDailyGoalProgress(int done, int goal);
+
+  /// No description provided for @profileDailyGoalClear.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Remover meta'**
+  String get profileDailyGoalClear;
+
   /// No description provided for @profileEditName.
   ///
   /// In pt_BR, this message translates to:

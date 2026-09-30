@@ -16,6 +16,7 @@ UserAccount userFromJson(Map<String, dynamic> json) {
     notificationTime: json['notification_time'] as String?,
     notificationDays: _daysFromJson(json['notification_days']),
     notificationBody: json['notification_body'] as String?,
+    dailyGoalMinutes: json['daily_goal_minutes'] as int?,
     avatarUrl: json['avatar_url'] as String?,
     avatarEmoji: json['avatar_emoji'] as String?,
     showInRanking: json['show_in_ranking'] as bool? ?? false,

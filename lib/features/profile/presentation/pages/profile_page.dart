@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -24,6 +27,9 @@ import 'package:mindvibe_app/features/progress/domain/progress_milestones.dart';
 import 'package:mindvibe_app/features/training/domain/entities/training_entities.dart';
 import 'package:mindvibe_app/features/training/presentation/providers/training_providers.dart';
 import 'package:mindvibe_app/l10n/app_localizations.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProfilePage extends ConsumerStatefulWidget {
@@ -682,6 +688,186 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     }
   }
 
+  Future<void> _exportData() async {
+    final l10n = AppLocalizations.of(context);
+    setState(() => _saving = true);
+    final result = await ref
+        .read(sessionControllerProvider.notifier)
+        .exportData();
+    if (!mounted) {
+      return;
+    }
+    setState(() => _saving = false);
+    final data = result.valueOrNull;
+    if (data == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            result.failureOrNull == null
+                ? l10n.profileExportError
+                : failureMessage(result.failureOrNull!, l10n),
+          ),
+        ),
+      );
+      return;
+    }
+    try {
+      final dir = await getTemporaryDirectory();
+      final file = File('${dir.path}/mindvibe-dados.json');
+      await file.writeAsString(
+        const JsonEncoder.withIndent('  ').convert(data),
+      );
+      await SharePlus.instance.share(
+        ShareParams(
+          files: [XFile(file.path)],
+          subject: l10n.profileExportData,
+        ),
+      );
+      if (!mounted) {
+        return;
+      }
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.profileExportReady)));
+    } catch (_) {
+      if (!mounted) {
+        return;
+      }
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.profileExportError)));
+    }
+  }
+
+  Future<void> _inviteFriends() async {
+    final l10n = AppLocalizations.of(context);
+    await SharePlus.instance.share(
+      ShareParams(
+        text: l10n.profileInviteMessage(AppConfig.inviteUrl),
+        subject: l10n.profileInvite,
+      ),
+    );
+  }
+
+  Future<void> _openAbout() async {
+    final l10n = AppLocalizations.of(context);
+    final info = await PackageInfo.fromPlatform();
+    if (!mounted) {
+      return;
+    }
+    await showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      builder: (context) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  l10n.profileAbout,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  l10n.profileAboutVersion('${info.version}+${info.buildNumber}'),
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: const Icon(Icons.language_outlined),
+                  title: Text(l10n.profileOpenSite),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    _openLegal(AppConfig.siteUrl);
+                  },
+                ),
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: const Icon(Icons.star_outline),
+                  title: Text(l10n.profileRateApp),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    final ios = Theme.of(context).platform == TargetPlatform.iOS;
+                    _openLegal(
+                      ios ? AppConfig.iosStoreUrl : AppConfig.androidStoreUrl,
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _editDailyGoal(UserAccount user) async {
+    final l10n = AppLocalizations.of(context);
+    const options = [5, 10, 15, 20, 30];
+    final selected = await showModalBottomSheet<int?>(
+      context: context,
+      showDragHandle: true,
+      builder: (context) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(8, 0, 8, 16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
+                  child: Text(
+                    l10n.profileDailyGoal,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                for (final minutes in options)
+                  ListTile(
+                    title: Text(l10n.profileDailyGoalMinutes(minutes)),
+                    trailing: user.dailyGoalMinutes == minutes
+                        ? Icon(
+                            Icons.check,
+                            color: Theme.of(context).colorScheme.primary,
+                          )
+                        : null,
+                    onTap: () => Navigator.of(context).pop(minutes),
+                  ),
+                ListTile(
+                  title: Text(l10n.profileDailyGoalClear),
+                  onTap: () => Navigator.of(context).pop(0),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+    if (selected == null || !mounted) {
+      return;
+    }
+    await _apply(
+      () => ref
+          .read(sessionControllerProvider.notifier)
+          .updateProfile(
+            dailyGoalMinutes: selected == 0 ? null : selected,
+            clearDailyGoal: selected == 0,
+          ),
+    );
+  }
+
   Future<void> _editReminderMessage(UserAccount user) async {
     final l10n = AppLocalizations.of(context);
     final controller = TextEditingController(text: user.notificationBody ?? '');
@@ -871,6 +1057,18 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               weekTrained: weekTrained,
               onTap: () => context.go(AppRoutes.progress),
             ),
+            if (user?.dailyGoalMinutes != null) ...[
+              const SizedBox(height: 12),
+              _DailyGoalProgress(
+                goalMinutes: user!.dailyGoalMinutes!,
+                doneMinutes: (weekDays
+                            .where((day) => day.isToday())
+                            .firstOrNull
+                            ?.seconds ??
+                        0) ~/
+                    60,
+              ),
+            ],
           ],
           const SizedBox(height: 28),
           AppCard(
@@ -1006,6 +1204,16 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                   ),
                 ],
                 divider(),
+                _ValueRow(
+                  label: l10n.profileDailyGoal,
+                  value: user?.dailyGoalMinutes == null
+                      ? l10n.profileDailyGoalNone
+                      : l10n.profileDailyGoalMinutes(user!.dailyGoalMinutes!),
+                  onTap: user == null || _saving
+                      ? null
+                      : () => _editDailyGoal(user),
+                ),
+                divider(),
                 _SwitchRow(
                   label: l10n.profileRanking,
                   value: user?.showInRanking ?? false,
@@ -1044,6 +1252,18 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               _ValueRow(
                 label: l10n.profileMessageTitle,
                 onTap: () => context.push(AppRoutes.profileMessage),
+              ),
+              _ValueRow(
+                label: l10n.profileInvite,
+                onTap: _inviteFriends,
+              ),
+              _ValueRow(
+                label: l10n.profileExportData,
+                onTap: _saving ? null : _exportData,
+              ),
+              _ValueRow(
+                label: l10n.profileAbout,
+                onTap: _openAbout,
               ),
               _ValueRow(
                 label: l10n.profileTerms,
@@ -1086,6 +1306,47 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 },
               ),
             ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _DailyGoalProgress extends StatelessWidget {
+  const _DailyGoalProgress({
+    required this.goalMinutes,
+    required this.doneMinutes,
+  });
+
+  final int goalMinutes;
+  final int doneMinutes;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final ratio = goalMinutes <= 0
+        ? 0.0
+        : (doneMinutes / goalMinutes).clamp(0.0, 1.0);
+    return AppCard(
+      padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            l10n.profileDailyGoalProgress(doneMinutes, goalMinutes),
+            style: const TextStyle(fontWeight: FontWeight.w700),
+          ),
+          const SizedBox(height: 10),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(999),
+            child: LinearProgressIndicator(
+              value: ratio,
+              minHeight: 8,
+              backgroundColor: Theme.of(
+                context,
+              ).colorScheme.surfaceContainerHighest,
+            ),
           ),
         ],
       ),

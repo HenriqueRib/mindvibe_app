@@ -583,6 +583,51 @@
   "feedbackHaptics": "Haptics",
   "feedbackSounds": "Completion sound",
   "feedbackAudioVolume": "Audio volume",
+  "profileExportData": "Export my data",
+  "profileExportReady": "Your data is ready to share.",
+  "profileExportError": "Could not export right now.",
+  "profileInvite": "Invite friends",
+  "profileInviteMessage": "Mental training on MindVibe. Join me: {url}",
+  "@profileInviteMessage": {
+    "placeholders": {
+      "url": {
+        "type": "String"
+      }
+    }
+  },
+  "profileAbout": "About the app",
+  "profileAboutVersion": "Version {version}",
+  "@profileAboutVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "profileRateApp": "Rate on the store",
+  "profileOpenSite": "Open the website",
+  "profileDailyGoal": "Daily goal",
+  "profileDailyGoalNone": "No goal",
+  "profileDailyGoalMinutes": "{minutes} min",
+  "@profileDailyGoalMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "profileDailyGoalProgress": "{done} of {goal} min today",
+  "@profileDailyGoalProgress": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "goal": {
+        "type": "int"
+      }
+    }
+  },
+  "profileDailyGoalClear": "Clear goal",
   "profileEditName": "Change name",
   "profileNameHint": "How you want to appear on the ranking.",
   "profileAvatarHint": "Tap the photo to pick a gallery image or a calm symbol. It shows on the ranking.",

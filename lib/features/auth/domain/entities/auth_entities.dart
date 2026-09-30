@@ -14,6 +14,7 @@ class UserAccount {
     this.notificationTime,
     this.notificationDays,
     this.notificationBody,
+    this.dailyGoalMinutes,
     this.avatarUrl,
     this.avatarEmoji,
     this.showInRanking = false,
@@ -33,6 +34,7 @@ class UserAccount {
   final String? notificationTime;
   final List<int>? notificationDays;
   final String? notificationBody;
+  final int? dailyGoalMinutes;
   final String? avatarUrl;
   final String? avatarEmoji;
   final bool showInRanking;

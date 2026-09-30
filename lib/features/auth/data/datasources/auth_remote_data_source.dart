@@ -102,4 +102,11 @@ class AuthRemoteDataSource {
   Future<Result<void>> deleteAccount() {
     return _client.delete('/me', parse: (_) {});
   }
+
+  Future<Result<Map<String, dynamic>>> exportData() {
+    return _client.get(
+      '/me/export',
+      parse: (data) => Map<String, dynamic>.from(data as Map),
+    );
+  }
 }

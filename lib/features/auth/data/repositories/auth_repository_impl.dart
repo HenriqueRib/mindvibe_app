@@ -122,6 +122,8 @@ class AuthRepositoryImpl implements AuthRepository {
     List<int>? notificationDays,
     String? notificationBody,
     bool clearNotificationBody = false,
+    int? dailyGoalMinutes,
+    bool clearDailyGoal = false,
     String? avatarEmoji,
     bool? showInRanking,
   }) {
@@ -134,6 +136,8 @@ class AuthRepositoryImpl implements AuthRepository {
       'notification_days': ?notificationDays,
       if (clearNotificationBody || notificationBody != null)
         'notification_body': clearNotificationBody ? null : notificationBody,
+      if (clearDailyGoal || dailyGoalMinutes != null)
+        'daily_goal_minutes': clearDailyGoal ? null : dailyGoalMinutes,
       'avatar_emoji': ?avatarEmoji,
       'show_in_ranking': ?showInRanking,
     });
@@ -174,6 +178,11 @@ class AuthRepositoryImpl implements AuthRepository {
     final result = await _remote.deleteAccount();
     await _tokenStore.clear();
     return result;
+  }
+
+  @override
+  Future<Result<Map<String, dynamic>>> exportData() {
+    return _remote.exportData();
   }
 
   Future<Result<AuthSession>> _authenticate(

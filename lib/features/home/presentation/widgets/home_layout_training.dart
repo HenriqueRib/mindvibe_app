@@ -5,6 +5,7 @@ import 'package:mindvibe_app/features/audio_player/presentation/widgets/cover_im
 import 'package:mindvibe_app/features/auth/domain/entities/auth_entities.dart';
 import 'package:mindvibe_app/features/billing/premium_access.dart';
 import 'package:mindvibe_app/features/exercises/presentation/widgets/daily_practice_card.dart';
+import 'package:mindvibe_app/features/home/presentation/widgets/home_daily_goal_card.dart';
 import 'package:mindvibe_app/features/home/presentation/widgets/home_shared.dart';
 import 'package:mindvibe_app/features/tools/presentation/widgets/today_focus_card.dart';
 import 'package:mindvibe_app/features/training/domain/entities/training_entities.dart';
@@ -177,7 +178,12 @@ class HomeTrainingLayout extends StatelessWidget {
           const SizedBox(height: 12),
           FadeSlideIn(
             index: 3,
-            child: HomeStatsStrip(l10n: l10n, progress: progress),
+            child: Column(
+              children: [
+                const HomeDailyGoalCard(),
+                HomeStatsStrip(l10n: l10n, progress: progress),
+              ],
+            ),
           ),
           const SizedBox(height: 24),
           FadeSlideIn(

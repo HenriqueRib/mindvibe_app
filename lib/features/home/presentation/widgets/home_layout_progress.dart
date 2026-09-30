@@ -8,6 +8,7 @@ import 'package:mindvibe_app/features/auth/domain/entities/auth_entities.dart';
 import 'package:mindvibe_app/features/billing/premium_access.dart';
 import 'package:mindvibe_app/features/exercises/presentation/widgets/daily_practice_card.dart';
 import 'package:mindvibe_app/features/home/presentation/home_actions.dart';
+import 'package:mindvibe_app/features/home/presentation/widgets/home_daily_goal_card.dart';
 import 'package:mindvibe_app/features/home/presentation/widgets/home_shared.dart';
 import 'package:mindvibe_app/features/tools/presentation/widgets/today_focus_card.dart';
 import 'package:mindvibe_app/features/training/domain/entities/training_entities.dart';
@@ -51,6 +52,7 @@ class HomeProgressLayout extends StatelessWidget {
             child: HomeGreetingBar(l10n: l10n, name: name, user: user),
           ),
           const SizedBox(height: 20),
+          const HomeDailyGoalCard(),
           FadeSlideIn(
             index: 1,
             child: AppCard(

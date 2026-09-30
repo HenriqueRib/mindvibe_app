@@ -1298,6 +1298,56 @@ class AppLocalizationsEn extends AppLocalizations {
   String get feedbackAudioVolume => 'Audio volume';
 
   @override
+  String get profileExportData => 'Export my data';
+
+  @override
+  String get profileExportReady => 'Your data is ready to share.';
+
+  @override
+  String get profileExportError => 'Could not export right now.';
+
+  @override
+  String get profileInvite => 'Invite friends';
+
+  @override
+  String profileInviteMessage(String url) {
+    return 'Mental training on MindVibe. Join me: $url';
+  }
+
+  @override
+  String get profileAbout => 'About the app';
+
+  @override
+  String profileAboutVersion(String version) {
+    return 'Version $version';
+  }
+
+  @override
+  String get profileRateApp => 'Rate on the store';
+
+  @override
+  String get profileOpenSite => 'Open the website';
+
+  @override
+  String get profileDailyGoal => 'Daily goal';
+
+  @override
+  String get profileDailyGoalNone => 'No goal';
+
+  @override
+  String profileDailyGoalMinutes(int minutes) {
+    return '$minutes min';
+  }
+
+  @override
+  String profileDailyGoalProgress(int done, int goal) {
+    return '$done of $goal min today';
+  }
+
+  @override
+  String get profileDailyGoalClear => 'Clear goal';
+
+  @override
   String get profileEditName => 'Change name';
 
   @override
@@ -3876,6 +3926,56 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get feedbackAudioVolume => 'Audio volume';
+
+  @override
+  String get profileExportData => 'Export my data';
+
+  @override
+  String get profileExportReady => 'Your data is ready to share.';
+
+  @override
+  String get profileExportError => 'Could not export right now.';
+
+  @override
+  String get profileInvite => 'Invite friends';
+
+  @override
+  String profileInviteMessage(String url) {
+    return 'Mental training on MindVibe. Join me: $url';
+  }
+
+  @override
+  String get profileAbout => 'About the app';
+
+  @override
+  String profileAboutVersion(String version) {
+    return 'Version $version';
+  }
+
+  @override
+  String get profileRateApp => 'Rate on the store';
+
+  @override
+  String get profileOpenSite => 'Open the website';
+
+  @override
+  String get profileDailyGoal => 'Daily goal';
+
+  @override
+  String get profileDailyGoalNone => 'No goal';
+
+  @override
+  String profileDailyGoalMinutes(int minutes) {
+    return '$minutes min';
+  }
+
+  @override
+  String profileDailyGoalProgress(int done, int goal) {
+    return '$done of $goal min today';
+  }
+
+  @override
+  String get profileDailyGoalClear => 'Clear goal';
 
   @override
   String get profileEditName => 'Change name';

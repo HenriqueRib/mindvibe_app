@@ -583,6 +583,51 @@
   "feedbackHaptics": "Vibração",
   "feedbackSounds": "Som ao concluir",
   "feedbackAudioVolume": "Volume do áudio",
+  "profileExportData": "Exportar meus dados",
+  "profileExportReady": "Seus dados estão prontos para compartilhar.",
+  "profileExportError": "Não foi possível exportar agora.",
+  "profileInvite": "Convidar amigos",
+  "profileInviteMessage": "Treino mental no MindVibe. Vem comigo: {url}",
+  "@profileInviteMessage": {
+    "placeholders": {
+      "url": {
+        "type": "String"
+      }
+    }
+  },
+  "profileAbout": "Sobre o app",
+  "profileAboutVersion": "Versão {version}",
+  "@profileAboutVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "profileRateApp": "Avaliar na loja",
+  "profileOpenSite": "Abrir o site",
+  "profileDailyGoal": "Meta diária",
+  "profileDailyGoalNone": "Sem meta",
+  "profileDailyGoalMinutes": "{minutes} min",
+  "@profileDailyGoalMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "profileDailyGoalProgress": "{done} de {goal} min hoje",
+  "@profileDailyGoalProgress": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "goal": {
+        "type": "int"
+      }
+    }
+  },
+  "profileDailyGoalClear": "Remover meta",
   "profileEditName": "Alterar nome",
   "profileNameHint": "Como você quer aparecer no ranking.",
   "profileAvatarHint": "Toque na foto para escolher uma imagem da galeria ou um símbolo calmo. Ela aparece no ranking.",

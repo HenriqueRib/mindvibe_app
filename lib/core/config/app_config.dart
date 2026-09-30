@@ -39,4 +39,13 @@ class AppConfig {
 
   static String get termsUrl => '$siteUrl/termos';
   static String get privacyUrl => '$siteUrl/privacidade';
+
+  /// Link compartilhado no convite (site público).
+  static String get inviteUrl => siteUrl;
+
+  /// Lojas — ajuste quando o app estiver publicado.
+  static const String iosStoreUrl =
+      'https://apps.apple.com/search?term=MindVibe';
+  static const String androidStoreUrl =
+      'https://play.google.com/store/search?q=MindVibe&c=apps';
 }

@@ -163,6 +163,8 @@ class SessionController extends StateNotifier<SessionState> {
     List<int>? notificationDays,
     String? notificationBody,
     bool clearNotificationBody = false,
+    int? dailyGoalMinutes,
+    bool clearDailyGoal = false,
     String? avatarEmoji,
     bool? showInRanking,
   }) async {
@@ -175,6 +177,8 @@ class SessionController extends StateNotifier<SessionState> {
       notificationDays: notificationDays,
       notificationBody: notificationBody,
       clearNotificationBody: clearNotificationBody,
+      dailyGoalMinutes: dailyGoalMinutes,
+      clearDailyGoal: clearDailyGoal,
       avatarEmoji: avatarEmoji,
       showInRanking: showInRanking,
     );
@@ -183,6 +187,10 @@ class SessionController extends StateNotifier<SessionState> {
       state = state.copyWith(user: user);
     }
     return result;
+  }
+
+  Future<Result<Map<String, dynamic>>> exportData() {
+    return _auth.exportData();
   }
 
   Future<Result<UserAccount>> uploadAvatar(String filePath) async {

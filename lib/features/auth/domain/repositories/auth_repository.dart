@@ -53,6 +53,8 @@ abstract class AuthRepository {
     List<int>? notificationDays,
     String? notificationBody,
     bool clearNotificationBody = false,
+    int? dailyGoalMinutes,
+    bool clearDailyGoal = false,
     String? avatarEmoji,
     bool? showInRanking,
   });
@@ -71,4 +73,6 @@ abstract class AuthRepository {
   Future<Result<void>> disassociateDevice(String uuid);
 
   Future<Result<void>> deleteAccount();
+
+  Future<Result<Map<String, dynamic>>> exportData();
 }
