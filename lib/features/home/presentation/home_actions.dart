@@ -63,6 +63,9 @@ void openHomeDestination(
     case 'breathing':
       context.push(AppRoutes.breathing);
       return;
+    case 'blink':
+      context.push(AppRoutes.blink);
+      return;
     case 'sleep':
       context.push(AppRoutes.momentsPath(category: 'sleep'));
       return;

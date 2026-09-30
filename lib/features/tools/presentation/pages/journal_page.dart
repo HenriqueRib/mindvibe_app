@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:mindvibe_app/app/widgets/app_widgets.dart';
 import 'package:mindvibe_app/core/error/failure_message.dart';
+import 'package:mindvibe_app/core/storage/feedback_store.dart';
 import 'package:mindvibe_app/features/tools/presentation/providers/journal_controller.dart';
 import 'package:mindvibe_app/features/training/domain/entities/training_entities.dart';
 import 'package:mindvibe_app/l10n/app_localizations.dart';
@@ -77,7 +77,7 @@ class _JournalPageState extends ConsumerState<JournalPage> {
                         label: l10n.journalPrompt(prompt.name),
                         selected: state.prompt == prompt,
                         onTap: () {
-                          HapticFeedback.selectionClick();
+                          AppFeedback.selection();
                           runner.setPrompt(prompt);
                         },
                       ),

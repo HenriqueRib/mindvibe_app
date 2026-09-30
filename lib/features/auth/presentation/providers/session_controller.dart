@@ -123,6 +123,32 @@ class SessionController extends StateNotifier<SessionState> {
     return _auth.resetPassword(email: email, token: token, password: password);
   }
 
+  Future<Result<void>> changePassword({
+    required String currentPassword,
+    required String password,
+  }) {
+    return _auth.changePassword(
+      currentPassword: currentPassword,
+      password: password,
+    );
+  }
+
+  Future<Result<UserAccount>> changeEmail({
+    required String currentPassword,
+    required String email,
+  }) async {
+    final result = await _auth.changeEmail(
+      currentPassword: currentPassword,
+      email: email,
+    );
+    final user = result.valueOrNull;
+    if (user != null) {
+      state = state.copyWith(user: user);
+      unawaited(_rememberedAccount.keepEmail(user.email));
+    }
+    return result;
+  }
+
   Future<void> logout() async {
     await _auth.logout();
     await _lookupGuest();
@@ -134,6 +160,9 @@ class SessionController extends StateNotifier<SessionState> {
     String? locale,
     bool? notificationEnabled,
     String? notificationTime,
+    List<int>? notificationDays,
+    String? notificationBody,
+    bool clearNotificationBody = false,
     String? avatarEmoji,
     bool? showInRanking,
   }) async {
@@ -143,6 +172,9 @@ class SessionController extends StateNotifier<SessionState> {
       locale: locale,
       notificationEnabled: notificationEnabled,
       notificationTime: notificationTime,
+      notificationDays: notificationDays,
+      notificationBody: notificationBody,
+      clearNotificationBody: clearNotificationBody,
       avatarEmoji: avatarEmoji,
       showInRanking: showInRanking,
     );

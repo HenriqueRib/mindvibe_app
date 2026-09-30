@@ -22,6 +22,7 @@ import 'package:mindvibe_app/features/catalog/presentation/pages/choose_plan_pag
 import 'package:mindvibe_app/features/catalog/presentation/pages/listen_page.dart';
 import 'package:mindvibe_app/features/catalog/presentation/pages/moments_page.dart';
 import 'package:mindvibe_app/features/catalog/presentation/pages/program_detail_page.dart';
+import 'package:mindvibe_app/features/exercises/presentation/pages/blink_hub_page.dart';
 import 'package:mindvibe_app/features/exercises/presentation/pages/breathing_hub_page.dart';
 import 'package:mindvibe_app/features/exercises/presentation/pages/daily_circuit_page.dart';
 import 'package:mindvibe_app/features/exercises/presentation/pages/daily_hub_page.dart';
@@ -148,6 +149,9 @@ final routerProvider = Provider<GoRouter>((ref) {
           if (state.uri.queryParameters['type'] == 'breathing') {
             return AppRoutes.breathing;
           }
+          if (state.uri.queryParameters['type'] == 'blink') {
+            return AppRoutes.blink;
+          }
           return null;
         },
         builder: (context, state) => PageWithMiniPlayer(
@@ -160,6 +164,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.breathing,
         builder: (context, state) =>
             const PageWithMiniPlayer(child: BreathingHubPage()),
+      ),
+      GoRoute(
+        path: AppRoutes.blink,
+        builder: (context, state) =>
+            const PageWithMiniPlayer(child: BlinkHubPage()),
       ),
       GoRoute(
         path: AppRoutes.daily,

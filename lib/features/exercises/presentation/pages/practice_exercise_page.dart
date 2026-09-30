@@ -4,9 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:mindvibe_app/app/widgets/app_widgets.dart';
 import 'package:mindvibe_app/core/error/failure_message.dart';
 import 'package:mindvibe_app/core/providers/core_providers.dart';
+import 'package:mindvibe_app/features/exercises/domain/blink_cycle.dart';
 import 'package:mindvibe_app/features/exercises/domain/breathing_cycle.dart';
 import 'package:mindvibe_app/features/exercises/domain/exercise_parsers.dart';
 import 'package:mindvibe_app/features/exercises/presentation/widgets/attention_exercise_view.dart';
+import 'package:mindvibe_app/features/exercises/presentation/widgets/blink_practice_flow.dart';
 import 'package:mindvibe_app/features/exercises/presentation/widgets/breathing_exercise_view.dart';
 import 'package:mindvibe_app/features/exercises/presentation/widgets/daily_drill_view.dart';
 import 'package:mindvibe_app/features/exercises/presentation/widgets/memory_exercise_view.dart';
@@ -34,7 +36,11 @@ class _PracticeExercisePageState extends ConsumerState<PracticeExercisePage> {
     return _memory ??= MemoryConfig.fromJson(config, extraWords: extra);
   }
 
-  Future<void> _submit(Map<String, dynamic> payload) async {
+  Future<void> _submit(
+    Map<String, dynamic> payload, {
+    bool popOnSuccess = true,
+    String? successMessage,
+  }) async {
     if (_submitting) {
       return;
     }
@@ -66,12 +72,72 @@ class _PracticeExercisePageState extends ConsumerState<PracticeExercisePage> {
           children: [
             Icon(Icons.check_circle_rounded, color: barStyle?.color),
             const SizedBox(width: 12),
-            Expanded(child: Text(l10n.exerciseRoomDone, style: barStyle)),
+            Expanded(
+              child: Text(successMessage ?? l10n.exerciseRoomDone, style: barStyle),
+            ),
           ],
         ),
       ),
     );
-    context.pop();
+    if (popOnSuccess) {
+      context.pop();
+    }
+  }
+
+  Future<bool> _submitBlinkSet({
+    required int setIndex,
+    required int durationMs,
+    required bool hasMoreSets,
+    required BlinkCycleConfig blink,
+  }) async {
+    final l10n = AppLocalizations.of(context);
+    if (_submitting) {
+      return false;
+    }
+    _submitting = true;
+    final result = await ref
+        .read(trainingRepositoryProvider)
+        .submitExerciseResult(
+          exerciseId: widget.exercise.id,
+          userSessionId: null,
+          payload: {
+            'cycles_completed': blink.reps,
+            'duration_ms': durationMs,
+            'completed': true,
+            'set_index': setIndex,
+          },
+        );
+    if (!mounted) {
+      return false;
+    }
+    _submitting = false;
+    if (!result.isSuccess) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(failureMessage(result.failureOrNull!, l10n))),
+      );
+      return false;
+    }
+    ref.invalidate(progressProvider);
+    ref.invalidate(historyProvider);
+    final barStyle = Theme.of(context).snackBarTheme.contentTextStyle;
+    final message = blink.hasMultipleSets
+        ? l10n.blinkSetSaved(setIndex, blink.setsPerDay)
+        : l10n.exerciseRoomDone;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            Icon(Icons.check_circle_rounded, color: barStyle?.color),
+            const SizedBox(width: 12),
+            Expanded(child: Text(message, style: barStyle)),
+          ],
+        ),
+      ),
+    );
+    if (!hasMoreSets) {
+      context.pop();
+    }
+    return true;
   }
 
   @override
@@ -91,6 +157,7 @@ class _PracticeExercisePageState extends ConsumerState<PracticeExercisePage> {
           )
         : _memoryOf(config, extraWords.valueOrNull ?? const []);
     final breathing = BreathingCycleConfig.fromJson(config);
+    final blink = BlinkCycleConfig.fromJson(config);
 
     final showMemoryWords =
         memory.variant == MemoryVariant.words ||
@@ -98,6 +165,21 @@ class _PracticeExercisePageState extends ConsumerState<PracticeExercisePage> {
 
     final child = switch (exercise.type) {
       'daily' => DailyDrillView(exercise: exercise, onCompleted: _submit),
+      'blink' => BlinkPracticeFlow(
+        config: blink,
+        onSubmitSet: ({
+          required setIndex,
+          required durationMs,
+          required hasMoreSets,
+        }) {
+          return _submitBlinkSet(
+            setIndex: setIndex,
+            durationMs: durationMs,
+            hasMoreSets: hasMoreSets,
+            blink: blink,
+          );
+        },
+      ),
       'breathing' || 'attention' || 'memory' => PreparedExercise(
         type: exercise.type,
         target: exercise.type == 'attention' ? attention.target : null,

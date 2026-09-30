@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mindvibe_app/core/notifications/notification_scheduler.dart';
 import 'package:mindvibe_app/core/providers/core_providers.dart';
+import 'package:mindvibe_app/core/storage/feedback_store.dart';
 import 'package:mindvibe_app/features/training/presentation/providers/training_providers.dart';
 import 'package:uuid/uuid.dart';
 
@@ -167,7 +167,7 @@ class PomodoroController extends StateNotifier<PomodoroState> {
     _tick?.cancel();
     _tick = null;
     try {
-      await HapticFeedback.mediumImpact();
+      await AppFeedback.medium();
       final wasFocus = state.phase == PomodoroPhase.focus;
       final focusDuration = state.preset.focus;
       try {

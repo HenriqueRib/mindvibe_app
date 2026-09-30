@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:mindvibe_app/app/router/app_routes.dart';
 import 'package:mindvibe_app/app/widgets/app_widgets.dart';
 import 'package:mindvibe_app/core/error/failure_message.dart';
+import 'package:mindvibe_app/core/storage/feedback_store.dart';
 import 'package:mindvibe_app/features/audio_player/presentation/widgets/cover_image.dart';
 import 'package:mindvibe_app/features/catalog/domain/audio_category.dart';
 import 'package:mindvibe_app/features/catalog/presentation/pages/listen_page.dart';
@@ -133,7 +133,7 @@ class _DayClosePageState extends ConsumerState<DayClosePage> {
                     moment: state.snapshot.audio!,
                     playLabel: l10n.dayClosePlay,
                     onPlay: () {
-                      HapticFeedback.selectionClick();
+                      AppFeedback.selection();
                       context.push(
                         AppRoutes.listen,
                         extra: ListenLaunch(

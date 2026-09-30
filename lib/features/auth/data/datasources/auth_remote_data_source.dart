@@ -40,6 +40,18 @@ class AuthRemoteDataSource {
     return _client.post('/auth/reset-password', body: body, parse: (_) {});
   }
 
+  Future<Result<void>> changePassword(Map<String, dynamic> body) {
+    return _client.put('/me/password', body: body, parse: (_) {});
+  }
+
+  Future<Result<UserAccount>> changeEmail(Map<String, dynamic> body) {
+    return _client.put(
+      '/me/email',
+      body: body,
+      parse: (data) => userFromJson(data as Map<String, dynamic>),
+    );
+  }
+
   Future<Result<void>> logout() {
     return _client.post('/auth/logout', parse: (_) {});
   }

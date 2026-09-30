@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mindvibe_app/app/router/app_routes.dart';
 import 'package:mindvibe_app/features/auth/domain/entities/auth_entities.dart';
 
-const premiumHomeSlugs = {'breathing', 'sleep', 'relaxation', 'memory'};
+const premiumHomeSlugs = {'breathing', 'blink', 'sleep', 'relaxation', 'memory'};
 
 bool isPremiumAccount(UserAccount? user) => user?.isPremium == true;
 
@@ -15,6 +15,7 @@ bool locationRequiresPremium(String location) {
     AppRoutes.listen,
     AppRoutes.exerciseLibrary,
     AppRoutes.breathing,
+    AppRoutes.blink,
     AppRoutes.daily,
     AppRoutes.dailyCircuit,
     AppRoutes.practice,

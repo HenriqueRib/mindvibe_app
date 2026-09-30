@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:mindvibe_app/app/theme/app_theme.dart';
 import 'package:mindvibe_app/app/widgets/app_widgets.dart';
+import 'package:mindvibe_app/core/storage/feedback_store.dart';
 import 'package:mindvibe_app/features/exercises/domain/daily_drills.dart';
 import 'package:mindvibe_app/features/tools/presentation/widgets/timer_ring.dart';
 import 'package:mindvibe_app/features/training/domain/entities/training_entities.dart';
@@ -206,7 +206,7 @@ class _ReverseDrillState extends State<_ReverseDrill> {
 
   void _tap(String item) {
     final expected = _round.expected[_index];
-    HapticFeedback.selectionClick();
+    AppFeedback.selection();
     if (item != expected) {
       setState(() => _wrong = item);
       return;
@@ -363,7 +363,7 @@ class _CategoriesDrillState extends State<_CategoriesDrill> {
       return;
     }
     _input.clear();
-    HapticFeedback.selectionClick();
+    AppFeedback.selection();
     setState(() {
       _lists[_group].add(value);
       if (_lists[_group].length >= 5 && _group < 3) {
@@ -567,7 +567,7 @@ class _CountdownDrillState extends State<_CountdownDrill> {
 
   void _pick(int value) {
     final expected = _current - 3;
-    HapticFeedback.selectionClick();
+    AppFeedback.selection();
     if (value != expected) {
       setState(() => _error = true);
       return;
@@ -699,7 +699,7 @@ class _SensesDrillState extends State<_SensesDrill> {
       return;
     }
     _input.clear();
-    HapticFeedback.selectionClick();
+    AppFeedback.selection();
     setState(() {
       _lists[_group].add(value);
       if (_lists[_group].length >= groups[_group].$2 && _group < 4) {
@@ -932,7 +932,7 @@ class _UsesDrillState extends State<_UsesDrill> {
       return;
     }
     _input.clear();
-    HapticFeedback.selectionClick();
+    AppFeedback.selection();
     setState(() => _items.add(value));
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
@@ -1045,7 +1045,7 @@ class _SortDrillState extends State<_SortDrill> {
   }
 
   void _classify(_SortBucket bucket) {
-    HapticFeedback.selectionClick();
+    AppFeedback.selection();
     _buckets[_index] = bucket;
     if (_index >= _items.length - 1) {
       widget.onDone(_items.length);

@@ -339,6 +339,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeNowBreathe => 'Breathe';
 
   @override
+  String get homeNowBlink => 'Blink';
+
+  @override
   String get homeNowStudy => 'Study';
 
   @override
@@ -420,6 +423,39 @@ class AppLocalizationsEn extends AppLocalizations {
   String get libraryBreathingRoomBody => 'Exercises and audio on one screen.';
 
   @override
+  String get libraryBlinkKindCso => 'Close · squeeze · open';
+
+  @override
+  String get libraryBlinkKindMicro => 'Complete micro-set';
+
+  @override
+  String get libraryBlinkKindBreak => '20-20-20 break';
+
+  @override
+  String get libraryBlinkRoom => 'Blink room';
+
+  @override
+  String get libraryBlinkRoomBody =>
+      'Short drills for full blinks and screen breaks.';
+
+  @override
+  String get blinkHubTitle => 'Blinking';
+
+  @override
+  String get blinkHubBody =>
+      'Train complete blinks to keep your eyes lubricated, especially at screens.';
+
+  @override
+  String get blinkHubEmpty => 'No blink drills here right now.';
+
+  @override
+  String get blinkDisclaimer =>
+      'Education and habit. Not a substitute for an eye exam.';
+
+  @override
+  String get homeExerciseBlink => 'Blinking';
+
+  @override
   String get breathingHubTitle => 'Breathing';
 
   @override
@@ -440,7 +476,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get homeExercisesBody =>
-      'Daily practice, attention, memory and breathing.';
+      'Daily practice, blinking, attention, memory and breathing.';
 
   @override
   String get homeExerciseBreathing => 'Breathing';
@@ -452,30 +488,30 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeExerciseMemory => 'Memory';
 
   @override
-  String get dailyHubTitle => 'Prática diária';
+  String get dailyHubTitle => 'Daily practice';
 
   @override
   String get dailyHubBody =>
-      'Dez treinos curtos. A rotina de 15 minutos monta o dia por você.';
+      'Ten short drills. The 15-minute routine builds the day for you.';
 
   @override
-  String get dailyHubList => 'Escolha um treino';
+  String get dailyHubList => 'Pick a drill';
 
   @override
-  String get dailyStart => 'Começar';
+  String get dailyStart => 'Start';
 
   @override
-  String get dailyFinish => 'Concluir';
+  String get dailyFinish => 'Finish';
 
   @override
   String get dailyNeedWrite =>
-      'Escreva pelo menos algumas respostas. Sem isso, o treino não conta.';
+      'Write at least a few answers. Without that, the drill doesn’t count.';
 
   @override
-  String get dailyNeedCount => 'Faça algumas contas antes de concluir.';
+  String get dailyNeedCount => 'Do a few counts before finishing.';
 
   @override
-  String get dailyAdd => 'Adicionar';
+  String get dailyAdd => 'Add';
 
   @override
   String dailyMinutes(int minutes) {
@@ -488,285 +524,287 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get dailyCircuitTitle => 'Rotina de 15 minutos';
+  String get dailyCircuitTitle => '15-minute routine';
 
   @override
   String get dailyCircuitBody =>
-      'Cinco minutos de concentração, cinco de memória, cinco de criatividade. Se a mente estiver saturada, inverte: sentidos, organização e silêncio.';
+      'Five minutes of focus, five of memory, five of creativity. If your mind feels full, flip it: senses, sorting, and silence.';
 
   @override
-  String get dailyCircuitFocus => 'Hoje: treinar a mente.';
+  String get dailyCircuitFocus => 'Today: train the mind.';
 
   @override
-  String get dailyCircuitSaturated => 'Hoje: recuperar espaço.';
+  String get dailyCircuitSaturated => 'Today: make space again.';
 
   @override
-  String get dailyCircuitCta => 'Começar os 15 minutos';
+  String get dailyCircuitCta => 'Start the 15 minutes';
 
   @override
-  String get dailyRestToggle => 'Mente saturada hoje';
+  String get dailyRestToggle => 'Mind feels full today';
 
   @override
-  String get dailyModeTrain => 'Treinar';
+  String get dailyModeTrain => 'Train';
 
   @override
-  String get dailyModeRest => 'Descansar';
+  String get dailyModeRest => 'Rest';
 
   @override
-  String get dailyReady => 'Já olhei';
+  String get dailyReady => 'I’ve looked';
 
   @override
-  String get dailySkipThis => 'Pular esta';
+  String get dailySkipThis => 'Skip this one';
 
   @override
-  String get dailyLeaveTitle => 'Sair da rotina?';
+  String get dailyLeaveTitle => 'Leave the routine?';
 
   @override
-  String get dailyLeaveBody => 'O passo atual não será guardado.';
+  String get dailyLeaveBody => 'The current step won’t be saved.';
 
   @override
-  String get dailyLeaveConfirm => 'Sair';
+  String get dailyLeaveConfirm => 'Leave';
 
   @override
-  String get dailyDoneToday => 'Feito hoje';
+  String get dailyDoneToday => 'Done today';
 
   @override
-  String get dailyHomeTitle => '15 minutos';
+  String get dailyHomeTitle => '15 minutes';
 
   @override
-  String get dailyHomeCta => 'Rotina de hoje';
+  String get dailyHomeCta => 'Today’s routine';
 
   @override
-  String get dailyFamilyFocus => 'Concentração';
+  String get dailyFamilyFocus => 'Focus';
 
   @override
-  String get dailyFamilyMemory => 'Memória';
+  String get dailyFamilyMemory => 'Memory';
 
   @override
-  String get dailyFamilyPresence => 'Presença';
+  String get dailyFamilyPresence => 'Presence';
 
   @override
-  String get dailyFamilyCreate => 'Criatividade';
+  String get dailyFamilyCreate => 'Creativity';
 
   @override
   String dailyCircuitStep(int current, int total) {
-    return '$current de $total';
+    return '$current of $total';
   }
 
   @override
-  String get dailyCircuitDone => 'Rotina concluída. Isso já é o treino.';
+  String get dailyCircuitDone =>
+      'Routine done. That already counts as training.';
 
   @override
-  String get dailyMetaObserve => '2 min · atenção';
+  String get dailyMetaObserve => '2 min · attention';
 
   @override
-  String get dailyMetaReverse => 'Memória de trabalho';
+  String get dailyMetaReverse => 'Working memory';
 
   @override
-  String get dailyMetaCategories => '3 min · raciocínio';
+  String get dailyMetaCategories => '3 min · reasoning';
 
   @override
-  String get dailyMetaRetell => 'Compreensão';
+  String get dailyMetaRetell => 'Comprehension';
 
   @override
-  String get dailyMetaCountdown => 'Foco';
+  String get dailyMetaCountdown => 'Focus';
 
   @override
-  String get dailyMetaSenses => 'Presente';
+  String get dailyMetaSenses => 'Present';
 
   @override
-  String get dailyMetaTask => '10 min · uma coisa';
+  String get dailyMetaTask => '10 min · one thing';
 
   @override
-  String get dailyMetaUses => 'Criatividade';
+  String get dailyMetaUses => 'Creativity';
 
   @override
-  String get dailyMetaSort => 'Organizar a cabeça';
+  String get dailyMetaSort => 'Clear your head';
 
   @override
-  String get dailyMetaSilence => '5 min · descanso';
+  String get dailyMetaSilence => '5 min · rest';
 
   @override
-  String get dailyObserveTitle => 'Observação consciente';
+  String get dailyObserveTitle => 'Mindful observation';
 
   @override
   String get dailyObserveBody =>
-      'Escolha um objeto e observe. Cor, formato, textura, detalhes. Só isso.';
+      'Pick an object and look closely. Color, shape, texture, details. That’s it.';
 
   @override
-  String get dailyObservePick => 'O que você vai observar?';
+  String get dailyObservePick => 'What will you observe?';
 
   @override
   String dailyObserveLook(String object) {
-    return 'Olhe para $object.';
+    return 'Look at $object.';
   }
 
   @override
-  String get dailyReverseTitle => 'Memória reversa';
+  String get dailyReverseTitle => 'Reverse memory';
 
   @override
   String get dailyReverseBody =>
-      'Cinco palavras, números ou objetos. Depois, de trás para frente.';
+      'Five words, numbers, or objects. Then reverse the order.';
 
   @override
-  String get dailyReverseLook => 'Olhe. Depois some.';
+  String get dailyReverseLook => 'Look. Then hide them.';
 
   @override
-  String get dailyReverseAsk => 'Toque de trás para frente.';
+  String get dailyReverseAsk => 'Tap them backwards.';
 
   @override
   String dailyReverseStep(int current, int total) {
-    return '$current de $total';
+    return '$current of $total';
   }
 
   @override
-  String get dailyReverseHint => 'Próximo número';
+  String get dailyReverseHint => 'Next number';
 
   @override
-  String get dailyReverseWrong => 'Não era esse. Tente o último que lembra.';
+  String get dailyReverseWrong =>
+      'That wasn’t it. Try the last one you remember.';
 
   @override
-  String get dailyCategoriesTitle => 'Desafio das categorias';
+  String get dailyCategoriesTitle => 'Category challenge';
 
   @override
   String get dailyCategoriesBody =>
-      'Uma letra. Cinco animais, comidas, profissões e lugares.';
+      'One letter. Five animals, foods, jobs, and places.';
 
   @override
   String dailyCategoriesLetter(String letter) {
-    return 'Letra $letter';
+    return 'Letter $letter';
   }
 
   @override
-  String get dailyRetellTitle => 'Recontar de memória';
+  String get dailyRetellTitle => 'Retell from memory';
 
   @override
   String get dailyRetellBody =>
-      'Leia um texto curto. Depois explique com suas palavras.';
+      'Read a short text. Then explain it in your own words.';
 
   @override
-  String get dailyRetellRead => 'Leia com calma. Depois some o texto.';
+  String get dailyRetellRead => 'Read slowly. Then hide the text.';
 
   @override
-  String get dailyRetellHide => 'Já li';
+  String get dailyRetellHide => 'I’ve read it';
 
   @override
-  String get dailyRetellWrite => 'Agora conte com suas palavras.';
+  String get dailyRetellWrite => 'Now tell it in your own words.';
 
   @override
-  String get dailyRetellHint => 'O que ficou';
+  String get dailyRetellHint => 'What stuck';
 
   @override
-  String get dailyCountdownTitle => 'Contagem consciente';
+  String get dailyCountdownTitle => 'Mindful countdown';
 
   @override
   String get dailyCountdownBody =>
-      'De 100 a 0, de 3 em 3. Se perder, volte ao último que lembra.';
+      'From 100 to 0, subtracting by 3. If you lose track, go back to the last one you remember.';
 
   @override
-  String get dailyCountdownAsk => 'Qual é o próximo, menos 3?';
+  String get dailyCountdownAsk => 'What’s next, minus 3?';
 
   @override
-  String get dailyCountdownMinus => 'menos 3';
+  String get dailyCountdownMinus => 'minus 3';
 
   @override
-  String get dailyCountdownHint => 'Próximo';
+  String get dailyCountdownHint => 'Next';
 
   @override
-  String get dailyCountdownWrong => 'Volte ao último que lembra.';
+  String get dailyCountdownWrong => 'Go back to the last one you remember.';
 
   @override
-  String get dailySensesTitle => 'Exercício dos sentidos';
+  String get dailySensesTitle => 'Senses exercise';
 
   @override
   String get dailySensesBody =>
-      'Cinco coisas que vê, quatro que toca, três sons, dois cheiros, uma no corpo.';
+      'Five things you see, four you can touch, three sounds, two smells, one in the body.';
 
   @override
-  String get dailySensesHint => 'Olhe em volta. Não precisa ser especial.';
+  String get dailySensesHint => 'Look around. It doesn’t have to be special.';
 
   @override
-  String get dailySensesSee => '5 coisas que você vê';
+  String get dailySensesSee => '5 things you see';
 
   @override
-  String get dailySensesTouch => '4 que consegue tocar';
+  String get dailySensesTouch => '4 you can touch';
 
   @override
-  String get dailySensesHear => '3 sons';
+  String get dailySensesHear => '3 sounds';
 
   @override
-  String get dailySensesSmell => '2 cheiros';
+  String get dailySensesSmell => '2 smells';
 
   @override
-  String get dailySensesFeel => '1 coisa no corpo';
+  String get dailySensesFeel => '1 thing in the body';
 
   @override
-  String get dailyTaskTitle => 'Uma tarefa por vez';
+  String get dailyTaskTitle => 'One task at a time';
 
   @override
   String get dailyTaskBody =>
-      'Dez minutos. Uma atividade. Sem celular e sem trocar.';
+      'Ten minutes. One activity. No phone and no switching.';
 
   @override
-  String get dailyTaskPick => 'O que você vai fazer agora?';
+  String get dailyTaskPick => 'What will you do now?';
 
   @override
   String dailyTaskDoing(String task) {
-    return '$task. Só isto.';
+    return '$task. Just this.';
   }
 
   @override
-  String get dailyTaskPhone =>
-      'Deixe o celular de lado. O timer continua aqui.';
+  String get dailyTaskPhone => 'Put the phone aside. The timer stays here.';
 
   @override
-  String get dailyUsesTitle => 'Usos de um objeto';
+  String get dailyUsesTitle => 'Object uses';
 
   @override
-  String get dailyUsesBody => 'Um objeto comum. Dez usos diferentes.';
+  String get dailyUsesBody => 'One ordinary object. Ten different uses.';
 
   @override
   String dailyUsesObject(String object) {
-    return '10 usos para $object';
+    return '10 uses for $object';
   }
 
   @override
-  String get dailySortTitle => 'Diário mental';
+  String get dailySortTitle => 'Mental journal';
 
   @override
   String get dailySortBody =>
-      'Escreva o que está na cabeça. Depois separe: resolver, depois, ou não depende de mim.';
+      'Write what’s on your mind. Then sort: deal with it, later, or not up to me.';
 
   @override
-  String get dailySortDump => 'Tudo que está passando. Sem organizar.';
+  String get dailySortDump =>
+      'Everything that’s passing through. No organizing yet.';
 
   @override
-  String get dailySortHint => 'Uma coisa por linha';
+  String get dailySortHint => 'One thing per line';
 
   @override
-  String get dailySortClassify => 'Classificar';
+  String get dailySortClassify => 'Sort';
 
   @override
-  String get dailySortPick => 'Onde cada uma fica?';
+  String get dailySortPick => 'Where does each one belong?';
 
   @override
-  String get dailySortResolve => 'Resolver';
+  String get dailySortResolve => 'Deal with it';
 
   @override
-  String get dailySortLater => 'Depois';
+  String get dailySortLater => 'Later';
 
   @override
-  String get dailySortNotMine => 'Não depende de mim';
+  String get dailySortNotMine => 'Not up to me';
 
   @override
-  String get dailySilenceTitle => 'Silêncio intencional';
+  String get dailySilenceTitle => 'Intentional silence';
 
   @override
   String get dailySilenceBody =>
-      'Cinco minutos sem aprender, assistir ou consumir. Só a respiração e os pensamentos passando.';
+      'Five minutes without learning, watching, or consuming. Just the breath and thoughts passing by.';
 
   @override
-  String get dailySilenceHint => 'Não tente resolver nada. Observe o ar.';
+  String get dailySilenceHint => 'Don’t try to fix anything. Watch the air.';
 
   @override
   String get homeExploreTitle => 'The six rooms';
@@ -900,7 +938,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get menuMyPlanHint => 'Days done and what’s next';
 
   @override
-  String get menuExercisesHint => 'Atenção, memória e respiração';
+  String get menuExercisesHint => 'Blinks, attention, memory, and breath';
 
   @override
   String get menuRoomHint => 'A full program';
@@ -1091,18 +1129,18 @@ class AppLocalizationsEn extends AppLocalizations {
       'Extra audios, exercises and tools are part of Premium. The first days of the plan stay free.';
 
   @override
-  String get paywallFreeLabel => 'Livre agora';
+  String get paywallFreeLabel => 'Free now';
 
   @override
   String get paywallFreeList =>
-      'Check-in, caderno, Mente cheia e os primeiros dias do seu plano.';
+      'Check-in, notebook, Full mind, and the first days of your plan.';
 
   @override
-  String get paywallPremiumLabel => 'No Premium';
+  String get paywallPremiumLabel => 'With Premium';
 
   @override
   String get paywallPremiumList =>
-      'Áudios, prática diária, exercícios, pomodoro, sala silenciosa, pensamentos e o restante do plano.';
+      'Audios, daily practice, exercises, pomodoro, silent room, thoughts, and the rest of the plan.';
 
   @override
   String get paywallCtaSoon => 'Subscription coming soon';
@@ -1181,7 +1219,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get billingPaymentRefunded => 'Refunded';
 
   @override
-  String get profilePlanFree => 'Plano gratuito';
+  String get profilePlanFree => 'Free plan';
 
   @override
   String get profilePlanPremium => 'Premium';
@@ -1216,6 +1254,48 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profileSaved => 'Profile updated.';
+
+  @override
+  String get profileChangePassword => 'Change password';
+
+  @override
+  String get fieldCurrentPassword => 'Current password';
+
+  @override
+  String get fieldNewPassword => 'New password';
+
+  @override
+  String get profilePasswordChanged => 'Password updated.';
+
+  @override
+  String get profileWeekTrained => 'Week';
+
+  @override
+  String get profileChangeEmail => 'Change email';
+
+  @override
+  String get fieldNewEmail => 'New email';
+
+  @override
+  String get profileEmailChanged => 'Email updated.';
+
+  @override
+  String get reminderDays => 'Reminder days';
+
+  @override
+  String get reminderMessage => 'Reminder text';
+
+  @override
+  String get reminderMessageHint => 'Leave empty to use the default text.';
+
+  @override
+  String get feedbackHaptics => 'Haptics';
+
+  @override
+  String get feedbackSounds => 'Completion sound';
+
+  @override
+  String get feedbackAudioVolume => 'Audio volume';
 
   @override
   String get profileEditName => 'Change name';
@@ -1896,6 +1976,82 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get breathingBriefingTideBody =>
       'The exhale is longer than the inhale. Follow the tide in and out. Don’t force it.';
+
+  @override
+  String get blinkBriefingTitle => 'Complete blink';
+
+  @override
+  String get blinkBriefingBody =>
+      'Close your eyes, squeeze gently, then open. The squeeze is light — just enough for the lids to meet fully. Education and habit; not a substitute for an eye exam.';
+
+  @override
+  String get blinkBriefingMicroTitle => 'Blink micro-set';
+
+  @override
+  String get blinkBriefingMicroBody =>
+      'A few slow, complete blinks. Use them at the screen when your eyes ask for it. Education and habit; not a substitute for an eye exam.';
+
+  @override
+  String get blinkBriefingBreakTitle => '20-20-20 break';
+
+  @override
+  String get blinkBriefingBreakBody =>
+      'Look far away for 20 seconds, then do complete blinks. Education and habit; not a substitute for an eye exam.';
+
+  @override
+  String get blinkClose => 'CLOSE';
+
+  @override
+  String get blinkSqueeze => 'LIGHT SQUEEZE';
+
+  @override
+  String get blinkOpen => 'OPEN';
+
+  @override
+  String get blinkLookAway => 'LOOK AWAY';
+
+  @override
+  String get blinkLookAwayHint =>
+      'Focus on something about 20 feet away for 20 seconds';
+
+  @override
+  String blinkCycle(int current, int total) {
+    return 'Cycle $current of $total';
+  }
+
+  @override
+  String get blinkSetPickerLabel => 'Which set are you doing now?';
+
+  @override
+  String blinkSetChip(int n) {
+    return 'Set $n';
+  }
+
+  @override
+  String blinkSetProgress(int current, int total) {
+    return 'Set $current of $total';
+  }
+
+  @override
+  String blinkSetSaved(int current, int total) {
+    return 'Set $current/$total saved';
+  }
+
+  @override
+  String blinkSetDoneTitle(int current, int total) {
+    return 'Set $current of $total done';
+  }
+
+  @override
+  String blinkSetDoneBody(int next, int total) {
+    return 'Do set $next of $total now?';
+  }
+
+  @override
+  String get blinkSetContinue => 'Continue';
+
+  @override
+  String get blinkSetFinish => 'Stop for now';
 
   @override
   String get memoryBriefingTitle => 'Word memory';
@@ -2763,6 +2919,9 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   String get homeNowBreathe => 'Breathe';
 
   @override
+  String get homeNowBlink => 'Blink';
+
+  @override
   String get homeNowStudy => 'Study';
 
   @override
@@ -2844,6 +3003,39 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   String get libraryBreathingRoomBody => 'Exercises and audio on one screen.';
 
   @override
+  String get libraryBlinkKindCso => 'Close · squeeze · open';
+
+  @override
+  String get libraryBlinkKindMicro => 'Complete micro-set';
+
+  @override
+  String get libraryBlinkKindBreak => '20-20-20 break';
+
+  @override
+  String get libraryBlinkRoom => 'Blink room';
+
+  @override
+  String get libraryBlinkRoomBody =>
+      'Short drills for full blinks and screen breaks.';
+
+  @override
+  String get blinkHubTitle => 'Blinking';
+
+  @override
+  String get blinkHubBody =>
+      'Train complete blinks to keep your eyes lubricated, especially at screens.';
+
+  @override
+  String get blinkHubEmpty => 'No blink drills here right now.';
+
+  @override
+  String get blinkDisclaimer =>
+      'Education and habit. Not a substitute for an eye exam.';
+
+  @override
+  String get homeExerciseBlink => 'Blinking';
+
+  @override
   String get breathingHubTitle => 'Breathing';
 
   @override
@@ -2864,7 +3056,7 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get homeExercisesBody =>
-      'Daily practice, attention, memory and breathing.';
+      'Daily practice, blinking, attention, memory and breathing.';
 
   @override
   String get homeExerciseBreathing => 'Breathing';
@@ -2874,6 +3066,325 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get homeExerciseMemory => 'Memory';
+
+  @override
+  String get dailyHubTitle => 'Daily practice';
+
+  @override
+  String get dailyHubBody =>
+      'Ten short drills. The 15-minute routine builds the day for you.';
+
+  @override
+  String get dailyHubList => 'Pick a drill';
+
+  @override
+  String get dailyStart => 'Start';
+
+  @override
+  String get dailyFinish => 'Finish';
+
+  @override
+  String get dailyNeedWrite =>
+      'Write at least a few answers. Without that, the drill doesn’t count.';
+
+  @override
+  String get dailyNeedCount => 'Do a few counts before finishing.';
+
+  @override
+  String get dailyAdd => 'Add';
+
+  @override
+  String dailyMinutes(int minutes) {
+    return '$minutes min';
+  }
+
+  @override
+  String dailyTimerLeft(int seconds) {
+    return '$seconds s';
+  }
+
+  @override
+  String get dailyCircuitTitle => '15-minute routine';
+
+  @override
+  String get dailyCircuitBody =>
+      'Five minutes of focus, five of memory, five of creativity. If your mind feels full, flip it: senses, sorting, and silence.';
+
+  @override
+  String get dailyCircuitFocus => 'Today: train the mind.';
+
+  @override
+  String get dailyCircuitSaturated => 'Today: make space again.';
+
+  @override
+  String get dailyCircuitCta => 'Start the 15 minutes';
+
+  @override
+  String get dailyRestToggle => 'Mind feels full today';
+
+  @override
+  String get dailyModeTrain => 'Train';
+
+  @override
+  String get dailyModeRest => 'Rest';
+
+  @override
+  String get dailyReady => 'I’ve looked';
+
+  @override
+  String get dailySkipThis => 'Skip this one';
+
+  @override
+  String get dailyLeaveTitle => 'Leave the routine?';
+
+  @override
+  String get dailyLeaveBody => 'The current step won’t be saved.';
+
+  @override
+  String get dailyLeaveConfirm => 'Leave';
+
+  @override
+  String get dailyDoneToday => 'Done today';
+
+  @override
+  String get dailyHomeTitle => '15 minutes';
+
+  @override
+  String get dailyHomeCta => 'Today’s routine';
+
+  @override
+  String get dailyFamilyFocus => 'Focus';
+
+  @override
+  String get dailyFamilyMemory => 'Memory';
+
+  @override
+  String get dailyFamilyPresence => 'Presence';
+
+  @override
+  String get dailyFamilyCreate => 'Creativity';
+
+  @override
+  String dailyCircuitStep(int current, int total) {
+    return '$current of $total';
+  }
+
+  @override
+  String get dailyCircuitDone =>
+      'Routine done. That already counts as training.';
+
+  @override
+  String get dailyMetaObserve => '2 min · attention';
+
+  @override
+  String get dailyMetaReverse => 'Working memory';
+
+  @override
+  String get dailyMetaCategories => '3 min · reasoning';
+
+  @override
+  String get dailyMetaRetell => 'Comprehension';
+
+  @override
+  String get dailyMetaCountdown => 'Focus';
+
+  @override
+  String get dailyMetaSenses => 'Present';
+
+  @override
+  String get dailyMetaTask => '10 min · one thing';
+
+  @override
+  String get dailyMetaUses => 'Creativity';
+
+  @override
+  String get dailyMetaSort => 'Clear your head';
+
+  @override
+  String get dailyMetaSilence => '5 min · rest';
+
+  @override
+  String get dailyObserveTitle => 'Mindful observation';
+
+  @override
+  String get dailyObserveBody =>
+      'Pick an object and look closely. Color, shape, texture, details. That’s it.';
+
+  @override
+  String get dailyObservePick => 'What will you observe?';
+
+  @override
+  String dailyObserveLook(String object) {
+    return 'Look at $object.';
+  }
+
+  @override
+  String get dailyReverseTitle => 'Reverse memory';
+
+  @override
+  String get dailyReverseBody =>
+      'Five words, numbers, or objects. Then reverse the order.';
+
+  @override
+  String get dailyReverseLook => 'Look. Then hide them.';
+
+  @override
+  String get dailyReverseAsk => 'Tap them backwards.';
+
+  @override
+  String dailyReverseStep(int current, int total) {
+    return '$current of $total';
+  }
+
+  @override
+  String get dailyReverseHint => 'Next number';
+
+  @override
+  String get dailyReverseWrong =>
+      'That wasn’t it. Try the last one you remember.';
+
+  @override
+  String get dailyCategoriesTitle => 'Category challenge';
+
+  @override
+  String get dailyCategoriesBody =>
+      'One letter. Five animals, foods, jobs, and places.';
+
+  @override
+  String dailyCategoriesLetter(String letter) {
+    return 'Letter $letter';
+  }
+
+  @override
+  String get dailyRetellTitle => 'Retell from memory';
+
+  @override
+  String get dailyRetellBody =>
+      'Read a short text. Then explain it in your own words.';
+
+  @override
+  String get dailyRetellRead => 'Read slowly. Then hide the text.';
+
+  @override
+  String get dailyRetellHide => 'I’ve read it';
+
+  @override
+  String get dailyRetellWrite => 'Now tell it in your own words.';
+
+  @override
+  String get dailyRetellHint => 'What stuck';
+
+  @override
+  String get dailyCountdownTitle => 'Mindful countdown';
+
+  @override
+  String get dailyCountdownBody =>
+      'From 100 to 0, subtracting by 3. If you lose track, go back to the last one you remember.';
+
+  @override
+  String get dailyCountdownAsk => 'What’s next, minus 3?';
+
+  @override
+  String get dailyCountdownMinus => 'minus 3';
+
+  @override
+  String get dailyCountdownHint => 'Next';
+
+  @override
+  String get dailyCountdownWrong => 'Go back to the last one you remember.';
+
+  @override
+  String get dailySensesTitle => 'Senses exercise';
+
+  @override
+  String get dailySensesBody =>
+      'Five things you see, four you can touch, three sounds, two smells, one in the body.';
+
+  @override
+  String get dailySensesHint => 'Look around. It doesn’t have to be special.';
+
+  @override
+  String get dailySensesSee => '5 things you see';
+
+  @override
+  String get dailySensesTouch => '4 you can touch';
+
+  @override
+  String get dailySensesHear => '3 sounds';
+
+  @override
+  String get dailySensesSmell => '2 smells';
+
+  @override
+  String get dailySensesFeel => '1 thing in the body';
+
+  @override
+  String get dailyTaskTitle => 'One task at a time';
+
+  @override
+  String get dailyTaskBody =>
+      'Ten minutes. One activity. No phone and no switching.';
+
+  @override
+  String get dailyTaskPick => 'What will you do now?';
+
+  @override
+  String dailyTaskDoing(String task) {
+    return '$task. Just this.';
+  }
+
+  @override
+  String get dailyTaskPhone => 'Put the phone aside. The timer stays here.';
+
+  @override
+  String get dailyUsesTitle => 'Object uses';
+
+  @override
+  String get dailyUsesBody => 'One ordinary object. Ten different uses.';
+
+  @override
+  String dailyUsesObject(String object) {
+    return '10 uses for $object';
+  }
+
+  @override
+  String get dailySortTitle => 'Mental journal';
+
+  @override
+  String get dailySortBody =>
+      'Write what’s on your mind. Then sort: deal with it, later, or not up to me.';
+
+  @override
+  String get dailySortDump =>
+      'Everything that’s passing through. No organizing yet.';
+
+  @override
+  String get dailySortHint => 'One thing per line';
+
+  @override
+  String get dailySortClassify => 'Sort';
+
+  @override
+  String get dailySortPick => 'Where does each one belong?';
+
+  @override
+  String get dailySortResolve => 'Deal with it';
+
+  @override
+  String get dailySortLater => 'Later';
+
+  @override
+  String get dailySortNotMine => 'Not up to me';
+
+  @override
+  String get dailySilenceTitle => 'Intentional silence';
+
+  @override
+  String get dailySilenceBody =>
+      'Five minutes without learning, watching, or consuming. Just the breath and thoughts passing by.';
+
+  @override
+  String get dailySilenceHint => 'Don’t try to fix anything. Watch the air.';
 
   @override
   String get homeExploreTitle => 'The six rooms';
@@ -3005,6 +3516,9 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get menuMyPlanHint => 'Days done and what’s next';
+
+  @override
+  String get menuExercisesHint => 'Blinks, attention, memory, and breath';
 
   @override
   String get menuRoomHint => 'A full program';
@@ -3195,6 +3709,20 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
       'Extra audios, exercises and tools are part of Premium. The first days of the plan stay free.';
 
   @override
+  String get paywallFreeLabel => 'Free now';
+
+  @override
+  String get paywallFreeList =>
+      'Check-in, notebook, Full mind, and the first days of your plan.';
+
+  @override
+  String get paywallPremiumLabel => 'With Premium';
+
+  @override
+  String get paywallPremiumList =>
+      'Audios, daily practice, exercises, pomodoro, silent room, thoughts, and the rest of the plan.';
+
+  @override
   String get paywallCtaSoon => 'Subscription coming soon';
 
   @override
@@ -3271,6 +3799,12 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   String get billingPaymentRefunded => 'Refunded';
 
   @override
+  String get profilePlanFree => 'Free plan';
+
+  @override
+  String get profilePlanPremium => 'Premium';
+
+  @override
   String get profileTitle => 'Profile';
 
   @override
@@ -3300,6 +3834,48 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get profileSaved => 'Profile updated.';
+
+  @override
+  String get profileChangePassword => 'Change password';
+
+  @override
+  String get fieldCurrentPassword => 'Current password';
+
+  @override
+  String get fieldNewPassword => 'New password';
+
+  @override
+  String get profilePasswordChanged => 'Password updated.';
+
+  @override
+  String get profileWeekTrained => 'Week';
+
+  @override
+  String get profileChangeEmail => 'Change email';
+
+  @override
+  String get fieldNewEmail => 'New email';
+
+  @override
+  String get profileEmailChanged => 'Email updated.';
+
+  @override
+  String get reminderDays => 'Reminder days';
+
+  @override
+  String get reminderMessage => 'Reminder text';
+
+  @override
+  String get reminderMessageHint => 'Leave empty to use the default text.';
+
+  @override
+  String get feedbackHaptics => 'Haptics';
+
+  @override
+  String get feedbackSounds => 'Completion sound';
+
+  @override
+  String get feedbackAudioVolume => 'Audio volume';
 
   @override
   String get profileEditName => 'Change name';
@@ -3980,6 +4556,82 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   @override
   String get breathingBriefingTideBody =>
       'The exhale is longer than the inhale. Follow the tide in and out. Don’t force it.';
+
+  @override
+  String get blinkBriefingTitle => 'Complete blink';
+
+  @override
+  String get blinkBriefingBody =>
+      'Close your eyes, squeeze gently, then open. The squeeze is light — just enough for the lids to meet fully. Education and habit; not a substitute for an eye exam.';
+
+  @override
+  String get blinkBriefingMicroTitle => 'Blink micro-set';
+
+  @override
+  String get blinkBriefingMicroBody =>
+      'A few slow, complete blinks. Use them at the screen when your eyes ask for it. Education and habit; not a substitute for an eye exam.';
+
+  @override
+  String get blinkBriefingBreakTitle => '20-20-20 break';
+
+  @override
+  String get blinkBriefingBreakBody =>
+      'Look far away for 20 seconds, then do complete blinks. Education and habit; not a substitute for an eye exam.';
+
+  @override
+  String get blinkClose => 'CLOSE';
+
+  @override
+  String get blinkSqueeze => 'LIGHT SQUEEZE';
+
+  @override
+  String get blinkOpen => 'OPEN';
+
+  @override
+  String get blinkLookAway => 'LOOK AWAY';
+
+  @override
+  String get blinkLookAwayHint =>
+      'Focus on something about 20 feet away for 20 seconds';
+
+  @override
+  String blinkCycle(int current, int total) {
+    return 'Cycle $current of $total';
+  }
+
+  @override
+  String get blinkSetPickerLabel => 'Which set are you doing now?';
+
+  @override
+  String blinkSetChip(int n) {
+    return 'Set $n';
+  }
+
+  @override
+  String blinkSetProgress(int current, int total) {
+    return 'Set $current of $total';
+  }
+
+  @override
+  String blinkSetSaved(int current, int total) {
+    return 'Set $current/$total saved';
+  }
+
+  @override
+  String blinkSetDoneTitle(int current, int total) {
+    return 'Set $current of $total done';
+  }
+
+  @override
+  String blinkSetDoneBody(int next, int total) {
+    return 'Do set $next of $total now?';
+  }
+
+  @override
+  String get blinkSetContinue => 'Continue';
+
+  @override
+  String get blinkSetFinish => 'Stop for now';
 
   @override
   String get memoryBriefingTitle => 'Word memory';

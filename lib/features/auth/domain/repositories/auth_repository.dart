@@ -30,6 +30,16 @@ abstract class AuthRepository {
     required String password,
   });
 
+  Future<Result<void>> changePassword({
+    required String currentPassword,
+    required String password,
+  });
+
+  Future<Result<UserAccount>> changeEmail({
+    required String currentPassword,
+    required String email,
+  });
+
   Future<Result<void>> logout();
 
   Future<Result<UserAccount>> fetchMe();
@@ -40,6 +50,9 @@ abstract class AuthRepository {
     String? locale,
     bool? notificationEnabled,
     String? notificationTime,
+    List<int>? notificationDays,
+    String? notificationBody,
+    bool clearNotificationBody = false,
     String? avatarEmoji,
     bool? showInRanking,
   });

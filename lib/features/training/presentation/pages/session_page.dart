@@ -11,9 +11,11 @@ import 'package:mindvibe_app/core/providers/core_providers.dart';
 import 'package:mindvibe_app/features/audio_player/presentation/providers/now_playing_controller.dart';
 import 'package:mindvibe_app/features/audio_player/presentation/widgets/cover_image.dart';
 import 'package:mindvibe_app/features/audio_player/presentation/widgets/session_audio_player.dart';
+import 'package:mindvibe_app/features/exercises/domain/blink_cycle.dart';
 import 'package:mindvibe_app/features/exercises/domain/breathing_cycle.dart';
 import 'package:mindvibe_app/features/exercises/domain/exercise_parsers.dart';
 import 'package:mindvibe_app/features/exercises/presentation/widgets/attention_exercise_view.dart';
+import 'package:mindvibe_app/features/exercises/presentation/widgets/blink_practice_flow.dart';
 import 'package:mindvibe_app/features/exercises/presentation/widgets/breathing_exercise_view.dart';
 import 'package:mindvibe_app/features/exercises/presentation/widgets/memory_exercise_view.dart';
 import 'package:mindvibe_app/features/exercises/presentation/widgets/memory_words_editor.dart';
@@ -478,6 +480,30 @@ class _SessionPageState extends ConsumerState<SessionPage> {
                 ),
               ),
             );
+          },
+        );
+      }(),
+      'blink' => () {
+        final config = BlinkCycleConfig.fromJson(
+          exercise.configuration ?? const {},
+        );
+        return BlinkPracticeFlow(
+          key: ValueKey('ex-${exercise.id}'),
+          config: config,
+          briefingBody: block.body,
+          onSubmitSet: ({
+            required setIndex,
+            required durationMs,
+            required hasMoreSets,
+          }) async {
+            await submit({
+              'cycles_completed': config.reps,
+              'duration_ms': durationMs,
+              'completed': true,
+              'set_index': setIndex,
+            });
+            // Session runner avançará no submit; sem diálogo de set extra.
+            return false;
           },
         );
       }(),

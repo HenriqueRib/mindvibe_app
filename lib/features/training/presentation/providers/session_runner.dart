@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mindvibe_app/core/error/app_failure.dart';
 import 'package:mindvibe_app/core/providers/core_providers.dart';
+import 'package:mindvibe_app/core/storage/feedback_store.dart';
 import 'package:mindvibe_app/core/storage/paused_training_store.dart';
 import 'package:mindvibe_app/core/storage/pending_session_store.dart';
 import 'package:mindvibe_app/features/analytics/data/analytics_client.dart';
@@ -171,6 +172,7 @@ class LiveSessionController extends StateNotifier<LiveSessionState> {
     }
     await _pending.clear();
     await _paused.clear();
+    await AppFeedback.completion();
     await _analytics.track('session_completed', {
       'session_id': sessionId,
       'user_session_id': completion.userSessionId,

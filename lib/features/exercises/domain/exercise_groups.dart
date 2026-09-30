@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mindvibe_app/features/exercises/domain/blink_cycle.dart';
 import 'package:mindvibe_app/features/exercises/domain/breathing_cycle.dart';
 import 'package:mindvibe_app/features/exercises/domain/daily_drills.dart';
 import 'package:mindvibe_app/features/exercises/domain/exercise_parsers.dart';
@@ -12,7 +13,7 @@ class ExerciseTypeGroup {
   final List<ExerciseSpec> items;
 }
 
-const exerciseTypeOrder = ['daily', 'breathing', 'attention', 'memory'];
+const exerciseTypeOrder = ['daily', 'blink', 'breathing', 'attention', 'memory'];
 
 List<ExerciseTypeGroup> groupExercisesByType(List<ExerciseSpec> items) {
   final map = <String, List<ExerciseSpec>>{};
@@ -37,6 +38,7 @@ List<ExerciseTypeGroup> groupExercisesByType(List<ExerciseSpec> items) {
 IconData exerciseTypeIcon(String type) {
   return switch (type) {
     'breathing' => Icons.self_improvement_outlined,
+    'blink' => Icons.remove_red_eye_outlined,
     'attention' => Icons.center_focus_strong_outlined,
     'memory' => Icons.psychology_outlined,
     'daily' => Icons.fitness_center_outlined,
@@ -47,6 +49,7 @@ IconData exerciseTypeIcon(String type) {
 String exerciseTypeLabel(AppLocalizations l10n, String type) {
   return switch (type) {
     'breathing' => l10n.homeExerciseBreathing,
+    'blink' => l10n.homeExerciseBlink,
     'attention' => l10n.homeExerciseAttention,
     'memory' => l10n.homeExerciseMemory,
     'daily' => l10n.dailyHubTitle,
@@ -67,6 +70,7 @@ String exerciseVariantOf(ExerciseSpec exercise) {
     'memory' => 'words',
     'attention' => 'target',
     'breathing' => 'wave',
+    'blink' => 'close_squeeze_open',
     'daily' => 'observe',
     _ => '',
   };
@@ -93,6 +97,23 @@ int memoryWordCountOf(ExerciseSpec exercise) {
     BreathingVariant.tide => (
       accent: const Color(0xFF3D7A9A),
       icon: Icons.waves_outlined,
+    ),
+  };
+}
+
+({Color accent, IconData icon}) blinkLook(ExerciseSpec exercise) {
+  return switch (blinkVariantFrom(exerciseVariantOf(exercise))) {
+    BlinkVariant.closeSqueezeOpen => (
+      accent: const Color(0xFF4A7C9B),
+      icon: Icons.remove_red_eye_outlined,
+    ),
+    BlinkVariant.completeBlinks => (
+      accent: const Color(0xFF5B8FA8),
+      icon: Icons.visibility_outlined,
+    ),
+    BlinkVariant.screenBreak20 => (
+      accent: const Color(0xFF6A9B7A),
+      icon: Icons.desktop_windows_outlined,
     ),
   };
 }
@@ -148,6 +169,14 @@ String breathingMeta(AppLocalizations l10n, ExerciseSpec exercise) {
   };
 }
 
+String blinkMeta(AppLocalizations l10n, ExerciseSpec exercise) {
+  return switch (blinkVariantFrom(exerciseVariantOf(exercise))) {
+    BlinkVariant.closeSqueezeOpen => l10n.libraryBlinkKindCso,
+    BlinkVariant.completeBlinks => l10n.libraryBlinkKindMicro,
+    BlinkVariant.screenBreak20 => l10n.libraryBlinkKindBreak,
+  };
+}
+
 String memoryMeta(AppLocalizations l10n, ExerciseSpec exercise) {
   return switch (memoryVariantFrom(exerciseVariantOf(exercise))) {
     MemoryVariant.words => l10n.libraryMemoryKindWords,
@@ -168,6 +197,21 @@ String attentionMeta(AppLocalizations l10n, ExerciseSpec exercise) {
 
 List<ExerciseSpec> sortedBreathingExercises(List<ExerciseSpec> items) {
   const order = {'wave': 0, 'box': 1, 'ladder': 2, 'tide': 3};
+  final copy = [...items];
+  copy.sort((a, b) {
+    return (order[exerciseVariantOf(a)] ?? 9).compareTo(
+      order[exerciseVariantOf(b)] ?? 9,
+    );
+  });
+  return copy;
+}
+
+List<ExerciseSpec> sortedBlinkExercises(List<ExerciseSpec> items) {
+  const order = {
+    'close_squeeze_open': 0,
+    'complete_blinks': 1,
+    'screen_break_20': 2,
+  };
   final copy = [...items];
   copy.sort((a, b) {
     return (order[exerciseVariantOf(a)] ?? 9).compareTo(

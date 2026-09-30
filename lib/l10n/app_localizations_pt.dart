@@ -338,6 +338,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get homeNowBreathe => 'Respirar';
 
   @override
+  String get homeNowBlink => 'Piscar';
+
+  @override
   String get homeNowStudy => 'Estudar';
 
   @override
@@ -419,6 +422,39 @@ class AppLocalizationsPt extends AppLocalizations {
   String get libraryBreathingRoomBody => 'Exercícios e áudios numa tela só.';
 
   @override
+  String get libraryBlinkKindCso => 'Fechar · squeeze · abrir';
+
+  @override
+  String get libraryBlinkKindMicro => 'Micro-série completa';
+
+  @override
+  String get libraryBlinkKindBreak => 'Pausa 20-20-20';
+
+  @override
+  String get libraryBlinkRoom => 'Sala de piscadas';
+
+  @override
+  String get libraryBlinkRoomBody =>
+      'Treinos curtos para piscada completa e pausas de tela.';
+
+  @override
+  String get blinkHubTitle => 'Piscar';
+
+  @override
+  String get blinkHubBody =>
+      'Treine piscadas completas para lubrificar os olhos, sobretudo na frente da tela.';
+
+  @override
+  String get blinkHubEmpty => 'Nada de piscadas por aqui agora.';
+
+  @override
+  String get blinkDisclaimer =>
+      'Educação e hábito. Não substitui avaliação oftalmológica.';
+
+  @override
+  String get homeExerciseBlink => 'Piscar';
+
+  @override
   String get breathingHubTitle => 'Respiração';
 
   @override
@@ -439,7 +475,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get homeExercisesBody =>
-      'Prática diária, atenção, memória e respiração.';
+      'Prática diária, piscadas, atenção, memória e respiração.';
 
   @override
   String get homeExerciseBreathing => 'Respiração';
@@ -900,7 +936,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get menuMyPlanHint => 'Dias feitos e os próximos';
 
   @override
-  String get menuExercisesHint => 'Atenção, memória e respiração';
+  String get menuExercisesHint => 'Piscadas, atenção, memória e respiração';
 
   @override
   String get menuRoomHint => 'Um programa completo';
@@ -1216,6 +1252,48 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get profileSaved => 'Perfil atualizado.';
+
+  @override
+  String get profileChangePassword => 'Alterar senha';
+
+  @override
+  String get fieldCurrentPassword => 'Senha atual';
+
+  @override
+  String get fieldNewPassword => 'Nova senha';
+
+  @override
+  String get profilePasswordChanged => 'Senha atualizada.';
+
+  @override
+  String get profileWeekTrained => 'Semana';
+
+  @override
+  String get profileChangeEmail => 'Alterar e-mail';
+
+  @override
+  String get fieldNewEmail => 'Novo e-mail';
+
+  @override
+  String get profileEmailChanged => 'E-mail atualizado.';
+
+  @override
+  String get reminderDays => 'Dias do lembrete';
+
+  @override
+  String get reminderMessage => 'Texto do lembrete';
+
+  @override
+  String get reminderMessageHint => 'Deixe vazio para usar o texto padrão.';
+
+  @override
+  String get feedbackHaptics => 'Vibração';
+
+  @override
+  String get feedbackSounds => 'Som ao concluir';
+
+  @override
+  String get feedbackAudioVolume => 'Volume do áudio';
 
   @override
   String get profileEditName => 'Alterar nome';
@@ -1894,6 +1972,81 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get breathingBriefingTideBody =>
       'A expiração é mais longa que a inspiração. Acompanhe a maré indo e voltando. Sem forçar.';
+
+  @override
+  String get blinkBriefingTitle => 'Piscada completa';
+
+  @override
+  String get blinkBriefingBody =>
+      'Feche os olhos, aperte de leve e abra. O squeeze é suave — só o bastante para as pálpebras se tocarem por completo. Educação e hábito; não substitui avaliação oftalmológica.';
+
+  @override
+  String get blinkBriefingMicroTitle => 'Micro-série de piscadas';
+
+  @override
+  String get blinkBriefingMicroBody =>
+      'Algumas piscadas lentas e completas. Use na frente da tela quando os olhos pedirem. Educação e hábito; não substitui avaliação oftalmológica.';
+
+  @override
+  String get blinkBriefingBreakTitle => 'Pausa 20-20-20';
+
+  @override
+  String get blinkBriefingBreakBody =>
+      'Olhe para longe por 20 segundos e depois faça piscadas completas. Educação e hábito; não substitui avaliação oftalmológica.';
+
+  @override
+  String get blinkClose => 'FECHAR';
+
+  @override
+  String get blinkSqueeze => 'SQUEEZE LEVE';
+
+  @override
+  String get blinkOpen => 'ABRIR';
+
+  @override
+  String get blinkLookAway => 'OLHAR LONGE';
+
+  @override
+  String get blinkLookAwayHint => 'Foque algo a uns 6 metros por 20 segundos';
+
+  @override
+  String blinkCycle(int current, int total) {
+    return 'Ciclo $current de $total';
+  }
+
+  @override
+  String get blinkSetPickerLabel => 'Qual set você vai fazer agora?';
+
+  @override
+  String blinkSetChip(int n) {
+    return 'Set $n';
+  }
+
+  @override
+  String blinkSetProgress(int current, int total) {
+    return 'Set $current de $total';
+  }
+
+  @override
+  String blinkSetSaved(int current, int total) {
+    return 'Set $current/$total registrado';
+  }
+
+  @override
+  String blinkSetDoneTitle(int current, int total) {
+    return 'Set $current de $total concluído';
+  }
+
+  @override
+  String blinkSetDoneBody(int next, int total) {
+    return 'Quer fazer o set $next de $total agora?';
+  }
+
+  @override
+  String get blinkSetContinue => 'Continuar';
+
+  @override
+  String get blinkSetFinish => 'Encerrar por agora';
 
   @override
   String get memoryBriefingTitle => 'Memória de palavras';
@@ -2761,6 +2914,9 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   String get homeNowBreathe => 'Respirar';
 
   @override
+  String get homeNowBlink => 'Piscar';
+
+  @override
   String get homeNowStudy => 'Estudar';
 
   @override
@@ -2842,6 +2998,39 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   String get libraryBreathingRoomBody => 'Exercícios e áudios numa tela só.';
 
   @override
+  String get libraryBlinkKindCso => 'Fechar · squeeze · abrir';
+
+  @override
+  String get libraryBlinkKindMicro => 'Micro-série completa';
+
+  @override
+  String get libraryBlinkKindBreak => 'Pausa 20-20-20';
+
+  @override
+  String get libraryBlinkRoom => 'Sala de piscadas';
+
+  @override
+  String get libraryBlinkRoomBody =>
+      'Treinos curtos para piscada completa e pausas de tela.';
+
+  @override
+  String get blinkHubTitle => 'Piscar';
+
+  @override
+  String get blinkHubBody =>
+      'Treine piscadas completas para lubrificar os olhos, sobretudo na frente da tela.';
+
+  @override
+  String get blinkHubEmpty => 'Nada de piscadas por aqui agora.';
+
+  @override
+  String get blinkDisclaimer =>
+      'Educação e hábito. Não substitui avaliação oftalmológica.';
+
+  @override
+  String get homeExerciseBlink => 'Piscar';
+
+  @override
   String get breathingHubTitle => 'Respiração';
 
   @override
@@ -2862,7 +3051,7 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
 
   @override
   String get homeExercisesBody =>
-      'Prática diária, atenção, memória e respiração.';
+      'Prática diária, piscadas, atenção, memória e respiração.';
 
   @override
   String get homeExerciseBreathing => 'Respiração';
@@ -3323,7 +3512,7 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   String get menuMyPlanHint => 'Sessão de hoje, dias e ritmo';
 
   @override
-  String get menuExercisesHint => 'Atenção, memória e respiração';
+  String get menuExercisesHint => 'Piscadas, atenção, memória e respiração';
 
   @override
   String get menuRoomHint => 'Um programa completo';
@@ -3639,6 +3828,48 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
 
   @override
   String get profileSaved => 'Perfil atualizado.';
+
+  @override
+  String get profileChangePassword => 'Alterar senha';
+
+  @override
+  String get fieldCurrentPassword => 'Senha atual';
+
+  @override
+  String get fieldNewPassword => 'Nova senha';
+
+  @override
+  String get profilePasswordChanged => 'Senha atualizada.';
+
+  @override
+  String get profileWeekTrained => 'Semana';
+
+  @override
+  String get profileChangeEmail => 'Alterar e-mail';
+
+  @override
+  String get fieldNewEmail => 'Novo e-mail';
+
+  @override
+  String get profileEmailChanged => 'E-mail atualizado.';
+
+  @override
+  String get reminderDays => 'Dias do lembrete';
+
+  @override
+  String get reminderMessage => 'Texto do lembrete';
+
+  @override
+  String get reminderMessageHint => 'Deixe vazio para usar o texto padrão.';
+
+  @override
+  String get feedbackHaptics => 'Vibração';
+
+  @override
+  String get feedbackSounds => 'Som ao concluir';
+
+  @override
+  String get feedbackAudioVolume => 'Volume do áudio';
 
   @override
   String get profileEditName => 'Alterar nome';
@@ -4317,6 +4548,81 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   @override
   String get breathingBriefingTideBody =>
       'A expiração é mais longa que a inspiração. Acompanhe a maré indo e voltando. Sem forçar.';
+
+  @override
+  String get blinkBriefingTitle => 'Piscada completa';
+
+  @override
+  String get blinkBriefingBody =>
+      'Feche os olhos, aperte de leve e abra. O squeeze é suave — só o bastante para as pálpebras se tocarem por completo. Educação e hábito; não substitui avaliação oftalmológica.';
+
+  @override
+  String get blinkBriefingMicroTitle => 'Micro-série de piscadas';
+
+  @override
+  String get blinkBriefingMicroBody =>
+      'Algumas piscadas lentas e completas. Use na frente da tela quando os olhos pedirem. Educação e hábito; não substitui avaliação oftalmológica.';
+
+  @override
+  String get blinkBriefingBreakTitle => 'Pausa 20-20-20';
+
+  @override
+  String get blinkBriefingBreakBody =>
+      'Olhe para longe por 20 segundos e depois faça piscadas completas. Educação e hábito; não substitui avaliação oftalmológica.';
+
+  @override
+  String get blinkClose => 'FECHAR';
+
+  @override
+  String get blinkSqueeze => 'SQUEEZE LEVE';
+
+  @override
+  String get blinkOpen => 'ABRIR';
+
+  @override
+  String get blinkLookAway => 'OLHAR LONGE';
+
+  @override
+  String get blinkLookAwayHint => 'Foque algo a uns 6 metros por 20 segundos';
+
+  @override
+  String blinkCycle(int current, int total) {
+    return 'Ciclo $current de $total';
+  }
+
+  @override
+  String get blinkSetPickerLabel => 'Qual set você vai fazer agora?';
+
+  @override
+  String blinkSetChip(int n) {
+    return 'Set $n';
+  }
+
+  @override
+  String blinkSetProgress(int current, int total) {
+    return 'Set $current de $total';
+  }
+
+  @override
+  String blinkSetSaved(int current, int total) {
+    return 'Set $current/$total registrado';
+  }
+
+  @override
+  String blinkSetDoneTitle(int current, int total) {
+    return 'Set $current de $total concluído';
+  }
+
+  @override
+  String blinkSetDoneBody(int next, int total) {
+    return 'Quer fazer o set $next de $total agora?';
+  }
+
+  @override
+  String get blinkSetContinue => 'Continuar';
+
+  @override
+  String get blinkSetFinish => 'Encerrar por agora';
 
   @override
   String get memoryBriefingTitle => 'Memória de palavras';

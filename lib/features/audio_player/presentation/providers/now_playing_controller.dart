@@ -4,8 +4,10 @@ import 'package:audio_session/audio_session.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:mindvibe_app/core/network/media_url.dart';
+import 'package:mindvibe_app/core/storage/feedback_store.dart';
 import 'package:mindvibe_app/features/audio_player/domain/playback_listen_meter.dart';
 import 'package:mindvibe_app/features/training/presentation/providers/training_providers.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 enum AudioPlayerUiState { idle, loading, playing, paused, completed, error }
@@ -87,7 +89,9 @@ class NowPlayingState {
 }
 
 class NowPlayingController extends StateNotifier<NowPlayingState> {
-  NowPlayingController({this.onListenSlice}) : super(const NowPlayingState()) {
+  NowPlayingController({this.onListenSlice, double initialVolume = 1})
+    : super(NowPlayingState(volume: initialVolume.clamp(0.0, 1.0))) {
+    _unmutedVolume = state.volume <= 0 ? 1 : state.volume;
     unawaited(_configurePlayback());
     _subs.add(
       _player.playerStateStream.listen((playerState) {
@@ -159,7 +163,14 @@ class NowPlayingController extends StateNotifier<NowPlayingState> {
       ),
     );
     await _player.setSkipSilenceEnabled(false);
-    await _player.setVolume(state.volume);
+    final prefs = await SharedPreferences.getInstance();
+    final volume = (prefs.getDouble('feedback_audio_volume') ?? state.volume)
+        .clamp(0.0, 1.0);
+    _unmutedVolume = volume <= 0 ? 1 : volume;
+    if (volume != state.volume) {
+      state = state.copyWith(volume: volume);
+    }
+    await _player.setVolume(volume);
   }
 
   void _syncListeningClock() {
@@ -429,7 +440,9 @@ class NowPlayingController extends StateNotifier<NowPlayingState> {
 
 final nowPlayingProvider =
     StateNotifierProvider<NowPlayingController, NowPlayingState>((ref) {
+      final volume = ref.read(feedbackProvider).audioVolume;
       return NowPlayingController(
+        initialVolume: volume,
         onListenSlice: (seconds, track) async {
           await ref
               .read(trainingRepositoryProvider)

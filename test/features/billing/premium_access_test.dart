@@ -36,6 +36,7 @@ void main() {
     expect(locationRequiresPremium(AppRoutes.listen), isTrue);
     expect(locationRequiresPremium(AppRoutes.exerciseLibrary), isTrue);
     expect(locationRequiresPremium(AppRoutes.breathing), isTrue);
+    expect(locationRequiresPremium(AppRoutes.blink), isTrue);
     expect(locationRequiresPremium(AppRoutes.pomodoro), isTrue);
     expect(locationRequiresPremium(AppRoutes.silentRoom), isTrue);
     expect(locationRequiresPremium(AppRoutes.thoughts), isTrue);

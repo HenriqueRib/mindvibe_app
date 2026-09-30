@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mindvibe_app/app/router/app_routes.dart';
 import 'package:mindvibe_app/app/widgets/app_widgets.dart';
 import 'package:mindvibe_app/core/error/failure_message.dart';
+import 'package:mindvibe_app/core/storage/feedback_store.dart';
 import 'package:mindvibe_app/features/home/presentation/home_actions.dart';
 import 'package:mindvibe_app/features/tools/presentation/providers/thought_controller.dart';
 import 'package:mindvibe_app/features/training/presentation/providers/training_providers.dart';
@@ -38,7 +38,7 @@ class _ThoughtPageState extends ConsumerState<ThoughtPage> {
     if (!saved || !mounted) {
       return;
     }
-    await HapticFeedback.mediumImpact();
+    await AppFeedback.medium();
     _body.clear();
     setState(() {});
   }
@@ -211,7 +211,7 @@ class _ThoughtPageState extends ConsumerState<ThoughtPage> {
                             onPressed: state.releasingId == thought.id
                                 ? null
                                 : () {
-                                    HapticFeedback.selectionClick();
+                                    AppFeedback.selection();
                                     runner.release(thought.id);
                                   },
                             child: state.releasingId == thought.id

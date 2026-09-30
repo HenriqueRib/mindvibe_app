@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mindvibe_app/core/notifications/notification_scheduler.dart';
 import 'package:mindvibe_app/core/providers/core_providers.dart';
+import 'package:mindvibe_app/core/storage/feedback_store.dart';
 import 'package:mindvibe_app/features/training/presentation/providers/training_providers.dart';
 import 'package:uuid/uuid.dart';
 
@@ -150,7 +150,7 @@ class SilentRoomController extends StateNotifier<SilentRoomState> {
     _tick = null;
     final block = state.total;
     try {
-      await HapticFeedback.mediumImpact();
+      await AppFeedback.medium();
       try {
         await _notifications.showNow(
           title: 'Sala silenciosa',

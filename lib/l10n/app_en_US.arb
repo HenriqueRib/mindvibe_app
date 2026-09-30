@@ -50,14 +50,16 @@
   "deviceAssociatedBody": "This device already has an account registered with {email}.",
   "@deviceAssociatedBody": {
     "placeholders": {
-      "email": { "type": "String" }
+      "email": {
+        "type": "String"
+      }
     }
   },
   "deviceAssociatedHint": "Sign in, reset the password, or change the device link after authenticating. We never create a new account silently.",
   "errorGeneric": "Something went wrong. Please try again.",
   "errorOffline": "You appear to be offline. Check your connection and try again.",
-  "errorNotFound": "We could not find what you are looking for.",
   "errorUnauthorized": "Your session expired. Please sign in again.",
+  "errorNotFound": "We could not find what you are looking for.",
   "errorServer": "The server is unavailable right now.",
   "errorUpdateApp": "Please update the app to continue.",
   "onboardingWelcomeTitle": "Let’s start slowly",
@@ -87,7 +89,9 @@
   "homeGreeting": "Hi, {name}",
   "@homeGreeting": {
     "placeholders": {
-      "name": { "type": "String" }
+      "name": {
+        "type": "String"
+      }
     }
   },
   "homeTodayTitle": "Today’s training",
@@ -97,8 +101,12 @@
   "homeDayProgress": "day {current}/{total}",
   "@homeDayProgress": {
     "placeholders": {
-      "current": { "type": "int" },
-      "total": { "type": "int" }
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
     }
   },
   "homeCompleted": "The next training unlocks tomorrow.",
@@ -110,16 +118,26 @@
   "homeTomorrowTraining": "Unlocks tomorrow: day {day} — {title}",
   "@homeTomorrowTraining": {
     "placeholders": {
-      "day": { "type": "int" },
-      "title": { "type": "String" }
+      "day": {
+        "type": "int"
+      },
+      "title": {
+        "type": "String"
+      }
     }
   },
   "homeNextUnlocksOn": "Unlocks on {date}: day {day} — {title}",
   "@homeNextUnlocksOn": {
     "placeholders": {
-      "date": { "type": "String" },
-      "day": { "type": "int" },
-      "title": { "type": "String" }
+      "date": {
+        "type": "String"
+      },
+      "day": {
+        "type": "int"
+      },
+      "title": {
+        "type": "String"
+      }
     }
   },
   "homeNoProgram": "You are not enrolled in a training plan yet.",
@@ -131,6 +149,7 @@
   "homeNowSleep": "Sleep",
   "homeNowRelax": "Relax",
   "homeNowBreathe": "Breathe",
+  "homeNowBlink": "Blink",
   "homeNowStudy": "Study",
   "homeNowWork": "Work",
   "homeNowAll": "All",
@@ -145,8 +164,12 @@
   "libraryMemoryMeta": "{words} words · {seconds}s to look",
   "@libraryMemoryMeta": {
     "placeholders": {
-      "words": { "type": "int" },
-      "seconds": { "type": "int" }
+      "words": {
+        "type": "int"
+      },
+      "seconds": {
+        "type": "int"
+      }
     }
   },
   "libraryMemoryKindWords": "Words · short term",
@@ -163,16 +186,184 @@
   "libraryBreathingKindTide": "Tide · long exhale",
   "libraryBreathingRoom": "Breathing room",
   "libraryBreathingRoomBody": "Exercises and audio on one screen.",
+  "libraryBlinkKindCso": "Close · squeeze · open",
+  "libraryBlinkKindMicro": "Complete micro-set",
+  "libraryBlinkKindBreak": "20-20-20 break",
+  "libraryBlinkRoom": "Blink room",
+  "libraryBlinkRoomBody": "Short drills for full blinks and screen breaks.",
+  "blinkHubTitle": "Blinking",
+  "blinkHubBody": "Train complete blinks to keep your eyes lubricated, especially at screens.",
+  "blinkHubEmpty": "No blink drills here right now.",
+  "blinkDisclaimer": "Education and habit. Not a substitute for an eye exam.",
+  "homeExerciseBlink": "Blinking",
   "breathingHubTitle": "Breathing",
   "breathingHubBody": "Guided exercises and audio to breathe at your own pace.",
   "breathingHubExercises": "Exercises",
   "breathingHubAudios": "Audio",
   "breathingHubEmpty": "No breathing content here right now.",
   "homeExercisesTitle": "Exercises",
-  "homeExercisesBody": "Daily practice, attention, memory and breathing.",
+  "homeExercisesBody": "Daily practice, blinking, attention, memory and breathing.",
   "homeExerciseBreathing": "Breathing",
   "homeExerciseAttention": "Attention",
   "homeExerciseMemory": "Memory",
+  "dailyHubTitle": "Daily practice",
+  "dailyHubBody": "Ten short drills. The 15-minute routine builds the day for you.",
+  "dailyHubList": "Pick a drill",
+  "dailyStart": "Start",
+  "dailyFinish": "Finish",
+  "dailyNeedWrite": "Write at least a few answers. Without that, the drill doesn’t count.",
+  "dailyNeedCount": "Do a few counts before finishing.",
+  "dailyAdd": "Add",
+  "dailyMinutes": "{minutes} min",
+  "@dailyMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "dailyTimerLeft": "{seconds} s",
+  "@dailyTimerLeft": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "dailyCircuitTitle": "15-minute routine",
+  "dailyCircuitBody": "Five minutes of focus, five of memory, five of creativity. If your mind feels full, flip it: senses, sorting, and silence.",
+  "dailyCircuitFocus": "Today: train the mind.",
+  "dailyCircuitSaturated": "Today: make space again.",
+  "dailyCircuitCta": "Start the 15 minutes",
+  "dailyRestToggle": "Mind feels full today",
+  "dailyModeTrain": "Train",
+  "dailyModeRest": "Rest",
+  "dailyReady": "I’ve looked",
+  "dailySkipThis": "Skip this one",
+  "dailyLeaveTitle": "Leave the routine?",
+  "dailyLeaveBody": "The current step won’t be saved.",
+  "dailyLeaveConfirm": "Leave",
+  "dailyDoneToday": "Done today",
+  "dailyHomeTitle": "15 minutes",
+  "dailyHomeCta": "Today’s routine",
+  "dailyFamilyFocus": "Focus",
+  "dailyFamilyMemory": "Memory",
+  "dailyFamilyPresence": "Presence",
+  "dailyFamilyCreate": "Creativity",
+  "dailyCircuitStep": "{current} of {total}",
+  "@dailyCircuitStep": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "dailyCircuitDone": "Routine done. That already counts as training.",
+  "dailyMetaObserve": "2 min · attention",
+  "dailyMetaReverse": "Working memory",
+  "dailyMetaCategories": "3 min · reasoning",
+  "dailyMetaRetell": "Comprehension",
+  "dailyMetaCountdown": "Focus",
+  "dailyMetaSenses": "Present",
+  "dailyMetaTask": "10 min · one thing",
+  "dailyMetaUses": "Creativity",
+  "dailyMetaSort": "Clear your head",
+  "dailyMetaSilence": "5 min · rest",
+  "dailyObserveTitle": "Mindful observation",
+  "dailyObserveBody": "Pick an object and look closely. Color, shape, texture, details. That’s it.",
+  "dailyObservePick": "What will you observe?",
+  "dailyObserveLook": "Look at {object}.",
+  "@dailyObserveLook": {
+    "placeholders": {
+      "object": {
+        "type": "String"
+      }
+    }
+  },
+  "dailyReverseTitle": "Reverse memory",
+  "dailyReverseBody": "Five words, numbers, or objects. Then reverse the order.",
+  "dailyReverseLook": "Look. Then hide them.",
+  "dailyReverseAsk": "Tap them backwards.",
+  "dailyReverseStep": "{current} of {total}",
+  "@dailyReverseStep": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "dailyReverseHint": "Next number",
+  "dailyReverseWrong": "That wasn’t it. Try the last one you remember.",
+  "dailyCategoriesTitle": "Category challenge",
+  "dailyCategoriesBody": "One letter. Five animals, foods, jobs, and places.",
+  "dailyCategoriesLetter": "Letter {letter}",
+  "@dailyCategoriesLetter": {
+    "placeholders": {
+      "letter": {
+        "type": "String"
+      }
+    }
+  },
+  "dailyRetellTitle": "Retell from memory",
+  "dailyRetellBody": "Read a short text. Then explain it in your own words.",
+  "dailyRetellRead": "Read slowly. Then hide the text.",
+  "dailyRetellHide": "I’ve read it",
+  "dailyRetellWrite": "Now tell it in your own words.",
+  "dailyRetellHint": "What stuck",
+  "dailyCountdownTitle": "Mindful countdown",
+  "dailyCountdownBody": "From 100 to 0, subtracting by 3. If you lose track, go back to the last one you remember.",
+  "dailyCountdownAsk": "What’s next, minus 3?",
+  "dailyCountdownMinus": "minus 3",
+  "dailyCountdownHint": "Next",
+  "dailyCountdownWrong": "Go back to the last one you remember.",
+  "dailySensesTitle": "Senses exercise",
+  "dailySensesBody": "Five things you see, four you can touch, three sounds, two smells, one in the body.",
+  "dailySensesHint": "Look around. It doesn’t have to be special.",
+  "dailySensesSee": "5 things you see",
+  "dailySensesTouch": "4 you can touch",
+  "dailySensesHear": "3 sounds",
+  "dailySensesSmell": "2 smells",
+  "dailySensesFeel": "1 thing in the body",
+  "dailyTaskTitle": "One task at a time",
+  "dailyTaskBody": "Ten minutes. One activity. No phone and no switching.",
+  "dailyTaskPick": "What will you do now?",
+  "dailyTaskDoing": "{task}. Just this.",
+  "@dailyTaskDoing": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "dailyTaskPhone": "Put the phone aside. The timer stays here.",
+  "dailyUsesTitle": "Object uses",
+  "dailyUsesBody": "One ordinary object. Ten different uses.",
+  "dailyUsesObject": "10 uses for {object}",
+  "@dailyUsesObject": {
+    "placeholders": {
+      "object": {
+        "type": "String"
+      }
+    }
+  },
+  "dailySortTitle": "Mental journal",
+  "dailySortBody": "Write what’s on your mind. Then sort: deal with it, later, or not up to me.",
+  "dailySortDump": "Everything that’s passing through. No organizing yet.",
+  "dailySortHint": "One thing per line",
+  "dailySortClassify": "Sort",
+  "dailySortPick": "Where does each one belong?",
+  "dailySortResolve": "Deal with it",
+  "dailySortLater": "Later",
+  "dailySortNotMine": "Not up to me",
+  "dailySilenceTitle": "Intentional silence",
+  "dailySilenceBody": "Five minutes without learning, watching, or consuming. Just the breath and thoughts passing by.",
+  "dailySilenceHint": "Don’t try to fix anything. Watch the air.",
   "homeExploreTitle": "The six rooms",
   "homeExploreBody": "Each point has its own program. Today’s training stays in the card above.",
   "homeExploreAll": "See plans",
@@ -216,6 +407,7 @@
   "menuPlansHint": "The academy rooms",
   "menuMyPlan": "My plan",
   "menuMyPlanHint": "Days done and what’s next",
+  "menuExercisesHint": "Blinks, attention, memory, and breath",
   "menuRoomHint": "A full program",
   "menuAudios": "Library",
   "menuAudiosHint": "Listen at your own pace",
@@ -243,21 +435,29 @@
   "catalogDays": "{count} days",
   "@catalogDays": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "catalogDayItem": "Day {day} · {title}",
   "@catalogDayItem": {
     "placeholders": {
-      "day": { "type": "int" },
-      "title": { "type": "String" }
+      "day": {
+        "type": "int"
+      },
+      "title": {
+        "type": "String"
+      }
     }
   },
   "catalogBrowseHint": "One plan at a time. If you switch, the current plan’s progress and report start over.",
   "catalogFreeDays": "{count} free days",
   "@catalogFreeDays": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "catalogPlanDays": "The days of the plan",
@@ -272,7 +472,9 @@
   "sessionElapsed": "Time {time}",
   "@sessionElapsed": {
     "placeholders": {
-      "time": { "type": "String" }
+      "time": {
+        "type": "String"
+      }
     }
   },
   "themeSection": "Theme",
@@ -295,21 +497,33 @@
   "playerReplay": "Play again",
   "paywallTitle": "Continue with Premium",
   "paywallBody": "Extra audios, exercises and tools are part of Premium. The first days of the plan stay free.",
+  "paywallFreeLabel": "Free now",
+  "paywallFreeList": "Check-in, notebook, Full mind, and the first days of your plan.",
+  "paywallPremiumLabel": "With Premium",
+  "paywallPremiumList": "Audios, daily practice, exercises, pomodoro, silent room, thoughts, and the rest of the plan.",
   "paywallCtaSoon": "Subscription coming soon",
   "paywallCta": "Subscribe to Premium",
   "paywallCtaRenew": "Renew Premium",
   "paywallCtaPrice": "Subscribe to Premium · {price}/{period}",
   "@paywallCtaPrice": {
     "placeholders": {
-      "price": { "type": "String" },
-      "period": { "type": "String" }
+      "price": {
+        "type": "String"
+      },
+      "period": {
+        "type": "String"
+      }
     }
   },
   "paywallPriceHint": "{price} every {period}, via Mercado Pago.",
   "@paywallPriceHint": {
     "placeholders": {
-      "price": { "type": "String" },
-      "period": { "type": "String" }
+      "price": {
+        "type": "String"
+      },
+      "period": {
+        "type": "String"
+      }
     }
   },
   "paywallWaiting": "Checkout opened in the browser. When you return, the app confirms the status.",
@@ -321,13 +535,17 @@
   "billingPeriodDays": "{count} days",
   "@billingPeriodDays": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "billingValidUntil": "Valid until {date}",
   "@billingValidUntil": {
     "placeholders": {
-      "date": { "type": "String" }
+      "date": {
+        "type": "String"
+      }
     }
   },
   "billingStatusActive": "Premium active",
@@ -339,6 +557,8 @@
   "billingPaymentPending": "Pending",
   "billingPaymentFailed": "Not approved",
   "billingPaymentRefunded": "Refunded",
+  "profilePlanFree": "Free plan",
+  "profilePlanPremium": "Premium",
   "profileTitle": "Profile",
   "profileAccountTitle": "Account",
   "profileLogoutConfirm": "Log out on this device?",
@@ -349,6 +569,20 @@
   "profileTerms": "Terms of use",
   "profilePrivacy": "Privacy policy",
   "profileSaved": "Profile updated.",
+  "profileChangePassword": "Change password",
+  "fieldCurrentPassword": "Current password",
+  "fieldNewPassword": "New password",
+  "profilePasswordChanged": "Password updated.",
+  "profileWeekTrained": "Week",
+  "profileChangeEmail": "Change email",
+  "fieldNewEmail": "New email",
+  "profileEmailChanged": "Email updated.",
+  "reminderDays": "Reminder days",
+  "reminderMessage": "Reminder text",
+  "reminderMessageHint": "Leave empty to use the default text.",
+  "feedbackHaptics": "Haptics",
+  "feedbackSounds": "Completion sound",
+  "feedbackAudioVolume": "Audio volume",
   "profileEditName": "Change name",
   "profileNameHint": "How you want to appear on the ranking.",
   "profileAvatarHint": "Tap the photo to pick a gallery image or a calm symbol. It shows on the ranking.",
@@ -377,27 +611,39 @@
   "progressTimeOnlyMinutes": "{minutes} min",
   "@progressTimeOnlyMinutes": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "progressTimeHours": "{hours} h {minutes} min",
   "@progressTimeHours": {
     "placeholders": {
-      "hours": { "type": "int" },
-      "minutes": { "type": "int" }
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "progressTimeCompactMinutes": "{minutes}min",
   "@progressTimeCompactMinutes": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "progressTimeCompactHours": "{hours}h {minutes}min",
   "@progressTimeCompactHours": {
     "placeholders": {
-      "hours": { "type": "int" },
-      "minutes": { "type": "int" }
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "progressEmptyTitle": "Your journey is just beginning",
@@ -407,14 +653,20 @@
   "progressStreakDays": "{count, plural, =1{1 day in a row} other{{count} days in a row}}",
   "@progressStreakDays": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "progressHeroStats": "{time} trained · {count} sessions",
   "@progressHeroStats": {
     "placeholders": {
-      "time": { "type": "String" },
-      "count": { "type": "int" }
+      "time": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
     }
   },
   "progressMoreTitle": "More",
@@ -423,15 +675,23 @@
   "progressProgramDay": "Day {current} of {total}",
   "@progressProgramDay": {
     "placeholders": {
-      "current": { "type": "int" },
-      "total": { "type": "int" }
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
     }
   },
   "progressProgramDaysDone": "{done} of {total} days completed",
   "@progressProgramDaysDone": {
     "placeholders": {
-      "done": { "type": "int" },
-      "total": { "type": "int" }
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
     }
   },
   "progressContinue": "Continue training",
@@ -439,58 +699,80 @@
   "progressWeekDaysTrained": "{count, plural, =1{You trained 1 day this week} other{You trained {count} days this week}}",
   "@progressWeekDaysTrained": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "progressWeekDeltaUp": "+{time} vs last week",
   "@progressWeekDeltaUp": {
     "placeholders": {
-      "time": { "type": "String" }
+      "time": {
+        "type": "String"
+      }
     }
   },
   "progressWeekDeltaDown": "{time} less than last week",
   "@progressWeekDeltaDown": {
     "placeholders": {
-      "time": { "type": "String" }
+      "time": {
+        "type": "String"
+      }
     }
   },
   "progressMilestoneTitle": "Next milestone",
   "progressMilestoneXp": "{xp} XP to the next level",
   "@progressMilestoneXp": {
     "placeholders": {
-      "xp": { "type": "int" }
+      "xp": {
+        "type": "int"
+      }
     }
   },
   "progressMilestoneXpBar": "{current} / {target} XP",
   "@progressMilestoneXpBar": {
     "placeholders": {
-      "current": { "type": "int" },
-      "target": { "type": "int" }
+      "current": {
+        "type": "int"
+      },
+      "target": {
+        "type": "int"
+      }
     }
   },
   "progressMilestoneStreak": "{count, plural, =1{1 day in a row} other{{count} days in a row}}",
   "@progressMilestoneStreak": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "progressMilestoneStreakRemain": "{count, plural, =1{1 day left} other{{count} days left}}",
   "@progressMilestoneStreakRemain": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "progressMilestoneMinutes": "{minutes} minutes trained",
   "@progressMilestoneMinutes": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "progressMilestoneMinutesBar": "{current} / {target} min",
   "@progressMilestoneMinutesBar": {
     "placeholders": {
-      "current": { "type": "int" },
-      "target": { "type": "int" }
+      "current": {
+        "type": "int"
+      },
+      "target": {
+        "type": "int"
+      }
     }
   },
   "progressRecentTitle": "Recent activity",
@@ -508,7 +790,9 @@
   "rankingPlayers": "{count, plural, =0{Nobody on the ranking yet} =1{1 person on the ranking} other{{count} people on the ranking}}",
   "@rankingPlayers": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "rankingYourPlace": "Your place",
@@ -516,13 +800,17 @@
   "rankingXp": "{xp} XP",
   "@rankingXp": {
     "placeholders": {
-      "xp": { "type": "int" }
+      "xp": {
+        "type": "int"
+      }
     }
   },
   "rankingRank": "#{rank}",
   "@rankingRank": {
     "placeholders": {
-      "rank": { "type": "int" }
+      "rank": {
+        "type": "int"
+      }
     }
   },
   "rankingYou": "You",
@@ -531,7 +819,9 @@
   "progressLevelName": "Current level: {name}",
   "@progressLevelName": {
     "placeholders": {
-      "name": { "type": "String" }
+      "name": {
+        "type": "String"
+      }
     }
   },
   "progressXpCardBody": "It comes from training. Tap to see how.",
@@ -553,7 +843,9 @@
   "progressWeekChartTotal": "{time} this week",
   "@progressWeekChartTotal": {
     "placeholders": {
-      "time": { "type": "String" }
+      "time": {
+        "type": "String"
+      }
     }
   },
   "historyTitle": "History",
@@ -565,8 +857,12 @@
   "historyWhen": "{weekday} at {time}",
   "@historyWhen": {
     "placeholders": {
-      "weekday": { "type": "String" },
-      "time": { "type": "String" }
+      "weekday": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
     }
   },
   "historyTypeExercise": "Exercise",
@@ -583,7 +879,9 @@
   "sessionPrepareBody": "Find a calm place. This training takes about {minutes} minutes. There may be audio: sound does not start on its own. If you are in a classroom or with other people, use headphones and tap play only when you are ready.",
   "@sessionPrepareBody": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "sessionAudioWait": "Audio does not start on its own. Tap play when you are in a calm place. If you are in a classroom or with other people, use headphones.",
@@ -610,8 +908,12 @@
   "planDaysDone": "{done} of {total} days",
   "@planDaysDone": {
     "placeholders": {
-      "done": { "type": "int" },
-      "total": { "type": "int" }
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
     }
   },
   "planSettings": "Rhythm and reminder",
@@ -619,14 +921,20 @@
   "planNextUnlocksTomorrow": "Unlocks tomorrow: {title}",
   "@planNextUnlocksTomorrow": {
     "placeholders": {
-      "title": { "type": "String" }
+      "title": {
+        "type": "String"
+      }
     }
   },
   "planNextTraining": "Unlocks on {date}: {title}",
   "@planNextTraining": {
     "placeholders": {
-      "title": { "type": "String" },
-      "date": { "type": "String" }
+      "title": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
     }
   },
   "planDayDone": "Done",
@@ -635,27 +943,39 @@
   "planDayLocked": "Unlocks on {date}",
   "@planDayLocked": {
     "placeholders": {
-      "date": { "type": "String" }
+      "date": {
+        "type": "String"
+      }
     }
   },
   "planDayLabel": "Day {day} — {title}",
   "@planDayLabel": {
     "placeholders": {
-      "day": { "type": "int" },
-      "title": { "type": "String" }
+      "day": {
+        "type": "int"
+      },
+      "title": {
+        "type": "String"
+      }
     }
   },
   "sessionXpAwarded": "+{xp} XP",
   "@sessionXpAwarded": {
     "placeholders": {
-      "xp": { "type": "int" }
+      "xp": {
+        "type": "int"
+      }
     }
   },
   "sessionBlockOf": "{current} of {total}",
   "@sessionBlockOf": {
     "placeholders": {
-      "current": { "type": "int" },
-      "total": { "type": "int" }
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
     }
   },
   "breathingInhale": "INHALE",
@@ -665,8 +985,12 @@
   "breathingCycle": "cycle {current}/{total}",
   "@breathingCycle": {
     "placeholders": {
-      "current": { "type": "int" },
-      "total": { "type": "int" }
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
     }
   },
   "playerPlay": "Play",
@@ -706,6 +1030,83 @@
   "breathingBriefingLadderBody": "Inhale for 4, hold for 7, exhale for 8. The column rises and falls with the breath.",
   "breathingBriefingTideTitle": "Long tide",
   "breathingBriefingTideBody": "The exhale is longer than the inhale. Follow the tide in and out. Don’t force it.",
+  "blinkBriefingTitle": "Complete blink",
+  "blinkBriefingBody": "Close your eyes, squeeze gently, then open. The squeeze is light — just enough for the lids to meet fully. Education and habit; not a substitute for an eye exam.",
+  "blinkBriefingMicroTitle": "Blink micro-set",
+  "blinkBriefingMicroBody": "A few slow, complete blinks. Use them at the screen when your eyes ask for it. Education and habit; not a substitute for an eye exam.",
+  "blinkBriefingBreakTitle": "20-20-20 break",
+  "blinkBriefingBreakBody": "Look far away for 20 seconds, then do complete blinks. Education and habit; not a substitute for an eye exam.",
+  "blinkClose": "CLOSE",
+  "blinkSqueeze": "LIGHT SQUEEZE",
+  "blinkOpen": "OPEN",
+  "blinkLookAway": "LOOK AWAY",
+  "blinkLookAwayHint": "Focus on something about 20 feet away for 20 seconds",
+  "blinkCycle": "Cycle {current} of {total}",
+  "@blinkCycle": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "blinkSetPickerLabel": "Which set are you doing now?",
+  "blinkSetChip": "Set {n}",
+  "@blinkSetChip": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "blinkSetProgress": "Set {current} of {total}",
+  "@blinkSetProgress": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "blinkSetSaved": "Set {current}/{total} saved",
+  "@blinkSetSaved": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "blinkSetDoneTitle": "Set {current} of {total} done",
+  "@blinkSetDoneTitle": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "blinkSetDoneBody": "Do set {next} of {total} now?",
+  "@blinkSetDoneBody": {
+    "placeholders": {
+      "next": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "blinkSetContinue": "Continue",
+  "blinkSetFinish": "Stop for now",
   "memoryBriefingTitle": "Word memory",
   "memoryBriefingBody": "First look at the words. Then mark only the ones you remember.",
   "memoryBriefingIconsTitle": "Visual memory",
@@ -719,19 +1120,25 @@
   "exerciseDurationMinutes": "{minutes} min",
   "@exerciseDurationMinutes": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "attentionHits": "Hits: {count}",
   "@attentionHits": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "attentionMisses": "Misses: {count}",
   "@attentionMisses": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "memoryStudyTitle": "Look at the words",
@@ -751,7 +1158,9 @@
   "memoryWordsCount": "{count} of your words",
   "@memoryWordsCount": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "ratingSelect": "Choose a value",
@@ -779,7 +1188,9 @@
   "pomodoroRounds": "{count} blocks done",
   "@pomodoroRounds": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "checkinTitle": "Check-in",
@@ -789,19 +1200,25 @@
   "checkinMood": "{level, select, 1{Very heavy} 2{Heavy} 3{Neutral} 4{Light} 5{Good} other{}}",
   "@checkinMood": {
     "placeholders": {
-      "level": { "type": "String" }
+      "level": {
+        "type": "String"
+      }
     }
   },
   "checkinEnergy": "{level, select, 1{Drained} 2{Low} 3{Medium} 4{Steady} 5{High} other{}}",
   "@checkinEnergy": {
     "placeholders": {
-      "level": { "type": "String" }
+      "level": {
+        "type": "String"
+      }
     }
   },
   "checkinWeight": "{level, select, 1{A heavy day} 2{A quieter day} 3{A balanced day} 4{A moving day} 5{A light day} other{}}",
   "@checkinWeight": {
     "placeholders": {
-      "level": { "type": "String" }
+      "level": {
+        "type": "String"
+      }
     }
   },
   "checkinSaved": "Saved. This becomes today’s climate on progress.",
@@ -815,8 +1232,12 @@
   "progressCheckinBody": "Mood {mood} · Energy {energy}",
   "@progressCheckinBody": {
     "placeholders": {
-      "mood": { "type": "String" },
-      "energy": { "type": "String" }
+      "mood": {
+        "type": "String"
+      },
+      "energy": {
+        "type": "String"
+      }
     }
   },
   "progressStreakCheckinHint": "The streak is showing up. Climate explains the weight of the day better than minutes alone.",
@@ -836,7 +1257,9 @@
   "clearMindParked": "The rest was parked ({count}). It does not need to be solved today.",
   "@clearMindParked": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "clearMindParkedNone": "Just this. Nothing else to park.",
@@ -851,13 +1274,17 @@
   "journalPrompt": "{prompt, select, intention{Morning intention} unload{Empty the head} gratitude{3 gratitudes} other{Notebook}}",
   "@journalPrompt": {
     "placeholders": {
-      "prompt": { "type": "String" }
+      "prompt": {
+        "type": "String"
+      }
     }
   },
   "journalPromptHint": "{prompt, select, intention{What you carry into the day.} unload{Put down what is taking up space.} gratitude{Three small things that are still here.} other{}}",
   "@journalPromptHint": {
     "placeholders": {
-      "prompt": { "type": "String" }
+      "prompt": {
+        "type": "String"
+      }
     }
   },
   "journalIntention1": "What matters today?",
@@ -881,7 +1308,9 @@
   "silentRoomMinutes": "{count} min",
   "@silentRoomMinutes": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "thoughtTitle": "Park the thought",

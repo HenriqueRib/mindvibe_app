@@ -26,6 +26,7 @@ class HomeExploreItem {
     return switch (slug) {
       'focus' => l10n.homeNowFocus,
       'breathing' => l10n.homeNowBreathe,
+      'blink' => l10n.homeNowBlink,
       'relaxation' => l10n.homeNowRelax,
       'sleep' => l10n.homeNowSleep,
       'memory' => l10n.homeNowMemory,
@@ -45,6 +46,11 @@ const homeExploreItems = [
     slug: 'breathing',
     icon: Icons.air,
     accent: Color(0xFF2F7A8A),
+  ),
+  HomeExploreItem(
+    slug: 'blink',
+    icon: Icons.remove_red_eye_outlined,
+    accent: Color(0xFF4A7C9B),
   ),
   HomeExploreItem(
     slug: 'relaxation',

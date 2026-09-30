@@ -28,6 +28,7 @@ class AppRoutes {
   static const moments = '/moments';
   static const exerciseLibrary = '/exercises';
   static const breathing = '/breathing';
+  static const blink = '/blink';
   static const daily = '/daily';
   static const dailyCircuit = '/daily/circuit';
   static const practice = '/practice';

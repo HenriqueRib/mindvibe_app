@@ -12,6 +12,8 @@ class UserAccount {
     this.experienceLevel,
     this.notificationEnabled,
     this.notificationTime,
+    this.notificationDays,
+    this.notificationBody,
     this.avatarUrl,
     this.avatarEmoji,
     this.showInRanking = false,
@@ -29,9 +31,17 @@ class UserAccount {
   final String? experienceLevel;
   final bool? notificationEnabled;
   final String? notificationTime;
+  final List<int>? notificationDays;
+  final String? notificationBody;
   final String? avatarUrl;
   final String? avatarEmoji;
   final bool showInRanking;
+
+  /// ISO weekdays: Monday=1 … Sunday=7. Null means every day.
+  List<int> get reminderDays =>
+      notificationDays == null || notificationDays!.isEmpty
+      ? const [1, 2, 3, 4, 5, 6, 7]
+      : List<int>.unmodifiable(notificationDays!);
 }
 
 class AuthSession {

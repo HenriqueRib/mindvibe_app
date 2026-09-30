@@ -8,6 +8,7 @@ IconData activityIcon(ActivityItem item) {
   if (item.type == 'exercise') {
     return switch (item.exerciseType) {
       'breathing' => Icons.air,
+      'blink' => Icons.remove_red_eye_outlined,
       'attention' => Icons.center_focus_strong_outlined,
       'memory' => Icons.psychology_outlined,
       _ => Icons.fitness_center_outlined,

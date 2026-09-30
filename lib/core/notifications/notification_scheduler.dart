@@ -14,7 +14,8 @@ class NotificationScheduler {
   }) : _plugin = plugin ?? FlutterLocalNotificationsPlugin(),
        _timezone = timezone;
 
-  static const _id = 43;
+  static const _baseId = 43;
+  static const _dayIds = [43, 44, 45, 46, 47, 48, 49];
   final AnalyticsClient _analytics;
   final FlutterLocalNotificationsPlugin _plugin;
   final DeviceTimezone _timezone;
@@ -47,10 +48,10 @@ class NotificationScheduler {
     required String body,
   }) async {
     await initialize();
+    await _cancelReminders();
     final enabled = user.notificationEnabled ?? false;
     final time = user.notificationTime;
     if (!enabled || time == null || time.isEmpty) {
-      await _plugin.cancel(id: _id);
       return;
     }
     final parts = time.split(':');
@@ -63,26 +64,39 @@ class NotificationScheduler {
     if (!status.isGranted) {
       return;
     }
-    await _plugin.zonedSchedule(
-      id: _id,
-      title: title,
-      body: body,
-      scheduledDate: _nextInstance(hour, minute),
-      notificationDetails: const NotificationDetails(
-        android: AndroidNotificationDetails(
-          'mindvibe_daily',
-          'Treino diário',
-          channelDescription: 'Lembrete local do treino de hoje',
+    final message = (user.notificationBody?.trim().isNotEmpty ?? false)
+        ? user.notificationBody!.trim()
+        : body;
+    final days = user.reminderDays;
+    for (final weekday in days) {
+      await _plugin.zonedSchedule(
+        id: _baseId + (weekday - 1),
+        title: title,
+        body: message,
+        scheduledDate: _nextInstanceOfWeekday(weekday, hour, minute),
+        notificationDetails: const NotificationDetails(
+          android: AndroidNotificationDetails(
+            'mindvibe_daily',
+            'Treino diário',
+            channelDescription: 'Lembrete local do treino de hoje',
+          ),
+          iOS: DarwinNotificationDetails(),
         ),
-        iOS: DarwinNotificationDetails(),
-      ),
-      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
-      matchDateTimeComponents: DateTimeComponents.time,
-    );
+        androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+        matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
+      );
+    }
     await _analytics.track('notification_scheduled', {
       'hour': hour,
       'minute': minute,
+      'days': days.length,
     });
+  }
+
+  Future<void> _cancelReminders() async {
+    for (final id in _dayIds) {
+      await _plugin.cancel(id: id);
+    }
   }
 
   tz.TZDateTime _nextInstance(int hour, int minute) {
@@ -95,7 +109,15 @@ class NotificationScheduler {
       hour,
       minute,
     );
-    if (scheduled.isBefore(now)) {
+    if (!scheduled.isAfter(now)) {
+      scheduled = scheduled.add(const Duration(days: 1));
+    }
+    return scheduled;
+  }
+
+  tz.TZDateTime _nextInstanceOfWeekday(int weekday, int hour, int minute) {
+    var scheduled = _nextInstance(hour, minute);
+    while (scheduled.weekday != weekday) {
       scheduled = scheduled.add(const Duration(days: 1));
     }
     return scheduled;
@@ -104,7 +126,7 @@ class NotificationScheduler {
   Future<void> showNow({
     required String title,
     required String body,
-    int id = 44,
+    int id = 50,
   }) async {
     await initialize();
     final status = await Permission.notification.request();

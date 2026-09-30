@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mindvibe_app/app/router/app_routes.dart';
 import 'package:mindvibe_app/app/theme/app_theme.dart';
 import 'package:mindvibe_app/app/widgets/app_widgets.dart';
+import 'package:mindvibe_app/core/storage/feedback_store.dart';
 import 'package:mindvibe_app/features/audio_player/presentation/widgets/cover_image.dart';
 import 'package:mindvibe_app/features/auth/domain/entities/auth_entities.dart';
 import 'package:mindvibe_app/features/billing/premium_access.dart';
@@ -14,7 +14,7 @@ Future<void> showAcademyMenu(
   required AppLocalizations l10n,
   required UserAccount? user,
 }) {
-  HapticFeedback.mediumImpact();
+  AppFeedback.medium();
   return showGeneralDialog<void>(
     context: host,
     barrierLabel: l10n.menuClose,

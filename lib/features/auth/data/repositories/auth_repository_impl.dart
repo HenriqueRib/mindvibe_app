@@ -80,6 +80,29 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<Result<void>> changePassword({
+    required String currentPassword,
+    required String password,
+  }) {
+    return _remote.changePassword({
+      'current_password': currentPassword,
+      'password': password,
+      'password_confirmation': password,
+    });
+  }
+
+  @override
+  Future<Result<UserAccount>> changeEmail({
+    required String currentPassword,
+    required String email,
+  }) {
+    return _remote.changeEmail({
+      'current_password': currentPassword,
+      'email': email,
+    });
+  }
+
+  @override
   Future<Result<void>> logout() async {
     final result = await _remote.logout();
     await _tokenStore.clear();
@@ -96,6 +119,9 @@ class AuthRepositoryImpl implements AuthRepository {
     String? locale,
     bool? notificationEnabled,
     String? notificationTime,
+    List<int>? notificationDays,
+    String? notificationBody,
+    bool clearNotificationBody = false,
     String? avatarEmoji,
     bool? showInRanking,
   }) {
@@ -105,6 +131,9 @@ class AuthRepositoryImpl implements AuthRepository {
       'locale': ?locale,
       'notification_enabled': ?notificationEnabled,
       'notification_time': ?notificationTime,
+      'notification_days': ?notificationDays,
+      if (clearNotificationBody || notificationBody != null)
+        'notification_body': clearNotificationBody ? null : notificationBody,
       'avatar_emoji': ?avatarEmoji,
       'show_in_ranking': ?showInRanking,
     });

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:mindvibe_app/app/widgets/app_widgets.dart';
+import 'package:mindvibe_app/core/storage/feedback_store.dart';
 import 'package:mindvibe_app/features/progress/presentation/widgets/checkin_week_strip.dart';
 import 'package:mindvibe_app/l10n/app_localizations.dart';
 
@@ -38,7 +38,7 @@ class CheckinMoodEnergy extends StatelessWidget {
             Icons.sentiment_very_satisfied_outlined,
           ],
           onSelect: (level) {
-            HapticFeedback.selectionClick();
+            AppFeedback.selection();
             onMood(level);
           },
         ),
@@ -58,7 +58,7 @@ class CheckinMoodEnergy extends StatelessWidget {
             Icons.battery_full_outlined,
           ],
           onSelect: (level) {
-            HapticFeedback.selectionClick();
+            AppFeedback.selection();
             onEnergy(level);
           },
         ),

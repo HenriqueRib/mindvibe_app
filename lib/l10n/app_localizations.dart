@@ -712,6 +712,12 @@ abstract class AppLocalizations {
   /// **'Respirar'**
   String get homeNowBreathe;
 
+  /// No description provided for @homeNowBlink.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Piscar'**
+  String get homeNowBlink;
+
   /// No description provided for @homeNowStudy.
   ///
   /// In pt_BR, this message translates to:
@@ -868,6 +874,66 @@ abstract class AppLocalizations {
   /// **'Exercícios e áudios numa tela só.'**
   String get libraryBreathingRoomBody;
 
+  /// No description provided for @libraryBlinkKindCso.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Fechar · squeeze · abrir'**
+  String get libraryBlinkKindCso;
+
+  /// No description provided for @libraryBlinkKindMicro.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Micro-série completa'**
+  String get libraryBlinkKindMicro;
+
+  /// No description provided for @libraryBlinkKindBreak.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Pausa 20-20-20'**
+  String get libraryBlinkKindBreak;
+
+  /// No description provided for @libraryBlinkRoom.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Sala de piscadas'**
+  String get libraryBlinkRoom;
+
+  /// No description provided for @libraryBlinkRoomBody.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Treinos curtos para piscada completa e pausas de tela.'**
+  String get libraryBlinkRoomBody;
+
+  /// No description provided for @blinkHubTitle.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Piscar'**
+  String get blinkHubTitle;
+
+  /// No description provided for @blinkHubBody.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Treine piscadas completas para lubrificar os olhos, sobretudo na frente da tela.'**
+  String get blinkHubBody;
+
+  /// No description provided for @blinkHubEmpty.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Nada de piscadas por aqui agora.'**
+  String get blinkHubEmpty;
+
+  /// No description provided for @blinkDisclaimer.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Educação e hábito. Não substitui avaliação oftalmológica.'**
+  String get blinkDisclaimer;
+
+  /// No description provided for @homeExerciseBlink.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Piscar'**
+  String get homeExerciseBlink;
+
   /// No description provided for @breathingHubTitle.
   ///
   /// In pt_BR, this message translates to:
@@ -907,7 +973,7 @@ abstract class AppLocalizations {
   /// No description provided for @homeExercisesBody.
   ///
   /// In pt_BR, this message translates to:
-  /// **'Prática diária, atenção, memória e respiração.'**
+  /// **'Prática diária, piscadas, atenção, memória e respiração.'**
   String get homeExercisesBody;
 
   /// No description provided for @homeExerciseBreathing.
@@ -1765,7 +1831,7 @@ abstract class AppLocalizations {
   /// No description provided for @menuExercisesHint.
   ///
   /// In pt_BR, this message translates to:
-  /// **'Atenção, memória e respiração'**
+  /// **'Piscadas, atenção, memória e respiração'**
   String get menuExercisesHint;
 
   /// No description provided for @menuRoomHint.
@@ -2343,6 +2409,90 @@ abstract class AppLocalizations {
   /// In pt_BR, this message translates to:
   /// **'Perfil atualizado.'**
   String get profileSaved;
+
+  /// No description provided for @profileChangePassword.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Alterar senha'**
+  String get profileChangePassword;
+
+  /// No description provided for @fieldCurrentPassword.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Senha atual'**
+  String get fieldCurrentPassword;
+
+  /// No description provided for @fieldNewPassword.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Nova senha'**
+  String get fieldNewPassword;
+
+  /// No description provided for @profilePasswordChanged.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Senha atualizada.'**
+  String get profilePasswordChanged;
+
+  /// No description provided for @profileWeekTrained.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Semana'**
+  String get profileWeekTrained;
+
+  /// No description provided for @profileChangeEmail.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Alterar e-mail'**
+  String get profileChangeEmail;
+
+  /// No description provided for @fieldNewEmail.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Novo e-mail'**
+  String get fieldNewEmail;
+
+  /// No description provided for @profileEmailChanged.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'E-mail atualizado.'**
+  String get profileEmailChanged;
+
+  /// No description provided for @reminderDays.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Dias do lembrete'**
+  String get reminderDays;
+
+  /// No description provided for @reminderMessage.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Texto do lembrete'**
+  String get reminderMessage;
+
+  /// No description provided for @reminderMessageHint.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Deixe vazio para usar o texto padrão.'**
+  String get reminderMessageHint;
+
+  /// No description provided for @feedbackHaptics.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Vibração'**
+  String get feedbackHaptics;
+
+  /// No description provided for @feedbackSounds.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Som ao concluir'**
+  String get feedbackSounds;
+
+  /// No description provided for @feedbackAudioVolume.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Volume do áudio'**
+  String get feedbackAudioVolume;
 
   /// No description provided for @profileEditName.
   ///
@@ -3447,6 +3597,126 @@ abstract class AppLocalizations {
   /// In pt_BR, this message translates to:
   /// **'A expiração é mais longa que a inspiração. Acompanhe a maré indo e voltando. Sem forçar.'**
   String get breathingBriefingTideBody;
+
+  /// No description provided for @blinkBriefingTitle.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Piscada completa'**
+  String get blinkBriefingTitle;
+
+  /// No description provided for @blinkBriefingBody.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Feche os olhos, aperte de leve e abra. O squeeze é suave — só o bastante para as pálpebras se tocarem por completo. Educação e hábito; não substitui avaliação oftalmológica.'**
+  String get blinkBriefingBody;
+
+  /// No description provided for @blinkBriefingMicroTitle.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Micro-série de piscadas'**
+  String get blinkBriefingMicroTitle;
+
+  /// No description provided for @blinkBriefingMicroBody.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Algumas piscadas lentas e completas. Use na frente da tela quando os olhos pedirem. Educação e hábito; não substitui avaliação oftalmológica.'**
+  String get blinkBriefingMicroBody;
+
+  /// No description provided for @blinkBriefingBreakTitle.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Pausa 20-20-20'**
+  String get blinkBriefingBreakTitle;
+
+  /// No description provided for @blinkBriefingBreakBody.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Olhe para longe por 20 segundos e depois faça piscadas completas. Educação e hábito; não substitui avaliação oftalmológica.'**
+  String get blinkBriefingBreakBody;
+
+  /// No description provided for @blinkClose.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'FECHAR'**
+  String get blinkClose;
+
+  /// No description provided for @blinkSqueeze.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'SQUEEZE LEVE'**
+  String get blinkSqueeze;
+
+  /// No description provided for @blinkOpen.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'ABRIR'**
+  String get blinkOpen;
+
+  /// No description provided for @blinkLookAway.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'OLHAR LONGE'**
+  String get blinkLookAway;
+
+  /// No description provided for @blinkLookAwayHint.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Foque algo a uns 6 metros por 20 segundos'**
+  String get blinkLookAwayHint;
+
+  /// No description provided for @blinkCycle.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Ciclo {current} de {total}'**
+  String blinkCycle(int current, int total);
+
+  /// No description provided for @blinkSetPickerLabel.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Qual set você vai fazer agora?'**
+  String get blinkSetPickerLabel;
+
+  /// No description provided for @blinkSetChip.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Set {n}'**
+  String blinkSetChip(int n);
+
+  /// No description provided for @blinkSetProgress.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Set {current} de {total}'**
+  String blinkSetProgress(int current, int total);
+
+  /// No description provided for @blinkSetSaved.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Set {current}/{total} registrado'**
+  String blinkSetSaved(int current, int total);
+
+  /// No description provided for @blinkSetDoneTitle.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Set {current} de {total} concluído'**
+  String blinkSetDoneTitle(int current, int total);
+
+  /// No description provided for @blinkSetDoneBody.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Quer fazer o set {next} de {total} agora?'**
+  String blinkSetDoneBody(int next, int total);
+
+  /// No description provided for @blinkSetContinue.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Continuar'**
+  String get blinkSetContinue;
+
+  /// No description provided for @blinkSetFinish.
+  ///
+  /// In pt_BR, this message translates to:
+  /// **'Encerrar por agora'**
+  String get blinkSetFinish;
 
   /// No description provided for @memoryBriefingTitle.
   ///

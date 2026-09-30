@@ -127,6 +127,18 @@ class _PreparedExerciseState extends State<PreparedExercise> {
         l10n.breathingBriefingTitle,
         l10n.breathingBriefingBody,
       ),
+      ('blink', 'complete_blinks') => (
+        l10n.blinkBriefingMicroTitle,
+        l10n.blinkBriefingMicroBody,
+      ),
+      ('blink', 'screen_break_20') => (
+        l10n.blinkBriefingBreakTitle,
+        l10n.blinkBriefingBreakBody,
+      ),
+      ('blink', _) => (
+        l10n.blinkBriefingTitle,
+        l10n.blinkBriefingBody,
+      ),
       _ => (l10n.homeExercisesTitle, l10n.homeExercisesBody),
     };
     final body = widget.briefingBody?.trim().isNotEmpty == true

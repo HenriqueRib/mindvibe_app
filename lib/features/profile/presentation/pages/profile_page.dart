@@ -10,13 +10,18 @@ import 'package:mindvibe_app/core/error/failure_message.dart';
 import 'package:mindvibe_app/core/error/result.dart';
 import 'package:mindvibe_app/core/providers/core_providers.dart';
 import 'package:mindvibe_app/core/storage/appearance_store.dart';
+import 'package:mindvibe_app/core/storage/feedback_store.dart';
 import 'package:mindvibe_app/core/storage/home_layout_store.dart';
 import 'package:mindvibe_app/core/storage/locale_store.dart';
+import 'package:mindvibe_app/features/audio_player/presentation/providers/now_playing_controller.dart';
 import 'package:mindvibe_app/features/audio_player/presentation/widgets/cover_image.dart';
 import 'package:mindvibe_app/features/auth/domain/auth_validators.dart';
 import 'package:mindvibe_app/features/auth/domain/entities/auth_entities.dart';
 import 'package:mindvibe_app/features/auth/presentation/providers/session_controller.dart';
+import 'package:mindvibe_app/features/auth/presentation/widgets/app_password_field.dart';
 import 'package:mindvibe_app/features/profile/domain/profile_avatars.dart';
+import 'package:mindvibe_app/features/progress/domain/progress_milestones.dart';
+import 'package:mindvibe_app/features/training/domain/entities/training_entities.dart';
 import 'package:mindvibe_app/features/training/presentation/providers/training_providers.dart';
 import 'package:mindvibe_app/l10n/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -76,6 +81,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   Future<void> _save({
     required bool notificationEnabled,
     required String? notificationTime,
+    List<int>? notificationDays,
+    String? notificationBody,
+    bool clearNotificationBody = false,
   }) {
     return _apply(
       () => ref
@@ -83,6 +91,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
           .updateProfile(
             notificationEnabled: notificationEnabled,
             notificationTime: notificationTime,
+            notificationDays: notificationDays,
+            notificationBody: notificationBody,
+            clearNotificationBody: clearNotificationBody,
           ),
     );
   }
@@ -428,15 +439,321 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     }
   }
 
+  Future<void> _changePassword() async {
+    final l10n = AppLocalizations.of(context);
+    final formKey = GlobalKey<FormState>();
+    final current = TextEditingController();
+    final next = TextEditingController();
+    final confirm = TextEditingController();
+    var submitting = false;
+
+    final saved = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) {
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            return AlertDialog(
+              backgroundColor: Theme.of(context).colorScheme.surface,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              title: Text(l10n.profileChangePassword),
+              content: Form(
+                key: formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    AppPasswordField(
+                      controller: current,
+                      label: l10n.fieldCurrentPassword,
+                      autofillHints: const [AutofillHints.password],
+                      validator: (value) =>
+                          switch (AuthValidators.password(value)) {
+                            'required' => l10n.validationRequired,
+                            'password' => l10n.validationPasswordMin,
+                            _ => null,
+                          },
+                    ),
+                    const SizedBox(height: 12),
+                    AppPasswordField(
+                      controller: next,
+                      label: l10n.fieldNewPassword,
+                      autofillHints: const [AutofillHints.newPassword],
+                      validator: (value) =>
+                          switch (AuthValidators.password(value)) {
+                            'required' => l10n.validationRequired,
+                            'password' => l10n.validationPasswordMin,
+                            _ => null,
+                          },
+                    ),
+                    const SizedBox(height: 12),
+                    AppPasswordField(
+                      controller: confirm,
+                      label: l10n.fieldPasswordConfirm,
+                      autofillHints: const [AutofillHints.newPassword],
+                      validator: (value) {
+                        if (value != next.text) {
+                          return l10n.validationPasswordMatch;
+                        }
+                        return switch (AuthValidators.password(value)) {
+                          'required' => l10n.validationRequired,
+                          'password' => l10n.validationPasswordMin,
+                          _ => null,
+                        };
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: submitting
+                      ? null
+                      : () => Navigator.of(dialogContext).pop(false),
+                  child: Text(l10n.cancel),
+                ),
+                FilledButton(
+                  onPressed: submitting
+                      ? null
+                      : () async {
+                          if (!(formKey.currentState?.validate() ?? false)) {
+                            return;
+                          }
+                          setDialogState(() => submitting = true);
+                          final result = await ref
+                              .read(sessionControllerProvider.notifier)
+                              .changePassword(
+                                currentPassword: current.text,
+                                password: next.text,
+                              );
+                          if (!dialogContext.mounted) {
+                            return;
+                          }
+                          if (result.isSuccess) {
+                            Navigator.of(dialogContext).pop(true);
+                            return;
+                          }
+                          setDialogState(() => submitting = false);
+                          ScaffoldMessenger.of(dialogContext).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                failureMessage(
+                                  result.failureOrNull!,
+                                  l10n,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                  child: submitting
+                      ? const SizedBox(
+                          width: 18,
+                          height: 18,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : Text(l10n.actionSave),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+
+    current.dispose();
+    next.dispose();
+    confirm.dispose();
+
+    if (saved == true && mounted) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.profilePasswordChanged)));
+    }
+  }
+
+  Future<void> _changeEmail(UserAccount user) async {
+    final l10n = AppLocalizations.of(context);
+    final formKey = GlobalKey<FormState>();
+    final current = TextEditingController();
+    final email = TextEditingController(text: user.email);
+    var submitting = false;
+
+    final saved = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) {
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            return AlertDialog(
+              backgroundColor: Theme.of(context).colorScheme.surface,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              title: Text(l10n.profileChangeEmail),
+              content: Form(
+                key: formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    AppPasswordField(
+                      controller: current,
+                      label: l10n.fieldCurrentPassword,
+                      autofillHints: const [AutofillHints.password],
+                      validator: (value) =>
+                          switch (AuthValidators.password(value)) {
+                            'required' => l10n.validationRequired,
+                            'password' => l10n.validationPasswordMin,
+                            _ => null,
+                          },
+                    ),
+                    const SizedBox(height: 12),
+                    TextFormField(
+                      controller: email,
+                      keyboardType: TextInputType.emailAddress,
+                      autofillHints: const [AutofillHints.email],
+                      decoration: InputDecoration(labelText: l10n.fieldNewEmail),
+                      validator: (value) => switch (AuthValidators.email(value)) {
+                        'required' => l10n.validationRequired,
+                        'email' => l10n.validationEmail,
+                        _ => null,
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: submitting
+                      ? null
+                      : () => Navigator.of(dialogContext).pop(false),
+                  child: Text(l10n.cancel),
+                ),
+                FilledButton(
+                  onPressed: submitting
+                      ? null
+                      : () async {
+                          if (!(formKey.currentState?.validate() ?? false)) {
+                            return;
+                          }
+                          setDialogState(() => submitting = true);
+                          final result = await ref
+                              .read(sessionControllerProvider.notifier)
+                              .changeEmail(
+                                currentPassword: current.text,
+                                email: email.text.trim(),
+                              );
+                          if (!dialogContext.mounted) {
+                            return;
+                          }
+                          if (result.isSuccess) {
+                            Navigator.of(dialogContext).pop(true);
+                            return;
+                          }
+                          setDialogState(() => submitting = false);
+                          ScaffoldMessenger.of(dialogContext).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                failureMessage(result.failureOrNull!, l10n),
+                              ),
+                            ),
+                          );
+                        },
+                  child: submitting
+                      ? const SizedBox(
+                          width: 18,
+                          height: 18,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : Text(l10n.actionSave),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+
+    current.dispose();
+    email.dispose();
+
+    if (saved == true && mounted) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.profileEmailChanged)));
+    }
+  }
+
+  Future<void> _editReminderMessage(UserAccount user) async {
+    final l10n = AppLocalizations.of(context);
+    final controller = TextEditingController(text: user.notificationBody ?? '');
+    final saved = await showDialog<String>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          title: Text(l10n.reminderMessage),
+          content: TextField(
+            controller: controller,
+            autofocus: true,
+            maxLength: 120,
+            maxLines: 3,
+            decoration: InputDecoration(
+              hintText: l10n.reminderMessageHint,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(l10n.cancel),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.of(context).pop(controller.text),
+              child: Text(l10n.actionSave),
+            ),
+          ],
+        );
+      },
+    );
+    controller.dispose();
+    if (saved == null || !mounted) {
+      return;
+    }
+    final text = saved.trim();
+    await _save(
+      notificationEnabled: user.notificationEnabled ?? true,
+      notificationTime: user.notificationTime ?? _format(_timeFrom(user.notificationTime)),
+      notificationDays: user.reminderDays,
+      notificationBody: text.isEmpty ? null : text,
+      clearNotificationBody: text.isEmpty,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final user = ref.watch(sessionControllerProvider).user;
     final reminder = user?.notificationEnabled ?? false;
     final time = _timeFrom(user?.notificationTime);
+    final reminderDays = user?.reminderDays ?? const [1, 2, 3, 4, 5, 6, 7];
     final dark = ref.watch(appearanceProvider) == ThemeMode.dark;
     final locale = ref.watch(localeProvider);
     final homeLayout = ref.watch(homeLayoutProvider);
+    final feedback = ref.watch(feedbackProvider);
+    final progress = ref
+        .watch(progressProvider)
+        .maybeWhen(
+          data: (result) => result.valueOrNull,
+          orElse: () => null,
+        );
+    final weekDays = ref
+        .watch(weeklyReportProvider)
+        .maybeWhen(
+          data: (result) => result.valueOrNull?.weekDays ?? const <WeekDayTime>[],
+          orElse: () => progress?.weekDays ?? const <WeekDayTime>[],
+        );
+    final weekTrained = trainedDaysThisWeek(weekDays);
     final outline = Theme.of(
       context,
     ).colorScheme.outline.withValues(alpha: 0.7);
@@ -547,6 +864,14 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               ),
             ],
           ),
+          if (progress != null) ...[
+            const SizedBox(height: 20),
+            _ProfileStats(
+              progress: progress,
+              weekTrained: weekTrained,
+              onTap: () => context.go(AppRoutes.progress),
+            ),
+          ],
           const SizedBox(height: 28),
           AppCard(
             padding: const EdgeInsets.symmetric(vertical: 6),
@@ -574,6 +899,44 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 ),
                 divider(),
                 _SwitchRow(
+                  label: l10n.feedbackHaptics,
+                  value: feedback.hapticsEnabled,
+                  onChanged: (value) =>
+                      ref.read(feedbackProvider.notifier).setHaptics(value),
+                ),
+                divider(),
+                _SwitchRow(
+                  label: l10n.feedbackSounds,
+                  value: feedback.sfxEnabled,
+                  onChanged: (value) =>
+                      ref.read(feedbackProvider.notifier).setSfx(value),
+                ),
+                divider(),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 10, 16, 6),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        l10n.feedbackAudioVolume,
+                        style: const TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                      Slider(
+                        value: feedback.audioVolume,
+                        onChanged: (value) async {
+                          await ref
+                              .read(feedbackProvider.notifier)
+                              .setAudioVolume(value);
+                          await ref
+                              .read(nowPlayingProvider.notifier)
+                              .setVolume(value);
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                divider(),
+                _SwitchRow(
                   label: l10n.reminderEnable,
                   value: reminder,
                   onChanged: _saving
@@ -581,6 +944,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                       : (value) => _save(
                           notificationEnabled: value,
                           notificationTime: _format(time),
+                          notificationDays: reminderDays,
+                          notificationBody: user?.notificationBody,
                         ),
                 ),
                 if (reminder) ...[
@@ -599,9 +964,45 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                               await _save(
                                 notificationEnabled: true,
                                 notificationTime: _format(picked),
+                                notificationDays: reminderDays,
+                                notificationBody: user?.notificationBody,
                               );
                             }
                           },
+                  ),
+                  divider(),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          l10n.reminderDays,
+                          style: const TextStyle(fontWeight: FontWeight.w600),
+                        ),
+                        const SizedBox(height: 10),
+                        _ReminderDaysRow(
+                          selected: reminderDays,
+                          enabled: !_saving,
+                          onChanged: (days) => _save(
+                            notificationEnabled: true,
+                            notificationTime: _format(time),
+                            notificationDays: days,
+                            notificationBody: user?.notificationBody,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  divider(),
+                  _ValueRow(
+                    label: l10n.reminderMessage,
+                    value: (user?.notificationBody?.trim().isNotEmpty ?? false)
+                        ? user!.notificationBody!
+                        : l10n.notificationBody,
+                    onTap: user == null || _saving
+                        ? null
+                        : () => _editReminderMessage(user),
                   ),
                 ],
                 divider(),
@@ -629,6 +1030,16 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               _ValueRow(
                 label: l10n.billingTitle,
                 onTap: () => context.push(AppRoutes.billing),
+              ),
+              _ValueRow(
+                label: l10n.profileChangeEmail,
+                onTap: user == null || _saving
+                    ? null
+                    : () => _changeEmail(user),
+              ),
+              _ValueRow(
+                label: l10n.profileChangePassword,
+                onTap: _saving ? null : _changePassword,
               ),
               _ValueRow(
                 label: l10n.profileMessageTitle,
@@ -682,6 +1093,143 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   }
 }
 
+class _ProfileStats extends StatelessWidget {
+  const _ProfileStats({
+    required this.progress,
+    required this.weekTrained,
+    required this.onTap,
+  });
+
+  final ProgressSnapshot progress;
+  final int weekTrained;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final muted = Theme.of(context).colorScheme.onSurfaceVariant;
+    final dividerColor = Theme.of(
+      context,
+    ).colorScheme.outline.withValues(alpha: 0.5);
+
+    Widget column(String value, String label) {
+      return Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              value,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+            ),
+            const SizedBox(height: 2),
+            Text(
+              label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: muted,
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return AppCard(
+      onTap: onTap,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      child: Row(
+        children: [
+          column('${progress.streakDays}', l10n.homeStatDays),
+          Container(width: 1, height: 36, color: dividerColor),
+          Padding(
+            padding: const EdgeInsets.only(left: 12),
+            child: column('$weekTrained', l10n.profileWeekTrained),
+          ),
+          Container(width: 1, height: 36, color: dividerColor),
+          Padding(
+            padding: const EdgeInsets.only(left: 12),
+            child: column(l10n.rankingXp(progress.xp), l10n.progressXp),
+          ),
+          Icon(Icons.chevron_right, color: muted, size: 20),
+        ],
+      ),
+    );
+  }
+}
+
+class _ReminderDaysRow extends StatelessWidget {
+  const _ReminderDaysRow({
+    required this.selected,
+    required this.onChanged,
+    this.enabled = true,
+  });
+
+  final List<int> selected;
+  final ValueChanged<List<int>> onChanged;
+  final bool enabled;
+
+  @override
+  Widget build(BuildContext context) {
+    final labels = MaterialLocalizations.of(context).narrowWeekdays;
+    // Material narrowWeekdays: index 0 = Sunday
+    const isoOrder = [1, 2, 3, 4, 5, 6, 7];
+    final scheme = Theme.of(context).colorScheme;
+    return Row(
+      children: [
+        for (final day in isoOrder) ...[
+          if (day != isoOrder.first) const SizedBox(width: 6),
+          Expanded(
+            child: Material(
+              color: selected.contains(day)
+                  ? scheme.primary.withValues(alpha: 0.16)
+                  : scheme.surfaceContainerHighest,
+              borderRadius: BorderRadius.circular(10),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(10),
+                onTap: !enabled
+                    ? null
+                    : () {
+                        final next = [...selected];
+                        if (next.contains(day)) {
+                          if (next.length <= 1) {
+                            return;
+                          }
+                          next.remove(day);
+                        } else {
+                          next.add(day);
+                        }
+                        next.sort();
+                        onChanged(next);
+                      },
+                child: SizedBox(
+                  height: 36,
+                  child: Center(
+                    child: Text(
+                      labels[day % 7],
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 12,
+                        color: selected.contains(day)
+                            ? scheme.primary
+                            : scheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+}
+
 class _SwitchRow extends StatelessWidget {
   const _SwitchRow({
     required this.label,
@@ -723,13 +1271,17 @@ class _ValueRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final resolved = color ?? Theme.of(context).colorScheme.onSurface;
+    final trailingColor =
+        color ?? Theme.of(context).colorScheme.onSurfaceVariant;
+    final hasValue = value != null && value!.isNotEmpty;
     return InkWell(
       onTap: onTap,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(
+            Flexible(
               child: Text(
                 label,
                 maxLines: 1,
@@ -737,31 +1289,35 @@ class _ValueRow extends StatelessWidget {
                 style: TextStyle(fontWeight: FontWeight.w600, color: resolved),
               ),
             ),
-            if (value != null && value!.isNotEmpty) ...[
-              const SizedBox(width: 8),
-              Flexible(
-                child: Text(
-                  value!,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.right,
-                  style: TextStyle(
-                    color:
-                        color ?? Theme.of(context).colorScheme.onSurfaceVariant,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
+            if (hasValue || onTap != null)
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (hasValue)
+                    ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 160),
+                      child: Text(
+                        value!,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.right,
+                        style: TextStyle(
+                          color: trailingColor,
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  if (onTap != null) ...[
+                    if (hasValue) const SizedBox(width: 4),
+                    Icon(
+                      Icons.chevron_right,
+                      color: trailingColor,
+                      size: 20,
+                    ),
+                  ],
+                ],
               ),
-            ],
-            if (onTap != null) ...[
-              const SizedBox(width: 4),
-              Icon(
-                Icons.chevron_right,
-                color: color ?? Theme.of(context).colorScheme.onSurfaceVariant,
-                size: 20,
-              ),
-            ],
           ],
         ),
       ),

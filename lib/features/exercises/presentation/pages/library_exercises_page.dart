@@ -19,7 +19,9 @@ class LibraryExercisesPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final exercises = ref.watch(libraryExercisesProvider);
-    final filter = typeFilter == 'breathing' ? null : typeFilter;
+    final filter = (typeFilter == 'breathing' || typeFilter == 'blink')
+        ? null
+        : typeFilter;
 
     return AppScaffold(
       showBack: true,
@@ -63,6 +65,8 @@ class LibraryExercisesPage extends ConsumerWidget {
                 for (final group in groups) ...[
                   if (group.type == 'breathing' && filter == null)
                     _breathingRoom(context, l10n),
+                  if (group.type == 'blink' && filter == null)
+                    _blinkRoom(context, l10n),
                   if (group.type == 'daily' && filter == null)
                     _dailyRoom(context, l10n),
                   if (group.type == 'daily' && filter == null)
@@ -86,6 +90,8 @@ class LibraryExercisesPage extends ConsumerWidget {
                             ? sortedAttentionExercises(group.items)
                             : group.type == 'breathing'
                             ? sortedBreathingExercises(group.items)
+                            : group.type == 'blink'
+                            ? sortedBlinkExercises(group.items)
                             : group.type == 'daily'
                             ? sortedDailyExercises(group.items)
                             : group.items)
@@ -188,6 +194,50 @@ class LibraryExercisesPage extends ConsumerWidget {
     );
   }
 
+  Widget _blinkRoom(BuildContext context, AppLocalizations l10n) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+      child: AppCard(
+        onTap: () => context.push(AppRoutes.blink),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        child: Row(
+          children: [
+            CircleAvatar(
+              backgroundColor: Theme.of(
+                context,
+              ).colorScheme.primary.withValues(alpha: 0.12),
+              foregroundColor: Theme.of(context).colorScheme.primary,
+              child: Icon(exerciseTypeIcon('blink'), size: 20),
+            ),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l10n.libraryBlinkRoom,
+                    style: const TextStyle(fontWeight: FontWeight.w700),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    l10n.libraryBlinkRoomBody,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Icon(
+              Icons.chevron_right,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _exerciseCard(
     BuildContext context,
     AppLocalizations l10n,
@@ -197,6 +247,7 @@ class LibraryExercisesPage extends ConsumerWidget {
       'memory' => memoryLook(exercise),
       'attention' => attentionLook(exercise),
       'breathing' => breathingLook(exercise),
+      'blink' => blinkLook(exercise),
       'daily' => dailyLook(exercise),
       _ => (
         accent: AppColors.primarySoft,
@@ -207,6 +258,7 @@ class LibraryExercisesPage extends ConsumerWidget {
       'memory' => memoryMeta(l10n, exercise),
       'attention' => attentionMeta(l10n, exercise),
       'breathing' => breathingMeta(l10n, exercise),
+      'blink' => blinkMeta(l10n, exercise),
       'daily' => dailyMeta(l10n, exercise),
       _ => exerciseTypeLabel(l10n, exercise.type),
     };

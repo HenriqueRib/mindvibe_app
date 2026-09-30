@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mindvibe_app/app/router/app_routes.dart';
 import 'package:mindvibe_app/app/theme/app_theme.dart';
 import 'package:mindvibe_app/app/widgets/app_widgets.dart';
 import 'package:mindvibe_app/core/error/failure_message.dart';
+import 'package:mindvibe_app/core/storage/feedback_store.dart';
 import 'package:mindvibe_app/features/auth/presentation/providers/session_controller.dart';
 import 'package:mindvibe_app/features/billing/premium_access.dart';
 import 'package:mindvibe_app/features/tools/presentation/widgets/timer_ring.dart';
@@ -108,7 +108,7 @@ class _ClearMindPageState extends ConsumerState<ClearMindPage> {
     }
     result.when(
       success: (value) {
-        HapticFeedback.mediumImpact();
+        AppFeedback.medium();
         ref.invalidate(progressProvider);
         ref.invalidate(historyProvider);
         setState(() {
@@ -263,7 +263,7 @@ class _ClearMindPageState extends ConsumerState<ClearMindPage> {
           if (i > 0) const SizedBox(height: 10),
           AppCard(
             onTap: () {
-              HapticFeedback.selectionClick();
+              AppFeedback.selection();
               setState(() => _focusIndex = i);
             },
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
